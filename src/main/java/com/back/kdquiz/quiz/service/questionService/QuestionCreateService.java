@@ -1,0 +1,61 @@
+package com.back.kdquiz.quiz.service.questionService;
+
+import com.back.kdquiz.domain.entity.Choice;
+import com.back.kdquiz.domain.entity.Option;
+import com.back.kdquiz.domain.entity.Question;
+import com.back.kdquiz.domain.entity.Quiz;
+import com.back.kdquiz.domain.repository.ChoiceRepository;
+import com.back.kdquiz.domain.repository.OptionRepository;
+import com.back.kdquiz.domain.repository.QuestionRepository;
+import com.back.kdquiz.domain.repository.QuizRepository;
+import com.back.kdquiz.quiz.init.QuizInit;
+import com.back.kdquiz.response.ResponseDto;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.Optional;
+
+@Service
+@AllArgsConstructor
+public class QuestionCreateService {
+
+    private final QuizRepository quizRepository;
+    private final QuestionRepository questionRepository;
+    private final ChoiceRepository choiceRepository;
+    private final OptionRepository optionRepository;
+
+    private final QuizInit quizInit;
+
+    @Transactional
+    public ResponseDto<?> questionCreate(Long quizId){
+        try{
+            Optional<Quiz> quizOption = quizRepository.findById(quizId);
+            if(quizOption.isEmpty()){
+                return ResponseDto.setFailed("Q000", "퀴즈가 없음");
+            }
+
+            Quiz quiz = quizOption.get();
+
+            Question question = quizInit.questionInit(new Question());
+            question.setQuiz(quiz);
+            questionRepository.save(question);
+
+            for(int i=0; i<2; i++){
+                Choice choice = quizInit.choiceInit(new Choice());
+                choice.setQuestion(question);
+                choiceRepository.save(choice);
+            }
+
+            Option option = quizInit.optionInit(new Option());
+            option.setQuestion(question);
+            optionRepository.save(option);
+
+            return ResponseDto.setSuccess("Q200","생성 성공", quiz);
+
+        }catch (Exception e){
+            return ResponseDto.setFailed("Q00", "생성 실패");
+        }
+
+    }
+
+}

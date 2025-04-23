@@ -7,6 +7,8 @@ import java.util.List;
 
 @Getter
 @Setter
-public class QuizCreateDto {
+public class QuizGetDto {
+    private Long id;
     private String title;
+    private List<QuestionGetDto> questionGetDtoList;
 }

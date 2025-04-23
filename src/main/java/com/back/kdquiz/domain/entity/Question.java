@@ -11,21 +11,30 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Quiz implements Serializable {
+public class Question implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     private Long id;
 
-    @Column(nullable = false)
-    private String title;
+    @Column
+    private String content;
 
-    @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
-    private List<Question> questions;
+    @ManyToOne
+    @JoinColumn(name = "quiz_id", nullable = false)
+    private Quiz quiz;
 
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+    private List<Choice> Choice;
+
+    @OneToOne(mappedBy = "question", cascade = CascadeType.REMOVE)
+    private Option Option;
+
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }

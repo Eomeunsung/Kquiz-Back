@@ -1,7 +1,27 @@
 package com.back.kdquiz.quiz.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import com.back.kdquiz.quiz.service.questionService.QuestionCreateService;
+import com.back.kdquiz.response.ResponseDto;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/question")
+@AllArgsConstructor
 public class QuestionController {
+
+    private final QuestionCreateService questionCreateService;
+
+    @GetMapping("/create/{quizId}")
+    public ResponseEntity<ResponseDto<?>> questionCreate(@PathVariable Long quizId){
+        ResponseDto responseDto = questionCreateService.questionCreate(quizId);
+        if(responseDto.getCode().equals("Q200")){
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+        }
+
+    }
 }

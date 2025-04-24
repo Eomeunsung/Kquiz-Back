@@ -2,7 +2,7 @@ package com.back.kdquiz.quiz.service.optionService;
 
 import com.back.kdquiz.domain.entity.Option;
 import com.back.kdquiz.domain.repository.OptionRepository;
-import com.back.kdquiz.quiz.dto.OptionGetDto;
+import com.back.kdquiz.quiz.dto.get.OptionGetDto;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

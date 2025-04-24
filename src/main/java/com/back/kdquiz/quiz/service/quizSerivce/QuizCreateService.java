@@ -2,7 +2,7 @@ package com.back.kdquiz.quiz.service.quizSerivce;
 
 import com.back.kdquiz.domain.entity.Quiz;
 import com.back.kdquiz.domain.repository.QuizRepository;
-import com.back.kdquiz.quiz.dto.QuizCreateDto;
+import com.back.kdquiz.quiz.dto.create.QuizCreateDto;
 import com.back.kdquiz.quiz.service.questionService.QuestionCreateService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
@@ -23,6 +23,7 @@ public class QuizCreateService {
         Quiz quiz = new Quiz();
         quiz.setTitle(quizCreateDto.getTitle());
         quiz.setCreatedAt(LocalDateTime.now());
+        quiz.setUpdatedAt(LocalDateTime.now());
         try {
             quizRepository.save(quiz);
             ResponseDto responseDto = questionCreateService.questionCreate(quiz.getId());

@@ -18,6 +18,9 @@ public class Question implements Serializable {
     private Long id;
 
     @Column
+    private String title;
+
+    @Column
     private String content;
 
     @ManyToOne

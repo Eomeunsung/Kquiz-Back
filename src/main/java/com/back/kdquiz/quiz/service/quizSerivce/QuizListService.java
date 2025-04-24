@@ -2,7 +2,7 @@ package com.back.kdquiz.quiz.service.quizSerivce;
 
 import com.back.kdquiz.domain.entity.Quiz;
 import com.back.kdquiz.domain.repository.QuizRepository;
-import com.back.kdquiz.quiz.dto.QuizAllDto;
+import com.back.kdquiz.quiz.dto.get.QuizAllGetDto;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,13 +31,14 @@ public class QuizListService {
     }
 
     private ResponseDto<?> buildQuizAllListResponse(List<Quiz> quizList){
-        List<QuizAllDto> quizAllDtoList = new ArrayList<>();
+        List<QuizAllGetDto> quizAllGetDtoList = new ArrayList<>();
         for(Quiz quiz : quizList){
-            QuizAllDto qad = new QuizAllDto();
+            QuizAllGetDto qad = new QuizAllGetDto();
             qad.setId(quiz.getId());
             qad.setTitle(quiz.getTitle());
-            quizAllDtoList.add(qad);
+            qad.setUpdateAt(quiz.getUpdatedAt());
+            quizAllGetDtoList.add(qad);
         }
-        return ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", quizAllDtoList);
+        return ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", quizAllGetDtoList);
     }
 }

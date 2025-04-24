@@ -1,4 +1,4 @@
-package com.back.kdquiz.quiz.dto;
+package com.back.kdquiz.quiz.dto.get;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,5 +10,5 @@ import java.util.List;
 public class QuizGetDto {
     private Long id;
     private String title;
-    private List<QuestionGetDto> questionGetDtoList;
+    private List<QuestionGetDto> questions;
 }

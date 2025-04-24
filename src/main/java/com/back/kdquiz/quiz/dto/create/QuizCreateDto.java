@@ -1,11 +1,10 @@
-package com.back.kdquiz.quiz.dto;
+package com.back.kdquiz.quiz.dto.create;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class QuizAllDto {
-    private Long id;
+public class QuizCreateDto {
     private String title;
 }

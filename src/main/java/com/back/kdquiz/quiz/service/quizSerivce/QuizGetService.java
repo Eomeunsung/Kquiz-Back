@@ -4,8 +4,8 @@ package com.back.kdquiz.quiz.service.quizSerivce;
 import com.back.kdquiz.domain.entity.Question;
 import com.back.kdquiz.domain.entity.Quiz;
 import com.back.kdquiz.domain.repository.QuizRepository;
-import com.back.kdquiz.quiz.dto.QuestionGetDto;
-import com.back.kdquiz.quiz.dto.QuizGetDto;
+import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
+import com.back.kdquiz.quiz.dto.get.QuizGetDto;
 import com.back.kdquiz.quiz.service.questionService.QuestionGetService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
@@ -46,7 +46,7 @@ public class QuizGetService {
                     return responseDto;
                 }
             }
-            quizGetDto.setQuestionGetDtoList(questionGetDtoList);
+            quizGetDto.setQuestions(questionGetDtoList);
             return ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", quizGetDto);
         }catch (Exception e){
             return ResponseDto.setFailed("Q001", "퀴즈 조회 오류 발생");

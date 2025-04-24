@@ -4,9 +4,9 @@ import com.back.kdquiz.domain.entity.Choice;
 import com.back.kdquiz.domain.entity.Option;
 import com.back.kdquiz.domain.entity.Question;
 import com.back.kdquiz.domain.repository.QuestionRepository;
-import com.back.kdquiz.quiz.dto.ChoiceGetDto;
-import com.back.kdquiz.quiz.dto.OptionGetDto;
-import com.back.kdquiz.quiz.dto.QuestionGetDto;
+import com.back.kdquiz.quiz.dto.get.ChoiceGetDto;
+import com.back.kdquiz.quiz.dto.get.OptionGetDto;
+import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
 import com.back.kdquiz.quiz.service.choiceService.ChoiceGetService;
 import com.back.kdquiz.quiz.service.optionService.OptionGetService;
 import com.back.kdquiz.response.ResponseDto;
@@ -48,7 +48,7 @@ public class QuestionGetService {
                 choiceGetDtoList.add(choiceGetDto);
             }
 
-            questionGetDto.setChoiceList(choiceGetDtoList);
+            questionGetDto.setChoices(choiceGetDtoList);
             Option option = question.getOption();
             OptionGetDto optionGetDto = new OptionGetDto();
             optionGetDto.setId(option.getId());

@@ -18,7 +18,7 @@ public class ChoiceGetService {
     private final ChoiceRepository choiceRepository;
 
     @Transactional
-    public ResponseDto<?> choiceGet(Long questionId){
+    public ResponseDto<List<ChoiceGetDto>> choiceGet(Long questionId){
         try{
             List<Choice> choiceList = choiceRepository.findByQuestion_Id(questionId);
             if(choiceList.isEmpty()){

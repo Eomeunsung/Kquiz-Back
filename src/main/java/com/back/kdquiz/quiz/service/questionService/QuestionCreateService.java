@@ -8,22 +8,25 @@ import com.back.kdquiz.domain.repository.ChoiceRepository;
 import com.back.kdquiz.domain.repository.OptionRepository;
 import com.back.kdquiz.domain.repository.QuestionRepository;
 import com.back.kdquiz.domain.repository.QuizRepository;
+import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
 import com.back.kdquiz.quiz.init.QuizInit;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class QuestionCreateService {
 
     private final QuizRepository quizRepository;
     private final QuestionRepository questionRepository;
     private final ChoiceRepository choiceRepository;
     private final OptionRepository optionRepository;
-
+    private final QuestionGetService questionGetService;
     private final QuizInit quizInit;
 
     @Transactional
@@ -50,10 +53,14 @@ public class QuestionCreateService {
             option.setQuestion(question);
             optionRepository.save(option);
 
-            return ResponseDto.setSuccess("Q200","생성 성공", quiz);
+            ResponseDto responseDto = questionGetService.questionGet(question.getId());
+            log.info("퀘스천 "+responseDto.getCode()+" "+responseDto.getMessage());
+            return responseDto.getCode().equals("Q200") ?
+                    ResponseDto.setSuccess("Q200", "생성 성공", responseDto.getData()) :
+                    ResponseDto.setFailed("Q001", "Question 찾을 수 없음");
 
         }catch (Exception e){
-            return ResponseDto.setFailed("Q00", "생성 실패");
+            return ResponseDto.setFailed("Q002", "생성 실패");
         }
 
     }

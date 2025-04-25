@@ -1,7 +1,5 @@
 package com.back.kdquiz.quiz.service.questionService;
 
-import com.back.kdquiz.domain.entity.Choice;
-import com.back.kdquiz.domain.entity.Option;
 import com.back.kdquiz.domain.entity.Question;
 import com.back.kdquiz.domain.repository.QuestionRepository;
 import com.back.kdquiz.quiz.dto.get.ChoiceGetDto;
@@ -14,12 +12,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+
 public class QuestionGetService {
 
     private final QuestionRepository questionRepository;
@@ -34,34 +32,33 @@ public class QuestionGetService {
                 return ResponseDto.setFailed("Q000","question 없습니다.");
             }
             Question question = questionOptional.get();
-            QuestionGetDto questionGetDto = new QuestionGetDto();
-            questionGetDto.setId(question.getId());
-            questionGetDto.setContent(question.getContent());
-            questionGetDto.setCreateAt(question.getUpdatedAt());
 
-            List<ChoiceGetDto> choiceGetDtoList = new ArrayList<>();
-            for(Choice choice : question.getChoice()){
-                ChoiceGetDto choiceGetDto = new ChoiceGetDto();
-                choiceGetDto.setId(choice.getId());
-                choiceGetDto.setContent(choice.getContent());
-                choiceGetDto.setIsCorrect(choice.getIsCorrect());
-                choiceGetDtoList.add(choiceGetDto);
+
+            ResponseDto choiceResponseDto = choiceGetService.choiceGet(question.getId());
+            if(!"Q200".equals(choiceResponseDto.getCode())){
+                return ResponseDto.setFailed("Q001", "Choice 조회 오류");
             }
+            List<ChoiceGetDto> choiceGetDtoList = (List<ChoiceGetDto>) choiceResponseDto.getData();
 
-            questionGetDto.setChoices(choiceGetDtoList);
-            Option option = question.getOption();
-            OptionGetDto optionGetDto = new OptionGetDto();
-            optionGetDto.setId(option.getId());
-            optionGetDto.setUseAiFeedBack(option.getUseAiFeedback());
-            optionGetDto.setAiQuestion(option.getAiQuestion());
-            optionGetDto.setTime(option.getTime());
-            optionGetDto.setCommentary(option.getCommentary());
-            optionGetDto.setScore(option.getScore());
 
-            questionGetDto.setOption(optionGetDto);
+            ResponseDto optionGetDtoResponseDto = optionGetService.optionGet(question.getId());
+            if(!"Q200".equals(optionGetDtoResponseDto.getCode())){
+                return ResponseDto.setFailed("Q002", "Option 조회 오류");
+            }
+            OptionGetDto optionGetDto = (OptionGetDto) optionGetDtoResponseDto.getData();
+
+
+            QuestionGetDto questionGetDto = QuestionGetDto.builder()
+                    .id(question.getId())
+                    .title(question.getTitle())
+                    .content(question.getContent())
+                    .updateAt(question.getUpdatedAt())
+                    .choices(choiceGetDtoList)
+                    .option(optionGetDto)
+                    .build();
             return ResponseDto.setSuccess("Q200", "question 목록 조회 성공", questionGetDto);
         }catch (Exception e){
-            return ResponseDto.setSuccess("Q001", "question 오류 발생");
+            return ResponseDto.setFailed("Q001", "question 오류 발생: " + e.getMessage());
         }
     }
 }

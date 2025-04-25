@@ -30,7 +30,7 @@ public class QuizCreateService {
             if(!responseDto.getCode().equals("Q200")){
                 return ResponseDto.setFailed("Q000", "Question 생성 실패");
             }
-            return ResponseDto.setSuccess("Q200", "Quiz 생성 성공", null);
+            return ResponseDto.setSuccess("Q200", "Quiz 생성 성공", quiz.getId());
         } catch (Exception e) {
             return ResponseDto.setFailed("Q001", "Quiz 생성 실패");
 

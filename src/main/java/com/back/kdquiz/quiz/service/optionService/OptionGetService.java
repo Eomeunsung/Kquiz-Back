@@ -17,7 +17,7 @@ public class OptionGetService {
     private final OptionRepository optionRepository;
 
     @Transactional
-    public ResponseDto<?> optionGet(Long id){
+    public ResponseDto<OptionGetDto> optionGet(Long id){
 
         try{
             Optional<Option> optionalOption = optionRepository.findById(id);

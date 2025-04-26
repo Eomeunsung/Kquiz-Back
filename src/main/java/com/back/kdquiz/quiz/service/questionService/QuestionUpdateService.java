@@ -5,19 +5,24 @@ import com.back.kdquiz.domain.repository.QuestionRepository;
 import com.back.kdquiz.quiz.dto.update.ChoiceUpdateDto;
 import com.back.kdquiz.quiz.dto.update.QuestionUpdateDto;
 import com.back.kdquiz.quiz.service.choiceService.ChoiceUpdateService;
+import com.back.kdquiz.quiz.service.optionService.OptionUpdateService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class QuestionUpdateService {
 
     private final QuestionRepository questionRepository;
     private final ChoiceUpdateService choiceUpdateService;
+    private final OptionUpdateService optionUpdateService;
 
     @Transactional
     public ResponseDto<?> questionUpdate(QuestionUpdateDto questionUpdateDto){
@@ -29,14 +34,16 @@ public class QuestionUpdateService {
             Question question = questionOptional.get();
             question.setTitle(questionUpdateDto.getTitle());
             question.setContent(questionUpdateDto.getContent());
-            question.setUpdatedAt(questionUpdateDto.getUpdateAt());
+            question.setUpdatedAt(LocalDateTime.now());
             questionRepository.save(question);
             for(ChoiceUpdateDto choiceUpdateDto : questionUpdateDto.getChoices()){
                 choiceUpdateService.choiceUpdate(choiceUpdateDto);
             }
 
-            return ResponseDto.setSuccess("Q200", "Question 저장 성공");
+            optionUpdateService.optionUpdate(questionUpdateDto.getOption());
+            return ResponseDto.setSuccess("Q200", "Question 저장 성공", questionUpdateDto);
         }catch (Exception e){
+            log.info("questionUpdate 에러 "+e.getMessage());
             return ResponseDto.setFailed("Q001", "Question 저장 오류 발생");
         }
     }

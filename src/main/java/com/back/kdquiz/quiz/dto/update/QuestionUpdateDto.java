@@ -12,7 +12,6 @@ public class QuestionUpdateDto {
     private Long id;
     private String title;
     private String content;
-    private LocalDateTime updateAt;
     private List<ChoiceUpdateDto> choices;
     private OptionUpdateDto option;
 

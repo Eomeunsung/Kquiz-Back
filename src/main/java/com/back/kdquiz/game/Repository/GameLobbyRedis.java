@@ -1,0 +1,22 @@
+package com.back.kdquiz.game.Repository;
+
+import jakarta.annotation.PostConstruct;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.stereotype.Repository;
+
+@Repository
+@RequiredArgsConstructor
+public class GameLobbyRedis {
+    private final RedisTemplate<Object, Object> redisTemplate;
+    private ValueOperations<Object, Object> valueOperations;
+
+    @PostConstruct
+    public void init(){
+        valueOperations = redisTemplate.opsForValue();
+    }
+
+
+}

@@ -18,5 +18,8 @@ public class GameLobbyRedis {
         valueOperations = redisTemplate.opsForValue();
     }
 
+    public void gameCreate(String gameId, Long quizId){
+        valueOperations.set(gameId, quizId);
+    }
 
 }

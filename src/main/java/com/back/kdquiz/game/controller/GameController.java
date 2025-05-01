@@ -1,6 +1,7 @@
 package com.back.kdquiz.game.controller;
 
 import com.back.kdquiz.game.Service.GameCreateService;
+import com.back.kdquiz.game.dto.GameCreateDto;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.Response;
@@ -19,8 +20,8 @@ public class GameController {
     private final GameCreateService gameCreateService;
 
     @GetMapping("/create/{quizId}")
-    public ResponseEntity<ResponseDto<String>> gameCreate(@PathVariable Long quizId){
-        ResponseDto<String> responseDto = gameCreateService.gameCreate();
+    public ResponseEntity<ResponseDto<GameCreateDto>> gameCreate(@PathVariable Long quizId){
+        ResponseDto<GameCreateDto> responseDto = gameCreateService.gameCreate(quizId);
 
         if(responseDto.getCode().equals("G200")){
             return new ResponseEntity<>(responseDto, HttpStatus.OK);

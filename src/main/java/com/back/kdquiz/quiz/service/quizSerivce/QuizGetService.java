@@ -49,7 +49,7 @@ public class QuizGetService {
             quizGetDto.setQuestions(questionGetDtoList);
             return ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", quizGetDto);
         }catch (Exception e){
-            return ResponseDto.setFailed("Q001", "퀴즈 조회 오류 발생");
+            return ResponseDto.setFailed("Q001", "퀴즈 조회 오류 발생"+e.getMessage());
         }
     }
 }

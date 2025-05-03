@@ -20,8 +20,8 @@ public class WebSocketHandler {
         log.info("들어온 메시지 "+event);
         SimpMessageHeaderAccessor accessor = SimpMessageHeaderAccessor.wrap(event.getMessage());
 
-        //클라이언트에서 보낸 jwt 토큰 가져오기
-        String id = accessor.getFirstNativeHeader("id");
+        String userId = accessor.getFirstNativeHeader("userId");
+        String roomId = accessor.getFirstNativeHeader("roomId");
         String name = accessor.getFirstNativeHeader("name");
 
 
@@ -30,13 +30,15 @@ public class WebSocketHandler {
         ChatMessageDto chatMessageDto = new ChatMessageDto();
         chatMessageDto.setName(name);
         chatMessageDto.setContent(name+" 님이 참가하였습니다.");
-        messagingTemplate.convertAndSend(String.format("/topic/chat/%s", id), chatMessageDto);
+        messagingTemplate.convertAndSend(String.format("/topic/chat/%s", roomId), chatMessageDto);
     }
 
     @EventListener
     public void handleSessionDisconnect(SessionDisconnectEvent event) {
         SimpMessageHeaderAccessor accessor = SimpMessageHeaderAccessor.wrap(event.getMessage());
-        String id = accessor.getFirstNativeHeader("id");
+
+        String userId = accessor.getFirstNativeHeader("userId");
+        String roomId = accessor.getFirstNativeHeader("roomId");
         String name = accessor.getFirstNativeHeader("name");
 
         log.info("[SessionDisconnected]: "+name);
@@ -46,6 +48,6 @@ public class WebSocketHandler {
         chatMessageDto.setName(name);
         chatMessageDto.setContent(name+" 님이 나갔습니다.");
 
-        messagingTemplate.convertAndSend(String.format("/topic/chat/%s", id), chatMessageDto);
+        messagingTemplate.convertAndSend(String.format("/topic/chat/%s", roomId), chatMessageDto);
     }
 }

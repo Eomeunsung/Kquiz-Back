@@ -35,6 +35,8 @@ public class GameCreateService {
                 gameCreateDto.setQuizGetDto((QuizGetDto) responseDto.getData());
                 gameCreateDto.setGameId(sb.toString());
                 gameLobbyRedis.gameCreate(sb.toString(), quizId);
+            }else{
+                return ResponseDto.setFailed("G000", responseDto.getMessage());
             }
             return ResponseDto.setSuccess("G200", "게임 생성 성공", gameCreateDto);
         }catch (Exception e){

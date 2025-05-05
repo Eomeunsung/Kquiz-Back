@@ -22,4 +22,8 @@ public class GameLobbyRedis {
         valueOperations.set(gameId, quizId);
     }
 
+    public Integer get(String gameId){
+        return (Integer) valueOperations.get(gameId);
+    }
+
 }

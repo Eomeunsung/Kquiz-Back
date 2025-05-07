@@ -1,29 +1,49 @@
 package com.back.kdquiz.game.Repository;
 
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
+
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
 public class GameLobbyRedis {
     private final RedisTemplate<Object, Object> redisTemplate;
     private ValueOperations<Object, Object> valueOperations;
+    private HashOperations<Object, Object, Object> hashOps;
 
     @PostConstruct
     public void init(){
         valueOperations = redisTemplate.opsForValue();
+        hashOps = redisTemplate.opsForHash();
     }
 
     public void gameCreate(String gameId, Long quizId){
-        valueOperations.set(gameId, quizId);
+        valueOperations.set("game:quiz:"+gameId, quizId);
     }
 
+    public Long addUser(String gameId, String username){
+        Long newIndex = redisTemplate.opsForValue().increment("game:users:index:"+gameId);
+
+        hashOps.put("game:users:"+gameId, String.valueOf(newIndex), username);
+        return newIndex;
+    }
+
+    public String getUser(String gameId, Integer index){
+        return (String) hashOps.get("game:users:"+gameId, String.valueOf(index));
+    }
+
+    public Map<Object, Object> getAllUsers(String gameId){
+        return hashOps.entries("game:users:"+gameId);
+    }
+
+
     public Integer get(String gameId){
-        return (Integer) valueOperations.get(gameId);
+        return (Integer) valueOperations.get("game:quiz:"+gameId);
     }
 
 }

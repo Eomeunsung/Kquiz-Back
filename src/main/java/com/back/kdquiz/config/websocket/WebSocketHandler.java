@@ -13,6 +13,8 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Component
 @RequiredArgsConstructor
@@ -28,20 +30,36 @@ public class WebSocketHandler {
 
         String roomId = accessor.getFirstNativeHeader("roomId");
         String name = accessor.getFirstNativeHeader("name");
+        String userId = accessor.getFirstNativeHeader("userId");
+        log.info("user아이디 "+userId);
+        ChatMessageDto chatMessageDto = new ChatMessageDto();
+        if(userId==null || userId.equals("null")){
+            Long newId =  gameLobbyRedis.addUser(roomId,name);
+            chatMessageDto.setUserId(newId);
+        }else{
+            Long Id = Long.parseLong(userId);
+            chatMessageDto.setUserId(Id);
+        }
 
-       Long userId =  gameLobbyRedis.addUser(roomId,name);
+
 
         log.info("[SessionConnected]: nickname = " + name);
         log.info("룸 아이디 "+roomId);
         Map<Object, Object> users = gameLobbyRedis.getAllUsers(roomId);
 
-        ChatMessageDto chatMessageDto = new ChatMessageDto();
-        chatMessageDto.setUserId(userId);
         chatMessageDto.setName(name);
         chatMessageDto.setUserList(users);
         chatMessageDto.setContent(name+" 님이 참가하였습니다.");
-        log.info("메시지 전송 {}",chatMessageDto);
-        messagingTemplate.convertAndSend(String.format("/topic/chat/%s", roomId), chatMessageDto);
+        log.info("메시지 전송 {}",chatMessageDto.getUserId());
+        log.info("보낼 주소 "+String.format("/topic/chat/%s", roomId));
+
+        //바로 클라이언트로 보내면 받지 못할 수도 있음으로 딜레이 주면서 보내기
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                messagingTemplate.convertAndSend(String.format("/topic/chat/%s", roomId), chatMessageDto);
+            }
+        }, 200); // 200ms 딜레이
     }
 
     @EventListener

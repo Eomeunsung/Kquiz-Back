@@ -46,4 +46,8 @@ public class GameLobbyRedis {
         return (Integer) valueOperations.get("game:quiz:"+gameId);
     }
 
+    public void removeUser(String gameId, String userId){
+        hashOps.delete("game:users:"+gameId, userId);
+    }
+
 }

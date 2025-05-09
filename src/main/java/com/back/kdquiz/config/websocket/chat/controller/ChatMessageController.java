@@ -1,9 +1,12 @@
 package com.back.kdquiz.config.websocket.chat.controller;
 
 import com.back.kdquiz.config.websocket.chat.dto.ChatMessageDto;
+import com.back.kdquiz.config.websocket.chat.dto.KickRequestDto;
+import com.back.kdquiz.game.Repository.GameLobbyRedis;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -13,9 +16,10 @@ import java.time.LocalDate;
 @Slf4j
 public class ChatMessageController {
     private final SimpMessagingTemplate messagingTemplate;
-
-    public ChatMessageController(SimpMessagingTemplate messagingTemplate) {
+    private final GameLobbyRedis gameLobbyRedis;
+    public ChatMessageController(SimpMessagingTemplate messagingTemplate, GameLobbyRedis gameLobbyRedis) {
         this.messagingTemplate = messagingTemplate;
+        this.gameLobbyRedis = gameLobbyRedis;
     }
 
 //    @MessageMapping("/chat")
@@ -33,6 +37,16 @@ public class ChatMessageController {
         String destination = "/topic/chat/"+roomId;
         log.info("보낼 주소 "+destination);
         messagingTemplate.convertAndSend(destination, chatMessageDto);
+    }
 
+    //강퇴
+    @MessageMapping("/kick")
+    public void kickUser(@Payload KickRequestDto request){
+        String gameId = request.getGameId();
+        log.info("게임 아이디 "+gameId);
+        String userId = request.getUserId();
+        log.info("유저 아이디 "+userId);
+//        gameLobbyRedis.removeUser(gameId, userId);
+        messagingTemplate.convertAndSendToUser(userId,"/queue/kick", "KICKED");
     }
 }

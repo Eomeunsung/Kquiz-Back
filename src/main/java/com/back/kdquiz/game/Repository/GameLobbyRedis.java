@@ -33,8 +33,8 @@ public class GameLobbyRedis {
         return newIndex;
     }
 
-    public String getUser(String gameId, Integer index){
-        return (String) hashOps.get("game:users:"+gameId, String.valueOf(index));
+    public String getUser(String gameId, String index){
+        return (String) hashOps.get("game:users:"+gameId, index);
     }
 
     public Map<Object, Object> getAllUsers(String gameId){

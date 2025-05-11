@@ -1,6 +1,7 @@
 package com.back.kdquiz.config.websocket.chat.controller;
 
 import com.back.kdquiz.config.websocket.chat.dto.ChatMessageDto;
+import com.back.kdquiz.config.websocket.chat.dto.GameRequestDto;
 import com.back.kdquiz.config.websocket.chat.dto.KickRequestDto;
 import com.back.kdquiz.config.websocket.chat.enums.TypeEnum;
 import com.back.kdquiz.game.Repository.GameLobbyRedis;
@@ -61,6 +62,12 @@ public class ChatMessageController {
 
         messagingTemplate.convertAndSend("/topic/chat/" + gameId, chatMessageDto);
         messagingTemplate.convertAndSend("/topic/kick/" + userId, "KICKED");
+    }
+
+    //게임 시작
+    @MessageMapping("/start")
+    public void startGame(GameRequestDto gameRequestDto){
+
     }
 
 }

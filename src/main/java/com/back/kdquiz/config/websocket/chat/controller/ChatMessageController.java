@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -36,20 +37,31 @@ public class ChatMessageController {
 
     //전체
     @MessageMapping("/chat/{roomId}")
-    public void sendMessage(ChatMessageDto chatMessageDto, @DestinationVariable Long roomId){
-        log.info("들어온 DTO "+chatMessageDto.getContent()+" 아이디 "+roomId +" 이름 "+chatMessageDto.getName());
+    public void sendMessage(ChatMessageDto chatMessageDto, @DestinationVariable String roomId){
         String destination = "/topic/chat/"+roomId;
-        log.info("보낼 주소 "+destination);
-        messagingTemplate.convertAndSend(destination, chatMessageDto);
+        if(chatMessageDto.getContent().equals("GAME")){
+            GameRequestDto gameRequestDto = new GameRequestDto();
+            gameRequestDto.setType(TypeEnum.GAME);
+            gameRequestDto.setContent("게임 시작");
+
+            messagingTemplate.convertAndSend(destination, gameRequestDto);
+        }else{
+            log.info("들어온 DTO "+chatMessageDto.getContent()+" 아이디 "+roomId +" 이름 "+chatMessageDto.getName());
+
+            log.info("보낼 주소 "+destination);
+
+            messagingTemplate.convertAndSend(destination, chatMessageDto);
+        }
+
     }
 
     //강퇴 개별
     @MessageMapping("/kick")
     public void kickUser(@Payload KickRequestDto request){
         String gameId = request.getGameId();
-        log.info("게임 아이디 "+gameId);
+        log.info("강퇴 게임 아이디 "+gameId);
         String userId = request.getUserId();
-        log.info("유저 아이디 "+userId);
+        log.info("강퇴 유저 아이디 "+userId);
 
         ChatMessageDto chatMessageDto = new ChatMessageDto();
         String userName = gameLobbyRedis.getUser(gameId, userId); //유저 이름 찾기
@@ -65,9 +77,13 @@ public class ChatMessageController {
     }
 
     //게임 시작
-    @MessageMapping("/start")
-    public void startGame(GameRequestDto gameRequestDto){
-
+    @MessageMapping("/game/{roomId}")
+    public void startGame(@DestinationVariable String roomId){
+        GameRequestDto gameRequestDto = new GameRequestDto();
+        gameRequestDto.setContent("게임이 시작됩니다.");
+        gameRequestDto.setType(TypeEnum.GAME);
+        log.info("게임 주소 "+roomId);
+        messagingTemplate.convertAndSend("/topic/game/"+roomId,gameRequestDto);
     }
 
 }

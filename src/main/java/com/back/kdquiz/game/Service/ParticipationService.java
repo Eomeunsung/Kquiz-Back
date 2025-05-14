@@ -17,7 +17,8 @@ public class ParticipationService {
     @Transactional
     public ResponseDto<?> participation(String roomId){
         try{
-            Integer id = gameLobbyRedis.get(roomId);
+            String strId = gameLobbyRedis.getQuiz(roomId);
+            Long id = Long.parseLong(strId);
             log.info("게임 아이디 "+id);
             if(id==null){
                 return ResponseDto.setFailed("P000", "게임을 못 찾음");

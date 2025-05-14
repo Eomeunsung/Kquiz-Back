@@ -1,10 +1,7 @@
 package com.back.kdquiz.quiz.controller;
 
 import com.back.kdquiz.quiz.dto.update.QuestionUpdateDto;
-import com.back.kdquiz.quiz.service.questionService.QuestionCreateService;
-import com.back.kdquiz.quiz.service.questionService.QuestionDeleteService;
-import com.back.kdquiz.quiz.service.questionService.QuestionGetService;
-import com.back.kdquiz.quiz.service.questionService.QuestionUpdateService;
+import com.back.kdquiz.quiz.service.questionService.*;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +17,7 @@ public class QuestionController {
     private final QuestionDeleteService questionDeleteService;
     private final QuestionGetService questionGetService;
     private final QuestionUpdateService questionUpdateService;
+    private final QuestionGetIdService questionGetIdService;
 
     @GetMapping("/create/{quizId}")
     public ResponseEntity<ResponseDto<?>> questionCreate(@PathVariable Long quizId){
@@ -54,6 +52,17 @@ public class QuestionController {
     @PutMapping("/update")
     public ResponseEntity<ResponseDto<?>> questionUpdate(@RequestBody QuestionUpdateDto questionUpdateDto){
         ResponseDto responseDto = questionUpdateService.questionUpdate(questionUpdateDto);
+        if(responseDto.getCode().equals("Q200")){
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //일단 안쓰는거
+    @GetMapping("/get/questionId/{quizId}")
+    public ResponseEntity<ResponseDto<?>> questionGetId(@PathVariable Long quizId){
+        ResponseDto responseDto = questionGetIdService.questionGetId(quizId);
         if(responseDto.getCode().equals("Q200")){
             return new ResponseEntity<>(responseDto, HttpStatus.OK);
         }else{

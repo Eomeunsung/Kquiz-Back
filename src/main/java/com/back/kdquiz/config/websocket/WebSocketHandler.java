@@ -4,6 +4,11 @@ import com.back.kdquiz.config.websocket.chat.dto.ChatMessageDto;
 import com.back.kdquiz.config.websocket.chat.dto.GameRequestDto;
 import com.back.kdquiz.config.websocket.chat.enums.TypeEnum;
 import com.back.kdquiz.game.Repository.GameLobbyRedis;
+import com.back.kdquiz.quiz.dto.get.QuestionGetIdDto;
+import com.back.kdquiz.quiz.dto.get.QuizGetDto;
+import com.back.kdquiz.quiz.service.questionService.QuestionGetIdService;
+import com.back.kdquiz.quiz.service.quizSerivce.QuizGetService;
+import com.back.kdquiz.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -24,6 +29,8 @@ import java.util.TimerTask;
 public class WebSocketHandler {
     private final SimpMessagingTemplate messagingTemplate;
     private final GameLobbyRedis gameLobbyRedis;
+    private final QuizGetService quizGetService;
+    private final QuestionGetIdService questionGetIdService;
 
     @EventListener
     public void handleSessionConnect(SessionConnectEvent event) {
@@ -71,11 +78,20 @@ public class WebSocketHandler {
             GameRequestDto gameRequestDto = new GameRequestDto();
             gameRequestDto.setContent("곧 있으면 게임이 시작 됩니다.");
             gameRequestDto.setType(TypeEnum.GAME);
+            String strId = gameLobbyRedis.getQuiz(roomId);
+            Long quizId = Long.parseLong(strId);
+            QuestionGetIdDto questionGetIdDto = new QuestionGetIdDto();
+            ResponseDto responseDto = questionGetIdService.questionGetId(quizId);
+            if(responseDto.getCode().equals("Q200")){
+                questionGetIdDto = (QuestionGetIdDto) responseDto.getData();
+            }
             //바로 클라이언트로 보내면 받지 못할 수도 있음으로 딜레이 주면서 보내기
+            QuestionGetIdDto finalQuestionGetIdDto = questionGetIdDto;
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
                     messagingTemplate.convertAndSend(String.format("/topic/game/%s", roomId), gameRequestDto);
+                    messagingTemplate.convertAndSend(String.format("/topic/quiz/%s",roomId), finalQuestionGetIdDto);
                 }
             }, 200); // 200ms 딜레이
         }

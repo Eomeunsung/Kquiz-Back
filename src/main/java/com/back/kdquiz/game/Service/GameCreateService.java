@@ -34,7 +34,8 @@ public class GameCreateService {
             if(responseDto.getData()!=null){
                 gameCreateDto.setQuizGetDto((QuizGetDto) responseDto.getData());
                 gameCreateDto.setGameId(sb.toString());
-                gameLobbyRedis.gameCreate(sb.toString(), quizId);
+                String strId = String.valueOf(quizId);
+                gameLobbyRedis.gameCreate(sb.toString(), strId);
             }else{
                 return ResponseDto.setFailed("G000", responseDto.getMessage());
             }

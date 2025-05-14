@@ -22,7 +22,7 @@ public class GameLobbyRedis {
         hashOps = redisTemplate.opsForHash();
     }
 
-    public void gameCreate(String gameId, Long quizId){
+    public void gameCreate(String gameId, String quizId){
         valueOperations.set("game:quiz:"+gameId, quizId);
     }
 
@@ -42,8 +42,8 @@ public class GameLobbyRedis {
     }
 
 
-    public Integer get(String gameId){
-        return (Integer) valueOperations.get("game:quiz:"+gameId);
+    public String getQuiz(String gameId){
+        return (String) valueOperations.get("game:quiz:"+gameId);
     }
 
     public void removeUser(String gameId, String userId){

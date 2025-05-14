@@ -1,10 +1,11 @@
 package com.back.kdquiz.config.websocket.chat.controller;
 
-import com.back.kdquiz.config.websocket.chat.dto.ChatMessageDto;
-import com.back.kdquiz.config.websocket.chat.dto.GameRequestDto;
-import com.back.kdquiz.config.websocket.chat.dto.KickRequestDto;
+import com.back.kdquiz.config.websocket.chat.dto.*;
 import com.back.kdquiz.config.websocket.chat.enums.TypeEnum;
 import com.back.kdquiz.game.Repository.GameLobbyRedis;
+import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
+import com.back.kdquiz.quiz.service.questionService.QuestionGetService;
+import com.back.kdquiz.response.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,9 +22,12 @@ import java.util.Map;
 public class ChatMessageController {
     private final SimpMessagingTemplate messagingTemplate;
     private final GameLobbyRedis gameLobbyRedis;
-    public ChatMessageController(SimpMessagingTemplate messagingTemplate, GameLobbyRedis gameLobbyRedis) {
+
+    private final QuestionGetService questionGetService;
+    public ChatMessageController(SimpMessagingTemplate messagingTemplate, GameLobbyRedis gameLobbyRedis, QuestionGetService questionGetService) {
         this.messagingTemplate = messagingTemplate;
         this.gameLobbyRedis = gameLobbyRedis;
+        this.questionGetService = questionGetService;
     }
 
 //    @MessageMapping("/chat")
@@ -85,5 +89,18 @@ public class ChatMessageController {
         log.info("게임 주소 "+roomId);
         messagingTemplate.convertAndSend("/topic/game/"+roomId,gameRequestDto);
     }
+
+    //question가져오기
+    @MessageMapping("/quiz/{roomId}")
+    public void questionGet(@DestinationVariable String roomId, @Payload QuestionIdDto questionId){
+        log.info("퀘스천 question 아이디 "+questionId.getQuestionId());
+        ResponseDto responseDto = questionGetService.questionGet(questionId.getQuestionId());
+        QuestionTypeDto questionTypeDto = new QuestionTypeDto();
+        questionTypeDto.setType(TypeEnum.QUESTION);
+        questionTypeDto.setQuestion((QuestionGetDto) responseDto.getData());
+        log.info("게임 주소 "+roomId);
+        messagingTemplate.convertAndSend("/topic/quiz/"+roomId, questionTypeDto);
+    }
+
 
 }

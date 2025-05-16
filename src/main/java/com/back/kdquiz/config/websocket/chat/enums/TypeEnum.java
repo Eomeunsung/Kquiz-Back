@@ -5,5 +5,7 @@ public enum TypeEnum {
     CHAT,
     KICK,
     GAME,
-    QUESTION
+    QUESTION,
+    SCORE,
+    END
 }

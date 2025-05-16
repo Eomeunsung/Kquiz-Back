@@ -7,6 +7,7 @@ import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
 import com.back.kdquiz.quiz.service.questionService.QuestionGetService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -15,6 +16,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -82,15 +86,35 @@ public class ChatMessageController {
 
     //게임 시작
     @MessageMapping("/game/{roomId}")
-    public void startGame(@DestinationVariable String roomId){
-        GameRequestDto gameRequestDto = new GameRequestDto();
-        gameRequestDto.setContent("게임이 시작됩니다.");
-        gameRequestDto.setType(TypeEnum.GAME);
-        log.info("게임 주소 "+roomId);
-        messagingTemplate.convertAndSend("/topic/game/"+roomId,gameRequestDto);
+    public void startGame(@DestinationVariable String roomId, @Payload ScoreDto scoreDto){
+        if(scoreDto.getType().equals("SCORE")){
+            gameLobbyRedis.addScore(roomId, scoreDto.getUserId(), scoreDto.getScore());
+            log.info("유저 점수 "+gameLobbyRedis.getScore(roomId, scoreDto.getUserId()));
+            messagingTemplate.convertAndSend("/topic/game/"+roomId, "채점 완료");
+        }else if(scoreDto.getType().equals("END")){
+            Map<Object, Object> scoreMap = gameLobbyRedis.getAllScores(roomId);
+            Map<Object, Object> userMap = gameLobbyRedis.getAllUsers(roomId);
+
+            UserScoreDto result = new UserScoreDto();
+            List<EndScoreDto> endScoreDtos = new ArrayList<>();
+             for(Map.Entry<Object, Object> entry : userMap.entrySet()){
+                String userIndex = entry.getKey().toString();
+                String username = entry.getValue().toString();
+                if(username.equals("HOST")){
+                    continue;
+                }
+                Object scoreObj = scoreMap.get(userIndex);
+                int score = scoreObj != null ? Integer.parseInt(scoreObj.toString()) : 0;
+                endScoreDtos.add(new EndScoreDto(username, score));
+            }
+             result.setScores(endScoreDtos);
+             result.setType(TypeEnum.END);
+            messagingTemplate.convertAndSend("/topic/game/"+roomId, result);
+        }
+
     }
 
-    //question가져오기
+    //question 가져오기
     @MessageMapping("/quiz/{roomId}")
     public void questionGet(@DestinationVariable String roomId, @Payload QuestionIdDto questionId){
         log.info("퀘스천 question 아이디 "+questionId.getQuestionId());
@@ -98,6 +122,7 @@ public class ChatMessageController {
         QuestionTypeDto questionTypeDto = new QuestionTypeDto();
         questionTypeDto.setType(TypeEnum.QUESTION);
         questionTypeDto.setQuestion((QuestionGetDto) responseDto.getData());
+        questionTypeDto.setLocalDateTime(LocalDateTime.now());
         log.info("게임 주소 "+roomId);
         messagingTemplate.convertAndSend("/topic/quiz/"+roomId, questionTypeDto);
     }

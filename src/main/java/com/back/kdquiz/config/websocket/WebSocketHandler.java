@@ -50,6 +50,8 @@ public class WebSocketHandler {
             ChatMessageDto chatMessageDto = new ChatMessageDto();
             if(userId==null || userId.equals("null")){
                 Long newId =  gameLobbyRedis.addUser(roomId,name);
+                String strId = String.valueOf(newId);
+//                gameLobbyRedis.saveUsername(roomId, strId, name);
                 chatMessageDto.setUserId(newId);
             }else{
                 Long Id = Long.parseLong(userId);

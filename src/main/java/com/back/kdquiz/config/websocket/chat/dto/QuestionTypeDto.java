@@ -5,9 +5,13 @@ import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class QuestionTypeDto {
     private QuestionGetDto question;
     private TypeEnum type;
+    private LocalDateTime localDateTime;
 }

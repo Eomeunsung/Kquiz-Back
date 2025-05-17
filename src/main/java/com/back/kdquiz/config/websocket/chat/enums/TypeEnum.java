@@ -7,5 +7,9 @@ public enum TypeEnum {
     GAME,
     QUESTION,
     SCORE,
-    END
+    ANSWER,
+    TIMER,
+    READY,
+
+    START,
 }

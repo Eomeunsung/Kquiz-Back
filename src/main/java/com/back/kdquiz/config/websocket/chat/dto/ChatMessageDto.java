@@ -4,7 +4,6 @@ import com.back.kdquiz.config.websocket.chat.enums.TypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Getter

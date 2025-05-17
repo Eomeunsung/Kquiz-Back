@@ -7,15 +7,11 @@ import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
 import com.back.kdquiz.quiz.service.questionService.QuestionGetService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +104,7 @@ public class ChatMessageController {
                 endScoreDtos.add(new EndScoreDto(username, score));
             }
              result.setScores(endScoreDtos);
-             result.setType(TypeEnum.END);
+             result.setType(TypeEnum.SCORE);
             messagingTemplate.convertAndSend("/topic/game/"+roomId, result);
         }
 
@@ -125,6 +121,24 @@ public class ChatMessageController {
         questionTypeDto.setLocalDateTime(LocalDateTime.now());
         log.info("게임 주소 "+roomId);
         messagingTemplate.convertAndSend("/topic/quiz/"+roomId, questionTypeDto);
+    }
+
+    //timer
+    @MessageMapping("/timer/{roomId}")
+    public void timer(@DestinationVariable String roomId, @Payload TimerDto timerDto){
+        TimerDto response = new TimerDto();
+        if(timerDto.getType().equals("READER")){
+            response.setFlag(true);
+            response.setType("READER");
+            response.setTime(timerDto.getTime());
+        }else if(timerDto.getType().equals("START")){
+            response.setFlag(false);
+            response.setType("START");
+            response.setTime(response.getTime());
+        }
+
+        messagingTemplate.convertAndSend("/topic/timer/"+roomId, response);
+
     }
 
 

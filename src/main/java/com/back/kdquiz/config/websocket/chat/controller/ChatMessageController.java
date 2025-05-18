@@ -85,11 +85,23 @@ public class ChatMessageController {
     public void startGame(@DestinationVariable String roomId, @Payload ScoreDto scoreDto){
         if(scoreDto.getType().equals("SCORE")){
             gameLobbyRedis.addScore(roomId, scoreDto.getUserId(), scoreDto.getScore());
-            log.info("유저 점수 "+gameLobbyRedis.getScore(roomId, scoreDto.getUserId()));
+            log.info("유저 점수 "+gameLobbyRedis.getScore(roomId, scoreDto.getUserId())+"유저 아이디 "+scoreDto.getUserId());
             messagingTemplate.convertAndSend("/topic/game/"+roomId, "채점 완료");
         }else if(scoreDto.getType().equals("END")){
             Map<Object, Object> scoreMap = gameLobbyRedis.getAllScores(roomId);
             Map<Object, Object> userMap = gameLobbyRedis.getAllUsers(roomId);
+
+            // scoreMap 키값 출력
+            System.out.println("scoreMap 키 목록:");
+            for (Object key : scoreMap.keySet()) {
+                System.out.println(" - " + key);
+            }
+
+        // userMap 키값 출력
+            System.out.println("userMap 키 목록:");
+            for (Object key : userMap.keySet()) {
+                System.out.println(" - " + key);
+            }
 
             UserScoreDto result = new UserScoreDto();
             List<EndScoreDto> endScoreDtos = new ArrayList<>();
@@ -134,7 +146,10 @@ public class ChatMessageController {
         }else if(timerDto.getType().equals("START")){
             response.setFlag(false);
             response.setType("START");
-            response.setTime(response.getTime());
+            response.setTime(timerDto.getTime());
+        }else if(timerDto.getType().equals("TIMER")){
+            response.setTime(timerDto.getTime());
+            response.setType("TIMER");
         }
 
         messagingTemplate.convertAndSend("/topic/timer/"+roomId, response);

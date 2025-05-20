@@ -2,10 +2,7 @@ package com.back.kdquiz.quiz.controller;
 
 import com.back.kdquiz.quiz.dto.create.QuizCreateDto;
 import com.back.kdquiz.quiz.dto.update.QuizUpdateDto;
-import com.back.kdquiz.quiz.service.quizSerivce.QuizCreateService;
-import com.back.kdquiz.quiz.service.quizSerivce.QuizGetService;
-import com.back.kdquiz.quiz.service.quizSerivce.QuizListService;
-import com.back.kdquiz.quiz.service.quizSerivce.QuizUpdateService;
+import com.back.kdquiz.quiz.service.quizSerivce.*;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +18,7 @@ public class QuizController {
     private final QuizGetService quizGetService;
     private final QuizListService quizListService;
     private final QuizUpdateService quizUpdateService;
+    private final QuizDeleteService quizDeleteService;
 
     @PostMapping("/create")
     public ResponseEntity<ResponseDto<?>> quizCreate(@RequestBody QuizCreateDto quizCreateDto){
@@ -56,6 +54,16 @@ public class QuizController {
     @PutMapping("/update")
     public ResponseEntity<ResponseDto<?>> quizUpdate(@RequestBody QuizUpdateDto quizUpdateDto){
         ResponseDto responseDto = quizUpdateService.quizUpdate(quizUpdateDto);
+        if(responseDto.getCode().equals("Q200")){
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/delete/{quizId}")
+    public ResponseEntity<ResponseDto<?>> quizDelete(@PathVariable Long quizId){
+        ResponseDto responseDto = quizDeleteService.quizDelete(quizId);
         if(responseDto.getCode().equals("Q200")){
             return new ResponseEntity<>(responseDto, HttpStatus.OK);
         }else{

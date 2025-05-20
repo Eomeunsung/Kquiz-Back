@@ -90,19 +90,6 @@ public class ChatMessageController {
         }else if(scoreDto.getType().equals("END")){
             Map<Object, Object> scoreMap = gameLobbyRedis.getAllScores(roomId);
             Map<Object, Object> userMap = gameLobbyRedis.getAllUsers(roomId);
-
-            // scoreMap 키값 출력
-            System.out.println("scoreMap 키 목록:");
-            for (Object key : scoreMap.keySet()) {
-                System.out.println(" - " + key);
-            }
-
-        // userMap 키값 출력
-            System.out.println("userMap 키 목록:");
-            for (Object key : userMap.keySet()) {
-                System.out.println(" - " + key);
-            }
-
             UserScoreDto result = new UserScoreDto();
             List<EndScoreDto> endScoreDtos = new ArrayList<>();
              for(Map.Entry<Object, Object> entry : userMap.entrySet()){
@@ -115,6 +102,10 @@ public class ChatMessageController {
                 int score = scoreObj != null ? Integer.parseInt(scoreObj.toString()) : 0;
                 endScoreDtos.add(new EndScoreDto(username, score));
             }
+
+            // 점수 기준 내림차순 정렬
+            endScoreDtos.sort((a, b) -> Integer.compare(b.getScore(), a.getScore()));
+
              result.setScores(endScoreDtos);
              result.setType(TypeEnum.SCORE);
             messagingTemplate.convertAndSend("/topic/game/"+roomId, result);
@@ -124,13 +115,11 @@ public class ChatMessageController {
 
     //question 가져오기
     @MessageMapping("/quiz/{roomId}")
-    public void questionGet(@DestinationVariable String roomId, @Payload QuestionIdDto questionId){
-        log.info("퀘스천 question 아이디 "+questionId.getQuestionId());
-        ResponseDto responseDto = questionGetService.questionGet(questionId.getQuestionId());
+    public void questionGet(@DestinationVariable String roomId, @Payload QuestionGetDto questionGetDto){
+        log.info("퀘스천 question 아이디 "+questionGetDto.getId()+" "+questionGetDto.getContent());
         QuestionTypeDto questionTypeDto = new QuestionTypeDto();
+        questionTypeDto.setQuestion(questionGetDto);
         questionTypeDto.setType(TypeEnum.QUESTION);
-        questionTypeDto.setQuestion((QuestionGetDto) responseDto.getData());
-        questionTypeDto.setLocalDateTime(LocalDateTime.now());
         log.info("게임 주소 "+roomId);
         messagingTemplate.convertAndSend("/topic/quiz/"+roomId, questionTypeDto);
     }
@@ -139,15 +128,15 @@ public class ChatMessageController {
     @MessageMapping("/timer/{roomId}")
     public void timer(@DestinationVariable String roomId, @Payload TimerDto timerDto){
         TimerDto response = new TimerDto();
-        if(timerDto.getType().equals("READER")){
+        if(timerDto.getType().equals("READY")){     //게임 시작전 카운터
             response.setFlag(true);
-            response.setType("READER");
+            response.setType("READY");
             response.setTime(timerDto.getTime());
-        }else if(timerDto.getType().equals("START")){
+        }else if(timerDto.getType().equals("START")){ //카운터 끝난 후 게임 시작
             response.setFlag(false);
             response.setType("START");
             response.setTime(timerDto.getTime());
-        }else if(timerDto.getType().equals("TIMER")){
+        }else if(timerDto.getType().equals("TIMER")){ //question 타이머
             response.setTime(timerDto.getTime());
             response.setType("TIMER");
         }

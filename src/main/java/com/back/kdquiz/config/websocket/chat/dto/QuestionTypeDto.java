@@ -12,5 +12,4 @@ import java.time.LocalDateTime;
 public class QuestionTypeDto {
     private QuestionGetDto question;
     private TypeEnum type;
-    private LocalDateTime localDateTime;
 }

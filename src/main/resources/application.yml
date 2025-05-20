@@ -21,3 +21,13 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+
+  kdquiz:
+    upload:
+      path: img
+
+  web:
+    resources:
+      static-locations:
+        - classpath:/static/
+        - file:Img/

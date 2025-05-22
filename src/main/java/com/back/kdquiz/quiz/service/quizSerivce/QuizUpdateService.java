@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -29,7 +30,7 @@ public class QuizUpdateService {
             }
             Quiz quiz = quizOptional.get();
             quiz.setTitle(quizUpdateDto.getTitle());
-            quiz.setUpdatedAt(quizUpdateDto.getUpdateAt());
+            quiz.setUpdatedAt(LocalDateTime.now());
             quizRepository.save(quiz);
             for(QuestionUpdateDto questionUpdateDto : quizUpdateDto.getQuestions()){
                 questionUpdateService.questionUpdate(questionUpdateDto);

@@ -41,6 +41,7 @@ public class QuestionCreateService {
 
             Question question = quizInit.questionInit(new Question());
             question.setQuiz(quiz);
+            question.setTitle("");
             questionRepository.save(question);
 
             for(int i=0; i<2; i++){

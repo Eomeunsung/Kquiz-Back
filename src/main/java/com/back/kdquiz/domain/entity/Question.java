@@ -20,6 +20,8 @@ public class Question implements Serializable {
     @Column
     private String title;
 
+    //더큰 문자열 길이를 저장 하기 위해
+    @Lob
     @Column
     private String content;
 

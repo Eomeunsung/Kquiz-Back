@@ -23,6 +23,10 @@ public class Quiz implements Serializable {
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
     private List<Question> questions;
 
+    @OneToMany(mappedBy = "imgUrl", cascade=CascadeType.REMOVE)
+    private List<ImgUrl> imgUrl;
+
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

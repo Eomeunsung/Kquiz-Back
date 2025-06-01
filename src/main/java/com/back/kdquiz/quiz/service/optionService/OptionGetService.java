@@ -31,6 +31,7 @@ public class OptionGetService {
             optionGetDto.setScore(option.getScore());
             optionGetDto.setUseAiFeedBack(option.getUseAiFeedback());
             optionGetDto.setAiQuestion(option.getAiQuestion());
+            optionGetDto.setUseCommentary(option.getUseCommentary());
             optionGetDto.setCommentary(option.getCommentary());
             return ResponseDto.setSuccess("Q200", "Option 조회 성공", optionGetDto);
         }catch (Exception e){

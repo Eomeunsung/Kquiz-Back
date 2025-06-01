@@ -26,6 +26,7 @@ public class OptionUpdateService {
                 return ResponseDto.setFailed("Q000", "Option 찾을 수 없습니다.");
             }
             Option option  = optionOptional.get();
+            option.setUseCommentary(optionUpdateDto.getUseCommentary());
             option.setCommentary(optionUpdateDto.getCommentary());
             option.setTime(optionUpdateDto.getTime());
             option.setScore(optionUpdateDto.getScore());

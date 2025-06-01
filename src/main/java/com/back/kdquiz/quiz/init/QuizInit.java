@@ -26,6 +26,7 @@ public class QuizInit {
         option.setTime(30);
         option.setUseAiFeedback(false);
         option.setAiQuestion("ai 피드백");
+        option.setUseCommentary(false);
         option.setCommentary("코멘트 피드백");
         option.setScore(0);
         return option;

@@ -12,6 +12,7 @@ public class OptionUpdateDto {
     private int time;
     private Boolean useAiFeedBack;
     private String aiQuestion;
+    private Boolean useCommentary;
     private String commentary;
     private int score;
 }

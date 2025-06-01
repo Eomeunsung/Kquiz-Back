@@ -16,19 +16,23 @@ public class Option implements Serializable {
     private Long id;
 
     @Column
-    private int time=30; //시간
+    private int time; //시간
 
     @Column
-    private Boolean useAiFeedback=true; //Ai여부
+    private Boolean useAiFeedback; //Ai여부
 
     @Column
-    private String aiQuestion="ai 피드백";//ai질문
+    private String aiQuestion;//ai질문
+
 
     @Column
-    private String commentary="코멘트 피드백"; //해설
+    private Boolean useCommentary;
 
     @Column
-    private int score=20; //점수
+    private String commentary; //해설
+
+    @Column
+    private int score; //점수
 
     @OneToOne
     @JoinColumn(name = "question_id", nullable = false)

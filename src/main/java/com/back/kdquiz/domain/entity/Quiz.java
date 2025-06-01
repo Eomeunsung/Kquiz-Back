@@ -23,7 +23,7 @@ public class Quiz implements Serializable {
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
     private List<Question> questions;
 
-    @OneToMany(mappedBy = "imgUrl", cascade=CascadeType.REMOVE)
+    @OneToMany(mappedBy = "quiz", cascade=CascadeType.REMOVE)
     private List<ImgUrl> imgUrl;
 
 

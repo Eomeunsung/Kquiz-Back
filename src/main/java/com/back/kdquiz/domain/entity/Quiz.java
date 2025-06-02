@@ -20,6 +20,10 @@ public class Quiz implements Serializable {
     @Column(nullable = false)
     private String title;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
     private List<Question> questions;
 

@@ -11,9 +11,10 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name="users")
 @Getter
 @Setter
-public class User implements Serializable {
+public class Users implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
@@ -28,9 +29,9 @@ public class User implements Serializable {
     @Column
     private LocalDate createAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
     @Column
-    private List<Quiz> quizList;
+    private Set<Quiz> quizList = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name="user_roles", joinColumns = {@JoinColumn(name="user_id")}, inverseJoinColumns = {@JoinColumn(name="role_id")})

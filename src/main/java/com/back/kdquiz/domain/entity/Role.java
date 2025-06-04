@@ -21,5 +21,5 @@ public class Role implements Serializable {
     private String roleName;
 
     @ManyToMany(mappedBy = "userRoles", cascade = CascadeType.ALL)
-    private Set<User> userRole = new HashSet<>();
+    private Set<Users> usersRole = new HashSet<>();
 }

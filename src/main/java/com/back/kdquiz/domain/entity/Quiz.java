@@ -22,7 +22,7 @@ public class Quiz implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users users;
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
     private List<Question> questions;

@@ -28,7 +28,8 @@ public class SecurityConfig {
                 .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/images/**", "/js/**", "/favicon.*", "/*/icon-*").permitAll()
-                        .requestMatchers("/quiz/list", "/quiz/get/**").permitAll());
+                        .requestMatchers("/quiz/list", "/quiz/get/**").permitAll()
+                        .requestMatchers("/user/**").permitAll());
 
         http
                 .sessionManagement(session->

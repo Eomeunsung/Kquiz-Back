@@ -24,17 +24,19 @@ public class Users implements Serializable {
     private String email;
 
     @Column
+    private String nickName;
+
+    @Column
     private String password;
 
     @Column
     private LocalDate createAt;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
-    @Column
     private Set<Quiz> quizList = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name="user_roles", joinColumns = {@JoinColumn(name="user_id")}, inverseJoinColumns = {@JoinColumn(name="role_id")})
+    @JoinTable(name="users_roles", joinColumns = {@JoinColumn(name="users_id")}, inverseJoinColumns = {@JoinColumn(name="role_id")})
     private Set<Role> userRoles = new HashSet<>();
 
 }

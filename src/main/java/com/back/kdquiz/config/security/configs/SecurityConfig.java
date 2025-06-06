@@ -29,7 +29,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/images/**", "/js/**", "/favicon.*", "/*/icon-*").permitAll()
                         .requestMatchers("/quiz/list", "/quiz/get/**").permitAll()
-                        .requestMatchers("/user/**").permitAll());
+                        .requestMatchers("/user/**").permitAll()
+                        .requestMatchers("/quiz/create").hasRole("USER")
+                );
 
         http
                 .sessionManagement(session->

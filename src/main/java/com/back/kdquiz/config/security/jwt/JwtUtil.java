@@ -98,12 +98,12 @@ public class JwtUtil {
     }
 
     // 토큰 유효성 검사 메서드
-    private Boolean validateToken(String token, UserDetails userDetails){
+    private Boolean validateToken(String token, CustomUserDetails userDetails){
         final String email = extractUser(token);
         return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    public Boolean isValidateToken(String token, UserDetails userDetails) {
+    public Boolean isValidateToken(String token, CustomUserDetails userDetails) {
         try {
             Claims claims = extractAllClaims(token);
             if (claims != null) {
@@ -120,7 +120,8 @@ public class JwtUtil {
         } catch (io.jsonwebtoken.security.SignatureException e){
             throw new JwtException("Invalid JWT signature: {}");
         } catch (Exception e) {
-            throw new JwtException("JWT Error");
+            log.info("JWT 에러 "+e.getMessage());
+            throw new JwtException("JWT Error"+e.getMessage());
         }
         return false;
     }

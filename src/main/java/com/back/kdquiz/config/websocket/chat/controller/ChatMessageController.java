@@ -70,7 +70,7 @@ public class ChatMessageController {
         ChatMessageDto chatMessageDto = new ChatMessageDto();
         String userName = gameLobbyRedis.getUser(gameId, userId); //유저 이름 찾기
         gameLobbyRedis.removeUser(gameId, userId); //유저 제거
-        Map<Object, Object> users = gameLobbyRedis.getAllUsers(gameId);
+        Map<String, Object> users = gameLobbyRedis.getAllUsers(gameId);
 
         chatMessageDto.setUserList(users);
         chatMessageDto.setContent(userName+" 님이 강퇴 당했습니다.");
@@ -88,11 +88,11 @@ public class ChatMessageController {
             log.info("유저 점수 "+gameLobbyRedis.getScore(roomId, scoreDto.getUserId())+"유저 아이디 "+scoreDto.getUserId());
             messagingTemplate.convertAndSend("/topic/game/"+roomId, "채점 완료");
         }else if(scoreDto.getType().equals("END")){
-            Map<Object, Object> scoreMap = gameLobbyRedis.getAllScores(roomId);
-            Map<Object, Object> userMap = gameLobbyRedis.getAllUsers(roomId);
+            Map<String, Object> scoreMap = gameLobbyRedis.getAllScores(roomId);
+            Map<String, Object> userMap = gameLobbyRedis.getAllUsers(roomId);
             UserScoreDto result = new UserScoreDto();
             List<EndScoreDto> endScoreDtos = new ArrayList<>();
-             for(Map.Entry<Object, Object> entry : userMap.entrySet()){
+             for(Map.Entry<String, Object> entry : userMap.entrySet()){
                 String userIndex = entry.getKey().toString();
                 String username = entry.getValue().toString();
                 if(username.equals("HOST")){

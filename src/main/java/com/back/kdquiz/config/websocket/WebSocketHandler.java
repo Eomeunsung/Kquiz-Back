@@ -60,7 +60,7 @@ public class WebSocketHandler {
 
             log.info("[SessionConnected]: nickname = " + name);
             log.info("룸 아이디 "+roomId);
-            Map<Object, Object> users = gameLobbyRedis.getAllUsers(roomId);
+            Map<String, Object> users = gameLobbyRedis.getAllUsers(roomId);
 
             chatMessageDto.setName(name);
             chatMessageDto.setUserList(users);

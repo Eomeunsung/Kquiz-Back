@@ -14,5 +14,5 @@ public class ChatMessageDto {
     private String name;
     private String content;
     private TypeEnum type;
-    private Map<Object, Object> userList;
+    private Map<String, Object> userList;
 }

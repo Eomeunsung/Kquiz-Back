@@ -12,9 +12,9 @@ import java.util.Map;
 @Repository
 @RequiredArgsConstructor
 public class GameLobbyRedis {
-    private final RedisTemplate<Object, Object> redisTemplate;
-    private ValueOperations<Object, Object> valueOperations;
-    private HashOperations<Object, Object, Object> hashOps;
+    private final RedisTemplate<String, Object> redisTemplate;
+    private ValueOperations<String, Object> valueOperations;
+    private HashOperations<String, String, Object> hashOps;
 
     @PostConstruct
     public void init(){
@@ -40,7 +40,7 @@ public class GameLobbyRedis {
     }
 
     //모든 유저 id 가져오기
-    public Map<Object, Object> getAllUsers(String gameId){
+    public Map<String, Object> getAllUsers(String gameId){
         return hashOps.entries("game:users:"+gameId);
     }
 
@@ -71,7 +71,7 @@ public class GameLobbyRedis {
     }
 
     // 전체 유저 점수 조회
-    public Map<Object, Object> getAllScores(String gameId) {
+    public Map<String, Object> getAllScores(String gameId) {
         return hashOps.entries("game:scores:" + gameId);
     }
 }

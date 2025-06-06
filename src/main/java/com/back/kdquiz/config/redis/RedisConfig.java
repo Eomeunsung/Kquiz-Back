@@ -19,11 +19,14 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){
-        RedisTemplate<Object, Object> template = new RedisTemplate<>();
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        template.setKeySerializer(new StringRedisSerializer()); // key는 String
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer()); // value는 JSON
+        template.setHashKeySerializer(new StringRedisSerializer()); // 해시 key도 String
+        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer()); // 해시 value는 JSON
         return template;
     }
 }

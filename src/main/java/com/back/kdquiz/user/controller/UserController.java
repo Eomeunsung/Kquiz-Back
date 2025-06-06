@@ -1,7 +1,9 @@
 package com.back.kdquiz.user.controller;
 
 import com.back.kdquiz.response.ResponseDto;
+import com.back.kdquiz.user.dto.SignInDto;
 import com.back.kdquiz.user.dto.SignUpDto;
+import com.back.kdquiz.user.service.SignInService;
 import com.back.kdquiz.user.service.SignUpService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final SignUpService signUpService;
+    private final SignInService signInService;
 
     @PostMapping("/signUp")
     public ResponseEntity<ResponseDto<?>> signUp(@RequestBody SignUpDto signUpDto){
         return signUpService.SignUp(signUpDto);
     }
 
+    @PostMapping("/signIn")
+    public ResponseEntity<ResponseDto<?>> signIn(@RequestBody SignInDto signInDto){
+        return signInService.signIn(signInDto);
+    }
 
 }

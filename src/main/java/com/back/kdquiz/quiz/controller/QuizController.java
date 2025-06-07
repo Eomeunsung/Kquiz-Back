@@ -1,5 +1,6 @@
 package com.back.kdquiz.quiz.controller;
 
+import com.back.kdquiz.config.custom.CustomUserDetails;
 import com.back.kdquiz.quiz.dto.create.QuizCreateDto;
 import com.back.kdquiz.quiz.dto.update.QuizUpdateDto;
 import com.back.kdquiz.quiz.service.quizSerivce.*;
@@ -7,6 +8,7 @@ import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,8 +23,8 @@ public class QuizController {
     private final QuizDeleteService quizDeleteService;
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto<?>> quizCreate(@RequestBody QuizCreateDto quizCreateDto){
-        ResponseDto responseDto = quizCreateService.quizCreate(quizCreateDto);
+    public ResponseEntity<ResponseDto<?>> quizCreate(@RequestBody QuizCreateDto quizCreateDto, @AuthenticationPrincipal CustomUserDetails userDetails){
+        ResponseDto responseDto = quizCreateService.quizCreate(quizCreateDto, userDetails);
 
         if(responseDto.getCode().equals("Q200")){
             return new ResponseEntity<>(responseDto, HttpStatus.OK);

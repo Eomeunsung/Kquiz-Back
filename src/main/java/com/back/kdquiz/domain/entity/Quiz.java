@@ -21,7 +21,7 @@ public class Quiz implements Serializable {
     private String title;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private Users users;
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)

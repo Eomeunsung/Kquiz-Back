@@ -26,6 +26,20 @@ public class GameLobbyRedis {
         valueOperations.set("game:quiz:"+gameId, quizId);
     }
 
+    public void gameDelete(String gameId){
+        // 삭제할 키 목록
+        String quizKey = "game:quiz:" + gameId;
+        String usersKey = "game:users:" + gameId;
+        String usersIndexKey = "game:users:index:" + gameId;
+        String scoresKey = "game:scores:" + gameId;
+
+        // 실제 삭제 수행
+        redisTemplate.delete(quizKey);
+        redisTemplate.delete(usersKey);
+        redisTemplate.delete(usersIndexKey);
+        redisTemplate.delete(scoresKey);
+    }
+
     public Long addUser(String gameId, String username){
         Long newIndex = redisTemplate.opsForValue().increment("game:users:index:"+gameId); //기존에 유저 값이 있으면 +1 해서 새로운 유저 id 생성
 
@@ -74,4 +88,6 @@ public class GameLobbyRedis {
     public Map<String, Object> getAllScores(String gameId) {
         return hashOps.entries("game:scores:" + gameId);
     }
+
+
 }

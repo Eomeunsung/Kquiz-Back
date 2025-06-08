@@ -1,11 +1,10 @@
 package com.back.kdquiz.config.websocket;
 
-import com.back.kdquiz.config.websocket.chat.dto.ChatMessageDto;
-import com.back.kdquiz.config.websocket.chat.dto.GameRequestDto;
-import com.back.kdquiz.config.websocket.chat.enums.TypeEnum;
+import com.back.kdquiz.config.websocket.room.dto.ChatMessageDto;
+import com.back.kdquiz.config.websocket.room.dto.GameRequestDto;
+import com.back.kdquiz.config.websocket.room.enums.TypeEnum;
 import com.back.kdquiz.game.Repository.GameLobbyRedis;
 import com.back.kdquiz.quiz.dto.get.QuestionGetIdDto;
-import com.back.kdquiz.quiz.dto.get.QuizGetDto;
 import com.back.kdquiz.quiz.service.questionService.QuestionGetIdService;
 import com.back.kdquiz.quiz.service.quizSerivce.QuizGetService;
 import com.back.kdquiz.response.ResponseDto;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;

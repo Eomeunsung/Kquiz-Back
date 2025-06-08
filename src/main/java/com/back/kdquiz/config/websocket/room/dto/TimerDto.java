@@ -1,6 +1,5 @@
-package com.back.kdquiz.config.websocket.chat.dto;
+package com.back.kdquiz.config.websocket.room.dto;
 
-import com.back.kdquiz.config.websocket.chat.enums.TypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 

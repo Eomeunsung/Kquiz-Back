@@ -30,6 +30,7 @@ public class SecurityConfig {
                         .requestMatchers("/css/**", "/images/**", "/js/**", "/favicon.*", "/*/icon-*").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() //스웨거
                         .requestMatchers("/quiz/list", "/quiz/get/**").permitAll()
+                        .requestMatchers("/user/myprofile").hasRole("USER")
                         .requestMatchers("/user/**").permitAll()
                         .requestMatchers("/game/**").permitAll()
                         .requestMatchers("/ws/**", "/topic/**", "/app/**", "/queue/**").permitAll()

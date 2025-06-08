@@ -1,4 +1,4 @@
-package com.back.kdquiz.config.websocket.chat.dto;
+package com.back.kdquiz.config.websocket.room.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

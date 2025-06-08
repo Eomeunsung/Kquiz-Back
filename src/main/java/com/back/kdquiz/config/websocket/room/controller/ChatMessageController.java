@@ -1,18 +1,17 @@
-package com.back.kdquiz.config.websocket.chat.controller;
+package com.back.kdquiz.config.websocket.room.controller;
 
-import com.back.kdquiz.config.websocket.chat.dto.*;
-import com.back.kdquiz.config.websocket.chat.enums.TypeEnum;
+import com.back.kdquiz.config.websocket.room.dto.*;
+import com.back.kdquiz.config.websocket.room.enums.TypeEnum;
 import com.back.kdquiz.game.Repository.GameLobbyRedis;
 import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
 import com.back.kdquiz.quiz.service.questionService.QuestionGetService;
-import com.back.kdquiz.response.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -108,6 +107,7 @@ public class ChatMessageController {
 
              result.setScores(endScoreDtos);
              result.setType(TypeEnum.SCORE);
+             gameLobbyRedis.gameDelete(roomId);
             messagingTemplate.convertAndSend("/topic/game/"+roomId, result);
         }
 

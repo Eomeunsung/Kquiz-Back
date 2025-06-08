@@ -31,6 +31,8 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() //스웨거
                         .requestMatchers("/quiz/list", "/quiz/get/**").permitAll()
                         .requestMatchers("/user/**").permitAll()
+                        .requestMatchers("/game/**").permitAll()
+                        .requestMatchers("/ws/**", "/topic/**", "/app/**", "/queue/**").permitAll()
                         .requestMatchers("/quiz/create" ,"/img/**", "/choice/**", "/question/**").hasRole("USER")
                         .anyRequest().authenticated()
                 );

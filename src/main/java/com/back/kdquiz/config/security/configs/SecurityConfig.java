@@ -29,8 +29,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/images/**", "/js/**", "/favicon.*", "/*/icon-*").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() //스웨거
+                        .requestMatchers("/refreshToken").permitAll()
                         .requestMatchers("/quiz/list", "/quiz/get/**").permitAll()
                         .requestMatchers("/user/myprofile").hasRole("USER")
+                        .requestMatchers("/refreshToken").hasRole("USER")
                         .requestMatchers("/user/**").permitAll()
                         .requestMatchers("/game/**").permitAll()
                         .requestMatchers("/ws/**", "/topic/**", "/app/**", "/queue/**").permitAll()

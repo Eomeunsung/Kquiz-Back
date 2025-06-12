@@ -2,6 +2,7 @@ package com.back.kdquiz.quiz.controller;
 
 import com.back.kdquiz.config.custom.CustomUserDetails;
 import com.back.kdquiz.quiz.dto.create.QuizCreateDto;
+import com.back.kdquiz.quiz.dto.update.QuizTitleUpdateDto;
 import com.back.kdquiz.quiz.dto.update.QuizUpdateDto;
 import com.back.kdquiz.quiz.service.quizSerivce.*;
 import com.back.kdquiz.response.ResponseDto;
@@ -21,6 +22,7 @@ public class QuizController {
     private final QuizListService quizListService;
     private final QuizUpdateService quizUpdateService;
     private final QuizDeleteService quizDeleteService;
+    private final QuizTitleUpdateService quizTitleUpdateService;
 
     @PostMapping("/create")
     public ResponseEntity<ResponseDto<?>> quizCreate(@RequestBody QuizCreateDto quizCreateDto, @AuthenticationPrincipal CustomUserDetails userDetails){
@@ -63,6 +65,11 @@ public class QuizController {
         }
     }
 
+    @PutMapping("/update/title")
+    public ResponseEntity<ResponseDto<?>> quizTitleUpdate(@RequestBody QuizTitleUpdateDto quizTitleUpdateDto){
+        return quizTitleUpdateService.quizTitleUpdate(quizTitleUpdateDto);
+    }
+
     @DeleteMapping("/delete/{quizId}")
     public ResponseEntity<ResponseDto<?>> quizDelete(@PathVariable Long quizId){
         ResponseDto responseDto = quizDeleteService.quizDelete(quizId);
@@ -72,4 +79,6 @@ public class QuizController {
             return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
         }
     }
+
+
 }

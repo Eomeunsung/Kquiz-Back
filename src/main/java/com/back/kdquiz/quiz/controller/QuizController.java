@@ -37,12 +37,7 @@ public class QuizController {
 
     @GetMapping("/list")
     public ResponseEntity<ResponseDto<?>> quizListGet(){
-        ResponseDto responseDto = quizListService.quizAllList();
-        if(responseDto.getCode().equals("Q200")){
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-        }
+        return quizListService.quizAllList();
     }
 
     @GetMapping("/get/{quizId}")
@@ -72,12 +67,7 @@ public class QuizController {
 
     @DeleteMapping("/delete/{quizId}")
     public ResponseEntity<ResponseDto<?>> quizDelete(@PathVariable Long quizId){
-        ResponseDto responseDto = quizDeleteService.quizDelete(quizId);
-        if(responseDto.getCode().equals("Q200")){
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-        }
+        return quizDeleteService.quizDelete(quizId);
     }
 
 

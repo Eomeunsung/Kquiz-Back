@@ -8,6 +8,8 @@ import com.back.kdquiz.domain.repository.QuizRepository;
 import com.back.kdquiz.response.ResponseDto;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,11 +24,13 @@ public class QuizDeleteService {
     private final CustomFileUtil customFileUtil;
 
     @Transactional
-    public ResponseDto<?> quizDelete(Long quizId){
+    public ResponseEntity<ResponseDto<?>> quizDelete(Long quizId){
+        ResponseDto responseDto;
         try{
             Optional<Quiz> quizOptional = quizRepository.findById(quizId);
             if(quizOptional==null){
-                return ResponseDto.setFailed("Q000","퀴즈를 못찾았습니다.");
+               responseDto = ResponseDto.setFailed("Q000","퀴즈를 못찾았습니다.");
+               return new ResponseEntity<>(responseDto, HttpStatus.OK);
             }
             List<ImgUrl> imgUrlList = imgUrlRepository.findByQuiz_Id(quizOptional.get().getId());
             if(!imgUrlList.isEmpty()){
@@ -35,9 +39,11 @@ public class QuizDeleteService {
                 }
             }
             quizRepository.deleteById(quizId);
-            return ResponseDto.setSuccess("Q200", "퀴즈 삭제하였습니다.");
+            responseDto = ResponseDto.setSuccess("Q200", "퀴즈 삭제하였습니다.");
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
         }catch (Exception e){
-            return ResponseDto.setFailed("Q001", "퀴즈 삭제 오류 "+e.getMessage());
+            responseDto = ResponseDto.setFailed("Q001", "퀴즈 삭제 오류 "+e.getMessage());
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
         }
     }
 }

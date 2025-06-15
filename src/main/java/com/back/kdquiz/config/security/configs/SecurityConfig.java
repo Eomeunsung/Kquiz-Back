@@ -31,11 +31,12 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() //스웨거
                         .requestMatchers("/refreshToken").permitAll()
                         .requestMatchers("/quiz/list", "/quiz/get/**").permitAll()
-                        .requestMatchers("/user/myprofile").hasRole("USER")
-                        .requestMatchers("/refreshToken").hasRole("USER")
                         .requestMatchers("/user/**").permitAll()
                         .requestMatchers("/game/**").permitAll()
                         .requestMatchers("/ws/**", "/topic/**", "/app/**", "/queue/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/myprofile").hasRole("USER")
+                        .requestMatchers("/refreshToken").hasRole("USER")
                         .requestMatchers("/quiz/create" ,"/img/**", "/choice/**", "/question/**").hasRole("USER")
                         .anyRequest().authenticated()
                 );

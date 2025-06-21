@@ -1,5 +1,6 @@
 package com.back.kdquiz.admin.controller;
 
+import com.back.kdquiz.admin.service.AdminUserGetService;
 import com.back.kdquiz.admin.service.AdminUserListService;
 import com.back.kdquiz.quiz.service.quizSerivce.QuizDeleteService;
 import com.back.kdquiz.quiz.service.quizSerivce.QuizListService;
@@ -11,17 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class AdminController {
 
     private final QuizListService quizListService;
     private final QuizDeleteService quizDeleteService;
     private final AdminUserListService adminUserListService;
-
-    public AdminController(QuizListService quizListService, QuizDeleteService quizDeleteService, AdminUserListService adminUserListService) {
-        this.quizListService = quizListService;
-        this.quizDeleteService = quizDeleteService;
-        this.adminUserListService = adminUserListService;
-    }
+    private final AdminUserGetService adminUserGetService;
 
     @GetMapping("/quiz/list")
     public ResponseEntity<ResponseDto<?>> quizList(){
@@ -36,6 +33,11 @@ public class AdminController {
     @GetMapping("/user/list")
     public ResponseEntity<ResponseDto<?>> userList(){
         return adminUserListService.userList();
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<ResponseDto<?>> userGet(@PathVariable Long userId){
+        return adminUserGetService.userGet(userId);
     }
 
 }

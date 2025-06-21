@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 email = jwtUtil.extractUser(jwt);
 
             }catch (Exception e) {
-                log.error("JWT 토큰 처리 중 예외 발생1: {}", e.getMessage());
+                log.info("JWT 에러1 "+e.getMessage());
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json;charset=UTF-8");
                 response.getWriter().write("{\"error\":\"JWT에러\", \"message\":\"" + e.getMessage() + "\"}");
@@ -57,7 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
             } catch (JwtException e) {
-                log.error("JWT 토큰 처리 중 예외 발생2: {}", e.getMessage());
+                log.info("JWT 에러2 "+e.getMessage());
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json;charset=UTF-8");
                 response.getWriter().write("{\"error\":\"JWT에러\", \"message\":\"" + e.getMessage() + "\"}");
@@ -66,7 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // 기타 예외 처리
                 log.error("JWT 토큰 처리 중 예외 발생3: {}", e.getMessage());
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); //500 에러
-                response.getWriter().write("JWT Error");
+                log.info("JWT 에러3 "+e.getMessage());
                 return;
             }
         }

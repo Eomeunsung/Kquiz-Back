@@ -2,7 +2,8 @@ package com.back.kdquiz.role.controller;
 
 import com.back.kdquiz.config.custom.CustomUserDetails;
 import com.back.kdquiz.response.ResponseDto;
-import com.back.kdquiz.role.service.RoleService;
+import com.back.kdquiz.role.service.RoleGetService;
+import com.back.kdquiz.role.service.RoleUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,10 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class RoleController {
 
-    private final RoleService roleService;
+    private final RoleUserService roleUserService;
+    private final RoleGetService roleGetService;
 
     @GetMapping("")
-    public ResponseEntity<ResponseDto<?>> roleGet(@AuthenticationPrincipal CustomUserDetails customUserDetails){
-        return roleService.roleGet(customUserDetails);
+    public ResponseEntity<ResponseDto<?>> roleGet(){
+        return roleGetService.roleGet();
     }
+
+
+    @GetMapping("/user")
+    public ResponseEntity<ResponseDto<?>> userRoleGet(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+        return roleUserService.userRoleGet(customUserDetails);
+    }
+
 }

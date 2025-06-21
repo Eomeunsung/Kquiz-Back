@@ -12,9 +12,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class RoleService {
+public class RoleUserService {
 
-    public ResponseEntity<ResponseDto<?>> roleGet(CustomUserDetails customUserDetails){
+    public ResponseEntity<ResponseDto<?>> userRoleGet(CustomUserDetails customUserDetails){
         ResponseDto responseDto;
         try{
             RoleGetDto roleGetDto = new RoleGetDto();

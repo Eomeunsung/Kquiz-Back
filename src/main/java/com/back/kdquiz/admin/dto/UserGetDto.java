@@ -14,17 +14,17 @@ public class UserGetDto {
     private Long id;
     private String email;
     private String nickName;
-    private LocalDate localDate;
+    private LocalDate createAt;
     private Set<String> roles;
 
     public UserGetDto() {
     }
 
-    public UserGetDto(Long id, String email, String nickName, LocalDate localDate, Set<String> roles) {
+    public UserGetDto(Long id, String email, String nickName, LocalDate createAt, Set<String> roles) {
         this.id = id;
         this.email = email;
         this.nickName = nickName;
-        this.localDate = localDate;
+        this.createAt = createAt;
         this.roles = roles;
     }
 }

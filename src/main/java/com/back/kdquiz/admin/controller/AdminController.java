@@ -1,7 +1,9 @@
 package com.back.kdquiz.admin.controller;
 
+import com.back.kdquiz.admin.dto.UserUpdateDto;
 import com.back.kdquiz.admin.service.AdminUserGetService;
 import com.back.kdquiz.admin.service.AdminUserListService;
+import com.back.kdquiz.admin.service.AdminUserUpdateService;
 import com.back.kdquiz.quiz.service.quizSerivce.QuizDeleteService;
 import com.back.kdquiz.quiz.service.quizSerivce.QuizListService;
 import com.back.kdquiz.response.ResponseDto;
@@ -19,6 +21,7 @@ public class AdminController {
     private final QuizDeleteService quizDeleteService;
     private final AdminUserListService adminUserListService;
     private final AdminUserGetService adminUserGetService;
+    private final AdminUserUpdateService adminUserUpdateService;
 
     @GetMapping("/quiz/list")
     public ResponseEntity<ResponseDto<?>> quizList(){
@@ -38,6 +41,11 @@ public class AdminController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<ResponseDto<?>> userGet(@PathVariable Long userId){
         return adminUserGetService.userGet(userId);
+    }
+
+    @PutMapping("/user/update")
+    public ResponseEntity<ResponseDto<?>> userUpdate(@RequestBody UserUpdateDto userUpdateDto){
+        return adminUserUpdateService.userUpdate(userUpdateDto);
     }
 
 }

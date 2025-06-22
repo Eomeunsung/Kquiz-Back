@@ -53,6 +53,7 @@ public class AdminUserUpdateService {
 
             users.setEmail(userUpdateDto.getEmail());
             users.setNickName(userUpdateDto.getNickName());
+            users.setEnabled(userUpdateDto.getEnabled());
             usersRepository.save(users);
             responseDto = ResponseDto.setSuccess("A200", "유저 업데이트를 성공 했습니다.");
             return new ResponseEntity<>(responseDto, HttpStatus.OK);

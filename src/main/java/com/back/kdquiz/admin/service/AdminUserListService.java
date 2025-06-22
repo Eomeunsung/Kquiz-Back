@@ -42,7 +42,7 @@ public class AdminUserListService {
 
                 Set<String> roles = users.getUserRoles().stream().map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toSet());
-                UserGetDto userGetDto = new UserGetDto(users.getId(), users.getEmail(), users.getNickName(), users.getCreateAt(), roles);
+                UserGetDto userGetDto = new UserGetDto(users.getId(), users.getEmail(), users.getNickName(), users.getEnabled(), users.getCreateAt(), roles);
                 userGetDtos.add(userGetDto);
             }
             userListDto.setUserList(userGetDtos);

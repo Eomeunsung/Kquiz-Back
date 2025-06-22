@@ -32,7 +32,7 @@ public class AdminUserGetService {
             Users users = usersOptional.get();
             Set<String> roles = users.getUserRoles().stream().map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toSet());
-            UserGetDto userGet = new UserGetDto(users.getId(), users.getEmail(), users.getNickName(), users.getCreateAt(), roles);
+            UserGetDto userGet = new UserGetDto(users.getId(), users.getEmail(), users.getNickName(),users.getEnabled(), users.getCreateAt(), roles);
             responseDto = ResponseDto.setSuccess("A200", "회원 정보를 찾았습니다.", userGet);
             return new ResponseEntity<>(responseDto, HttpStatus.OK);
         }catch (Exception e){

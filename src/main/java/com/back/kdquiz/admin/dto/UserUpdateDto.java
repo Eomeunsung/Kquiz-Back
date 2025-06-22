@@ -11,6 +11,7 @@ public class UserUpdateDto {
     private Long userId;
     private String email;
     private String nickName;
+    private Boolean enabled;
     private Set<String> roles;
 
 

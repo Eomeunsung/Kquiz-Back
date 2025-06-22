@@ -46,6 +46,7 @@ public class SignUpService {
             users.setNickName(signUpDto.getNickName());
             users.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
             users.setUserRoles(roleSet);
+            users.setEnabled(true);
             users.setCreateAt(LocalDate.now());
             usersRepository.save(users);
             responseDto = ResponseDto.setSuccess("U200", "회원가입 완료 했습니다.");

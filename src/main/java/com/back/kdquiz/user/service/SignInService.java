@@ -46,6 +46,10 @@ public class SignInService {
             }
 
             final CustomUserDetails customUserDetails = customUserDetailService.loadUserByUsername(users.getEmail());
+            if(!customUserDetails.isEnabled()){
+                responseDto = ResponseDto.setFailed("U002", "계정이 정지되었습니다. 관리자에게 문의 하여주십시오.");
+                return new ResponseEntity<>(responseDto, HttpStatus.UNAUTHORIZED);
+            }
             final String accessToken = jwtUtil.createToken(customUserDetails);
             final String refreshToken = jwtUtil.refreshCreateToken(customUserDetails);
 

@@ -30,18 +30,22 @@ public class AdminAccountInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if(usersRepository.findByEmail("admin")==null){
             Role role = roleRepository.findByRoleName("ROLE_ADMIN");
+            if(role==null){
+                log.info("아직 DB에 권한들이 등록되지 않았습니다.");
+            }else{
+                Set<Role> roleSet = new HashSet<>();
+                roleSet.add(role);
 
-            Set<Role> roleSet = new HashSet<>();
-            roleSet.add(role);
-
-            Users users = new Users();
-            users.setEmail("admin");
-            users.setNickName("admin");
-            users.setPassword(passwordEncoder.encode("1234"));
-            users.setUserRoles(roleSet);
-            users.setCreateAt(LocalDate.now());
-            usersRepository.save(users);
-            log.info("관리자 계정 생성");
+                Users users = new Users();
+                users.setEmail("admin");
+                users.setNickName("admin");
+                users.setPassword(passwordEncoder.encode("1234"));
+                users.setEnabled(true);
+                users.setUserRoles(roleSet);
+                users.setCreateAt(LocalDate.now());
+                usersRepository.save(users);
+                log.info("관리자 계정 생성");
+            }
         }else{
             log.info("관리자 계정 존재");
         }

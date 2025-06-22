@@ -30,6 +30,9 @@ public class Users implements Serializable {
     private String password;
 
     @Column
+    private Boolean enabled;
+
+    @Column
     private LocalDate createAt;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE)

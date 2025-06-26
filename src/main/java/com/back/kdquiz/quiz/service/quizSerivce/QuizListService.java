@@ -1,7 +1,9 @@
 package com.back.kdquiz.quiz.service.quizSerivce;
 
 import com.back.kdquiz.domain.entity.Quiz;
+import com.back.kdquiz.domain.entity.Users;
 import com.back.kdquiz.domain.repository.QuizRepository;
+import com.back.kdquiz.domain.repository.UsersRepository;
 import com.back.kdquiz.quiz.dto.get.QuizAllGetDto;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
@@ -12,12 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class QuizListService {
 
     private final QuizRepository quizRepository;
+    private final UsersRepository usersRepository;
 
     @Transactional
     public ResponseEntity<ResponseDto<?>> quizAllList(){
@@ -37,12 +41,15 @@ public class QuizListService {
         }
     }
 
+    @Transactional
     private List<QuizAllGetDto> buildQuizAllListResponse(List<Quiz> quizList){
         List<QuizAllGetDto> quizAllGetDtoList = new ArrayList<>();
         for(Quiz quiz : quizList){
             QuizAllGetDto qad = new QuizAllGetDto();
+            Optional<Users> usersOptional = usersRepository.findById(quiz.getUsers().getId());
             qad.setId(quiz.getId());
             qad.setTitle(quiz.getTitle());
+            qad.setNickName(usersOptional.get().getNickName());
             qad.setUpdateAt(quiz.getUpdatedAt());
             quizAllGetDtoList.add(qad);
         }

@@ -35,9 +35,6 @@ public class SecurityConfig {
                         .requestMatchers("/game/**").permitAll()
                         .requestMatchers("/ws/**", "/topic/**", "/app/**", "/queue/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/myprofile").hasRole("USER")
-                        .requestMatchers("/refreshToken").hasRole("USER")
-                        .requestMatchers("/quiz/create" ,"/img/**", "/choice/**", "/question/**").hasRole("USER")
                         .anyRequest().authenticated()
                 );
 

@@ -10,5 +10,6 @@ import java.time.LocalDateTime;
 public class QuizAllGetDto {
     private Long id;
     private String title;
+    private String nickName;
     private LocalDateTime updateAt;
 }

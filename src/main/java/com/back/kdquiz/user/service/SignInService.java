@@ -8,6 +8,7 @@ import com.back.kdquiz.domain.repository.UsersRepository;
 import com.back.kdquiz.response.ResponseDto;
 import com.back.kdquiz.user.dto.SignInDto;
 import com.back.kdquiz.user.dto.TokenDto;
+import com.back.kdquiz.user.exception.UserNotFoundException;
 import com.back.kdquiz.user.repository.RefreshTokenRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +37,7 @@ public class SignInService {
         try{
             Users users = usersRepository.findByEmail(signInDto.getEmail());
             if(users==null){
-                responseDto = ResponseDto.setFailed("U000", "이메일이나 비밀번호를 다시 입력해 주세요.");
-                return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+                throw new UserNotFoundException();
             }
 
             if(!passwordEncoder.matches(signInDto.getPassword(), users.getPassword())){

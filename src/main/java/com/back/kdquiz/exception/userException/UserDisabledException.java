@@ -1,4 +1,4 @@
-package com.back.kdquiz.user.exception;
+package com.back.kdquiz.exception.userException;
 
 import com.back.kdquiz.exception.CustomException;
 

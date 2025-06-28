@@ -8,4 +8,12 @@ import lombok.Setter;
 public class TokenDto {
     private String token;
     private String nickName;
+
+    public TokenDto() {
+    }
+
+    public TokenDto(String token, String nickName) {
+        this.token = token;
+        this.nickName = nickName;
+    }
 }

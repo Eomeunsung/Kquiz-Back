@@ -1,10 +1,7 @@
-package com.back.kdquiz.exception;
+package com.back.kdquiz.exception.userException.globalException;
 
+import com.back.kdquiz.exception.userException.*;
 import com.back.kdquiz.response.ResponseDto;
-import com.back.kdquiz.user.exception.UserDisabledException;
-import com.back.kdquiz.user.exception.UserNotFoundException;
-import com.back.kdquiz.user.exception.UserProfileException;
-import com.back.kdquiz.user.exception.WrongPasswordException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,5 +44,12 @@ public class UserGlobalExceptionHandler {
                 .body(ResponseDto.setFailed(ex.getErrorCode(), ex.getMessage()));
     }
 
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ResponseDto<?>> handlerEmailAlreadyExistsException(EmailAlreadyExistsException ex){
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ResponseDto.setFailed(ex.getErrorCode(), ex.getMessage()));
+    }
 
 }

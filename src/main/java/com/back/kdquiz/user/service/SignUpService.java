@@ -5,6 +5,8 @@ import com.back.kdquiz.domain.entity.Role;
 import com.back.kdquiz.domain.entity.Users;
 import com.back.kdquiz.domain.repository.RoleRepository;
 import com.back.kdquiz.domain.repository.UsersRepository;
+import com.back.kdquiz.exception.roleException.RoleNotFoundException;
+import com.back.kdquiz.exception.userException.EmailAlreadyExistsException;
 import com.back.kdquiz.response.ResponseDto;
 import com.back.kdquiz.user.dto.SignUpDto;
 import jakarta.transaction.Transactional;
@@ -26,35 +28,31 @@ public class SignUpService {
     private final PasswordEncoder passwordEncoder;
     @Transactional
     public ResponseEntity<ResponseDto<?>> SignUp(SignUpDto signUpDto){
-        ResponseDto responseDto;
-        try{
-            Users userEmail = usersRepository.findByEmail(signUpDto.getEmail());
-            if(userEmail!=null){
-                responseDto =  ResponseDto.setFailed("U000", "이미 존재하는 이메일 입니다.");
-                return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-            }
 
-            Role role = roleRepository.findByRoleName("ROLE_USER");
-            if(role==null){
-                responseDto =  ResponseDto.setFailed("U001", "사용 할 수 있는 권한이 없습니다.");
-                return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-            }
-            Set<Role> roleSet = new HashSet<>();
-            roleSet.add(role);
-            Users users = new Users();
-            users.setEmail(signUpDto.getEmail());
-            users.setNickName(signUpDto.getNickName());
-            users.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
-            users.setUserRoles(roleSet);
-            users.setEnabled(true);
-            users.setCreateAt(LocalDate.now());
-            usersRepository.save(users);
-            responseDto = ResponseDto.setSuccess("U200", "회원가입 완료 했습니다.");
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }catch (Exception e){
-            responseDto = ResponseDto.setFailed("U002", "알 수 없는 오류가 발생 했습니다. "+e.getMessage());
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+        Users userEmail = usersRepository.findByEmail(signUpDto.getEmail());
+        if(userEmail!=null){
+            throw new EmailAlreadyExistsException();
         }
+
+        Role role = roleRepository.findByRoleName("ROLE_USER");
+        if(role==null){
+            throw new RoleNotFoundException();
+        }
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(role);
+
+        Users users = Users.builder()
+                .email(signUpDto.getEmail())
+                .password(passwordEncoder.encode(signUpDto.getPassword()))
+                .nickName( signUpDto.getNickName())
+                .enabled(true)
+                .createAt(LocalDate.now())
+                .userRoles(roleSet)
+                .build();
+
+        usersRepository.save(users);
+        return new ResponseEntity<>(
+                ResponseDto.setSuccess("U200", "회원가입 완료 했습니다."), HttpStatus.OK);
 
     }
 }

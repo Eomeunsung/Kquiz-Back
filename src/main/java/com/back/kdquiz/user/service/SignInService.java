@@ -8,7 +8,9 @@ import com.back.kdquiz.domain.repository.UsersRepository;
 import com.back.kdquiz.response.ResponseDto;
 import com.back.kdquiz.user.dto.SignInDto;
 import com.back.kdquiz.user.dto.TokenDto;
-import com.back.kdquiz.user.exception.UserNotFoundException;
+import com.back.kdquiz.exception.userException.UserDisabledException;
+import com.back.kdquiz.exception.userException.UserNotFoundException;
+import com.back.kdquiz.exception.userException.WrongPasswordException;
 import com.back.kdquiz.user.repository.RefreshTokenRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -33,37 +35,28 @@ public class SignInService {
 
     @Transactional
     public ResponseEntity<ResponseDto<?>> signIn(SignInDto signInDto){
-        ResponseDto responseDto;
-        try{
-            Users users = usersRepository.findByEmail(signInDto.getEmail());
-            if(users==null){
-                throw new UserNotFoundException();
-            }
 
-            if(!passwordEncoder.matches(signInDto.getPassword(), users.getPassword())){
-                responseDto = ResponseDto.setFailed("U001", "이메일이나 비밀번호를 다시 입력해 주세요.");
-                return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-            }
-
-            final CustomUserDetails customUserDetails = customUserDetailService.loadUserByUsername(users.getEmail());
-            if(!customUserDetails.isEnabled()){
-                responseDto = ResponseDto.setFailed("U002", "계정이 정지되었습니다. 관리자에게 문의 하여주십시오.");
-                return new ResponseEntity<>(responseDto, HttpStatus.UNAUTHORIZED);
-            }
-            final String accessToken = jwtUtil.createToken(customUserDetails);
-            final String refreshToken = jwtUtil.refreshCreateToken(customUserDetails);
-
-            refreshTokenRepository.save(users.getEmail(), refreshToken);
-
-            TokenDto tokenDto = new TokenDto();
-            tokenDto.setToken(accessToken);
-            tokenDto.setNickName(users.getNickName());
-
-            responseDto = ResponseDto.setSuccess("U200", "로그인 성공", tokenDto);
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }catch (Exception e){
-            responseDto = ResponseDto.setFailed("U002", "알 수 없는 오류 발생 "+e.getMessage());
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+        Users users = usersRepository.findByEmail(signInDto.getEmail());
+        if(users==null){
+            throw new UserNotFoundException();
         }
+
+        if(!passwordEncoder.matches(signInDto.getPassword(), users.getPassword())){
+            throw new WrongPasswordException();
+        }
+
+        final CustomUserDetails customUserDetails = customUserDetailService.loadUserByUsername(users.getEmail());
+        if(!customUserDetails.isEnabled()){
+            throw new UserDisabledException();
+        }
+        final String accessToken = jwtUtil.createToken(customUserDetails);
+        final String refreshToken = jwtUtil.refreshCreateToken(customUserDetails);
+
+        refreshTokenRepository.save(users.getEmail(), refreshToken);
+
+        TokenDto tokenDto = new TokenDto(accessToken, users.getNickName());
+
+        return new ResponseEntity<>( ResponseDto.setSuccess("U200", "로그인 성공", tokenDto)
+                , HttpStatus.OK);
     }
 }

@@ -4,6 +4,7 @@ import com.back.kdquiz.config.custom.CustomUserDetails;
 import com.back.kdquiz.domain.entity.Quiz;
 import com.back.kdquiz.domain.entity.Users;
 import com.back.kdquiz.domain.repository.UsersRepository;
+import com.back.kdquiz.exception.userException.UserNotFoundException;
 import com.back.kdquiz.quiz.dto.get.QuizAllGetDto;
 import com.back.kdquiz.response.ResponseDto;
 import com.back.kdquiz.user.dto.MyProfileDto;
@@ -24,37 +25,34 @@ public class MyProfileService {
 
     @Transactional
     public ResponseEntity<ResponseDto<?>> myProfile(CustomUserDetails customUserDetails){
-        ResponseDto responseDto;
-        try{
+
             String email = customUserDetails.getUsername();
             Users users = usersRepository.findByEmail(email);
             if(users==null){
-                responseDto = ResponseDto.setFailed("U000", "유저를 찾을 수 없습니다.");
-                return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+                throw new UserNotFoundException();
             }
 
-            MyProfileDto myProfileDto = new MyProfileDto();
-            myProfileDto.setEmail(users.getEmail());
-            myProfileDto.setNickName(users.getNickName());
-            myProfileDto.setCreateAt(users.getCreateAt());
-
+            List<QuizAllGetDto> quizAllGetDtoList = new ArrayList<>();
             if(!users.getQuizList().isEmpty()){
-                List<QuizAllGetDto> quizAllGetDtoList = new ArrayList<>();
                 for(Quiz quiz : users.getQuizList()){
-                    QuizAllGetDto getDto = new QuizAllGetDto();
-                    getDto.setId(quiz.getId());
-                    getDto.setTitle(quiz.getTitle());
-                    getDto.setUpdateAt(quiz.getUpdatedAt());
+                    QuizAllGetDto getDto = QuizAllGetDto.builder()
+                                    .id(quiz.getId())
+                                    .title(quiz.getTitle())
+                                    .updateAt(quiz.getUpdatedAt())
+                                    .build();
                     quizAllGetDtoList.add(getDto);
                 }
-                myProfileDto.setQuizList(quizAllGetDtoList);
             }
-            responseDto = ResponseDto.setSuccess("U200", "유저 조회 성공", myProfileDto);
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }catch (Exception e){
-            responseDto = ResponseDto.setFailed("U000", "오류 발생하였습니다. "+e.getMessage());
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-        }
+
+            MyProfileDto myProfileDto = MyProfileDto.builder()
+                            .email(users.getEmail())
+                            .nickName(users.getNickName())
+                            .createAt(users.getCreateAt())
+                            .quizList(quizAllGetDtoList)
+                            .build();
+
+            return new ResponseEntity<>(ResponseDto.setSuccess("U200", "유저 조회 성공", myProfileDto)
+                    , HttpStatus.OK);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.back.kdquiz.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,5 +42,18 @@ public class Users implements Serializable {
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name="users_roles", joinColumns = {@JoinColumn(name="users_id")}, inverseJoinColumns = {@JoinColumn(name="role_id")})
     private Set<Role> userRoles = new HashSet<>();
+
+    public Users() {
+    }
+
+    @Builder
+    public Users(String email, String nickName, String password, Boolean enabled, LocalDate createAt, Set<Role> userRoles) {
+        this.email = email;
+        this.nickName = nickName;
+        this.password = password;
+        this.enabled = enabled;
+        this.createAt = createAt;
+        this.userRoles = userRoles;
+    }
 
 }

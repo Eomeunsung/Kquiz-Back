@@ -35,7 +35,7 @@ public class ChoiceGetServiceImpl implements ChoiceGetService {
     public List<ChoiceGetDto> choiceGetDTO(Long questionId) {
         List<Choice> choiceList = choiceRepository.findByQuestion_Id(questionId);
         if(choiceList.isEmpty()){
-            throw new ChoiceNotFoundException();
+            return new ArrayList<>();
         }
         List<ChoiceGetDto> choiceGetDtoList = new ArrayList<>();
         for(Choice choice : choiceList){
@@ -46,6 +46,5 @@ public class ChoiceGetServiceImpl implements ChoiceGetService {
             choiceGetDtoList.add(choiceGetDto);
         }
         return choiceGetDtoList;
-
     }
 }

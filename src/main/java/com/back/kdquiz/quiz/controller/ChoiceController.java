@@ -1,7 +1,7 @@
 package com.back.kdquiz.quiz.controller;
 
 import com.back.kdquiz.quiz.service.choiceService.ChoiceCreateService;
-import com.back.kdquiz.quiz.service.choiceService.ChoiceDeleteService;
+import com.back.kdquiz.quiz.service.choiceService.delete.ChoiceDeleteService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

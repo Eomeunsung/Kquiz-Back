@@ -1,4 +1,4 @@
-package com.back.kdquiz.exception.roleException.globalException;
+package com.back.kdquiz.exception.gobalException;
 
 import com.back.kdquiz.exception.roleException.RoleNotFoundException;
 import com.back.kdquiz.exception.userException.UserDisabledException;

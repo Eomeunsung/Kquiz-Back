@@ -1,4 +1,4 @@
-package com.back.kdquiz.quiz.service.questionService;
+package com.back.kdquiz.quiz.service.questionService.get;
 
 import com.back.kdquiz.domain.entity.Question;
 import com.back.kdquiz.domain.entity.Quiz;

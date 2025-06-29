@@ -1,4 +1,4 @@
-package com.back.kdquiz.exception.userException.globalException;
+package com.back.kdquiz.exception.gobalException;
 
 import com.back.kdquiz.exception.userException.*;
 import com.back.kdquiz.response.ResponseDto;

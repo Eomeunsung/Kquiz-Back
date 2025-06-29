@@ -2,6 +2,9 @@ package com.back.kdquiz.quiz.controller;
 
 import com.back.kdquiz.quiz.dto.update.QuestionUpdateDto;
 import com.back.kdquiz.quiz.service.questionService.*;
+import com.back.kdquiz.quiz.service.questionService.create.QuestionCreateService;
+import com.back.kdquiz.quiz.service.questionService.get.QuestionGetIdService;
+import com.back.kdquiz.quiz.service.questionService.get.QuestionGetService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

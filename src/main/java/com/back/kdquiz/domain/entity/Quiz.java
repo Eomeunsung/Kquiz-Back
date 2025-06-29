@@ -1,6 +1,7 @@
 package com.back.kdquiz.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,4 +37,16 @@ public class Quiz implements Serializable {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public Quiz() {
+    }
+
+    @Builder
+    public Quiz(String title, Users users, List<Question> questions, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.title = title;
+        this.users = users;
+        this.questions = questions;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 }

@@ -23,24 +23,19 @@ public class RefreshTokenService {
     @Transactional
     public ResponseEntity<ResponseDto<?>> refreshToken(String token, CustomUserDetails customUserDetails){
         ResponseDto responseDto;
-        try{
-            boolean tokenFlag = tokenExpired10Minutes(token);
+        boolean tokenFlag = tokenExpired10Minutes(token);
 
-            if(!tokenFlag){
-                responseDto = ResponseDto.setSuccess("T201", "토큰 아직 유효");
-                return new ResponseEntity<>(responseDto, HttpStatus.OK);
-            }else{
-                String refreshToken = refreshTokenRepository.get(customUserDetails.getUsername());
-                String newRefreshToken = jwtUtil.refreshCreateToken(customUserDetails);
+        if(!tokenFlag){
+            responseDto = ResponseDto.setSuccess("T201", "토큰 아직 유효");
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        }else{
+            String refreshToken = refreshTokenRepository.get(customUserDetails.getUsername());
+            String newRefreshToken = jwtUtil.refreshCreateToken(customUserDetails);
 
-                refreshTokenRepository.save(customUserDetails.getUsername(), newRefreshToken);
+            refreshTokenRepository.save(customUserDetails.getUsername(), newRefreshToken);
 
-                responseDto = ResponseDto.setSuccess("T200", "토큰 재발급", refreshToken);
-                return new ResponseEntity<>(responseDto, HttpStatus.OK);
-            }
-        }catch (Exception e){
-            responseDto = ResponseDto.setFailed("T000", "알 수 없는 오류 발생");
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+            responseDto = ResponseDto.setSuccess("T200", "토큰 재발급", refreshToken);
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
         }
     }
 

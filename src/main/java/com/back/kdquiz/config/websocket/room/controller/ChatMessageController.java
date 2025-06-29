@@ -4,7 +4,7 @@ import com.back.kdquiz.config.websocket.room.dto.*;
 import com.back.kdquiz.config.websocket.room.enums.TypeEnum;
 import com.back.kdquiz.game.Repository.GameLobbyRedis;
 import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
-import com.back.kdquiz.quiz.service.questionService.QuestionGetService;
+import com.back.kdquiz.quiz.service.questionService.get.QuestionGetService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;

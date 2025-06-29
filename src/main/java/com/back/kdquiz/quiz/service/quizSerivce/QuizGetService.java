@@ -6,7 +6,7 @@ import com.back.kdquiz.domain.entity.Quiz;
 import com.back.kdquiz.domain.repository.QuizRepository;
 import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
 import com.back.kdquiz.quiz.dto.get.QuizGetDto;
-import com.back.kdquiz.quiz.service.questionService.QuestionGetService;
+import com.back.kdquiz.quiz.service.questionService.get.QuestionGetService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

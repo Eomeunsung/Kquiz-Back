@@ -1,6 +1,7 @@
 package com.back.kdquiz.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,4 +38,31 @@ public class Option implements Serializable {
     @OneToOne
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
+
+    public Option() {
+    }
+
+    @Builder
+    public Option(Long id, int time, Boolean useAiFeedback, String aiQuestion, Boolean useCommentary, String commentary, int score, Question question) {
+        this.id = id;
+        this.time = time;
+        this.useAiFeedback = useAiFeedback;
+        this.aiQuestion = aiQuestion;
+        this.useCommentary = useCommentary;
+        this.commentary = commentary;
+        this.score = score;
+        this.question = question;
+    }
+
+    @Builder
+    void optionUpdate(Long id, int time, Boolean useAiFeedback, String aiQuestion, Boolean useCommentary, String commentary, int score, Question question){
+        this.id = id;
+        this.time = time;
+        this.useAiFeedback = useAiFeedback;
+        this.aiQuestion = aiQuestion;
+        this.useCommentary = useCommentary;
+        this.commentary = commentary;
+        this.score = score;
+        this.question = question;
+    }
 }

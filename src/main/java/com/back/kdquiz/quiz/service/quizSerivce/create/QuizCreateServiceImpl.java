@@ -1,4 +1,4 @@
-package com.back.kdquiz.quiz.service.quizSerivce;
+package com.back.kdquiz.quiz.service.quizSerivce.create;
 
 import com.back.kdquiz.config.custom.CustomUserDetails;
 import com.back.kdquiz.domain.entity.Quiz;
@@ -8,9 +8,12 @@ import com.back.kdquiz.domain.repository.UsersRepository;
 import com.back.kdquiz.exception.quizException.QuizCreateFailedException;
 import com.back.kdquiz.exception.userException.UserNotFoundException;
 import com.back.kdquiz.quiz.dto.create.QuizCreateDto;
+import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
 import com.back.kdquiz.quiz.service.questionService.create.QuestionCreateService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,15 +21,15 @@ import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
-public class QuizCreateService {
+public class QuizCreateServiceImpl implements QuizCreateService{
 
     private final UsersRepository usersRepository;
     private final QuizRepository quizRepository;
     private final QuestionCreateService questionCreateService;
 
     @Transactional
-    public ResponseDto<?> quizCreate(QuizCreateDto quizCreateDto, CustomUserDetails userDetails) {
-
+    @Override
+    public ResponseEntity quizCreateResponse(QuizCreateDto quizCreateDto, CustomUserDetails userDetails) {
         Users users = usersRepository.findByEmail(userDetails.getUsername());
         if(users==null){
             throw new UserNotFoundException();
@@ -38,12 +41,15 @@ public class QuizCreateService {
                 .users(users)
                 .build();
         quizRepository.save(quiz);
-        ResponseDto responseDto = questionCreateService.questionCreate(quiz.getId());
-        if(!responseDto.getCode().equals("Q200")){
-            throw new QuizCreateFailedException();
-        }
-        return ResponseDto.setSuccess("Q200", "Quiz 생성 성공", quiz.getId());
-
+        questionCreateService.questionCreateDto(quiz.getId());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseDto.setSuccess("Q200", "Quiz 생성 성공", quiz.getId()));
     }
 
+    @Transactional
+    @Override
+    public long quizCreateDto(QuizCreateDto quizCreateDto) {
+        return 0;
+    }
 }

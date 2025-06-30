@@ -5,6 +5,10 @@ import com.back.kdquiz.quiz.dto.create.QuizCreateDto;
 import com.back.kdquiz.quiz.dto.update.QuizTitleUpdateDto;
 import com.back.kdquiz.quiz.dto.update.QuizUpdateDto;
 import com.back.kdquiz.quiz.service.quizSerivce.*;
+import com.back.kdquiz.quiz.service.quizSerivce.create.QuizCreateService;
+import com.back.kdquiz.quiz.service.quizSerivce.delete.QuizDeleteService;
+import com.back.kdquiz.quiz.service.quizSerivce.get.QuizGetService;
+import com.back.kdquiz.quiz.service.quizSerivce.update.QuizUpdateService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,14 +29,8 @@ public class QuizController {
     private final QuizTitleUpdateService quizTitleUpdateService;
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto<?>> quizCreate(@RequestBody QuizCreateDto quizCreateDto, @AuthenticationPrincipal CustomUserDetails userDetails){
-        ResponseDto responseDto = quizCreateService.quizCreate(quizCreateDto, userDetails);
-
-        if(responseDto.getCode().equals("Q200")){
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity quizCreate(@RequestBody QuizCreateDto quizCreateDto, @AuthenticationPrincipal CustomUserDetails userDetails){
+        return quizCreateService.quizCreateResponse(quizCreateDto, userDetails);
     }
 
     @GetMapping("/list")
@@ -42,12 +40,7 @@ public class QuizController {
 
     @GetMapping("/get/{quizId}")
     public ResponseEntity<ResponseDto<?>> quizGet(@PathVariable Long quizId){
-        ResponseDto responseDto = quizGetService.quizGet(quizId);
-        if(responseDto.getCode().equals("Q200")){
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-        }
+        return quizGetService.quizGetResponse(quizId);
     }
 
     @PutMapping("/update")

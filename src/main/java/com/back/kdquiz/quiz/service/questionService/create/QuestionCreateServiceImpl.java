@@ -9,11 +9,13 @@ import com.back.kdquiz.domain.repository.OptionRepository;
 import com.back.kdquiz.domain.repository.QuestionRepository;
 import com.back.kdquiz.domain.repository.QuizRepository;
 import com.back.kdquiz.exception.quizException.QuizNotFoundException;
+import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
 import com.back.kdquiz.quiz.init.QuizInit;
 import com.back.kdquiz.quiz.service.questionService.get.QuestionGetService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,11 +36,19 @@ public class QuestionCreateServiceImpl implements QuestionCreateService{
     @Transactional
     @Override
     public ResponseEntity questionCreateResponse(Long quizId) {
+        QuestionGetDto questionGetDto = questionCreateDto(quizId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body( ResponseDto.setSuccess("Q200", "생성 성공", questionGetDto));
+    }
+
+    @Transactional
+    @Override
+    public QuestionGetDto questionCreateDto(Long quizId) {
         Optional<Quiz> quizOption = quizRepository.findById(quizId);
         if(quizOption.isEmpty()){
             throw new QuizNotFoundException();
         }
-
         Quiz quiz = quizOption.get();
 
         Question question = quizInit.questionInit(new Question());
@@ -56,16 +66,6 @@ public class QuestionCreateServiceImpl implements QuestionCreateService{
         option.setQuestion(question);
         optionRepository.save(option);
 
-        ResponseDto responseDto = questionGetService.questionGet(question.getId());
-        log.info("퀘스천 "+responseDto.getCode()+" "+responseDto.getMessage());
-        return responseDto.getCode().equals("Q200") ?
-                ResponseDto.setSuccess("Q200", "생성 성공", responseDto.getData()) :
-                ResponseDto.setFailed("Q001", "Question 찾을 수 없음");
-
-    }
-
-    @Override
-    public String questionCreateCode(Long quizId) {
-        return null;
+        return questionGetService.questionGetDto(question.getId());
     }
 }

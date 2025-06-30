@@ -23,7 +23,7 @@ public class ChoiceGetServiceImpl implements ChoiceGetService {
     @Transactional
     @Override
     public ResponseEntity choiceGetResponse(Long questionId) {
-        List<ChoiceGetDto> choiceGetDtoList = choiceGetDTO(questionId);
+        List<ChoiceGetDto> choiceGetDtoList = choiceGetDto(questionId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -32,11 +32,25 @@ public class ChoiceGetServiceImpl implements ChoiceGetService {
 
     @Transactional
     @Override
-    public List<ChoiceGetDto> choiceGetDTO(Long questionId) {
+    public List<ChoiceGetDto> choiceGetDto(Long questionId) {
         List<Choice> choiceList = choiceRepository.findByQuestion_Id(questionId);
         if(choiceList.isEmpty()){
             return new ArrayList<>();
         }
+        List<ChoiceGetDto> choiceGetDtoList = new ArrayList<>();
+        for(Choice choice : choiceList){
+            ChoiceGetDto choiceGetDto = new ChoiceGetDto();
+            choiceGetDto.setId(choice.getId());
+            choiceGetDto.setContent(choice.getContent());
+            choiceGetDto.setIsCorrect(choice.getIsCorrect());
+            choiceGetDtoList.add(choiceGetDto);
+        }
+        return choiceGetDtoList;
+    }
+
+    @Transactional
+    @Override
+    public List<ChoiceGetDto> choiceGetDto(List<Choice> choiceList) {
         List<ChoiceGetDto> choiceGetDtoList = new ArrayList<>();
         for(Choice choice : choiceList){
             ChoiceGetDto choiceGetDto = new ChoiceGetDto();

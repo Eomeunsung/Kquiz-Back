@@ -43,14 +43,28 @@ public class OptionGetServiceImpl implements OptionGetService {
 
     }
 
+    @Transactional
     @Override
-    public OptionGetDto optionGetDTO(Long optionId) {
+    public OptionGetDto optionGetDto(Long optionId) {
         Optional<Option> optionalOption = optionRepository.findById(optionId);
         if(optionalOption.isEmpty()){
             throw new OptionNotFoundException();
         }
         Option option = optionalOption.get();
 
+        return OptionGetDto.builder()
+                .id(option.getId())
+                .time(option.getTime())
+                .score(option.getScore())
+                .useAiFeedBack(option.getUseAiFeedback())
+                .aiQuestion(option.getAiQuestion())
+                .useCommentary(option.getUseCommentary())
+                .commentary(option.getCommentary())
+                .build();
+    }
+
+    @Override
+    public OptionGetDto optionGetDto(Option option) {
         return OptionGetDto.builder()
                 .id(option.getId())
                 .time(option.getTime())

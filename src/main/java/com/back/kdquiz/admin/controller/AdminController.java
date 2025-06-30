@@ -4,11 +4,10 @@ import com.back.kdquiz.admin.dto.UserUpdateDto;
 import com.back.kdquiz.admin.service.AdminUserGetService;
 import com.back.kdquiz.admin.service.AdminUserListService;
 import com.back.kdquiz.admin.service.AdminUserUpdateService;
-import com.back.kdquiz.quiz.service.quizSerivce.QuizDeleteService;
+import com.back.kdquiz.quiz.service.quizSerivce.delete.QuizDeleteService;
 import com.back.kdquiz.quiz.service.quizSerivce.QuizListService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

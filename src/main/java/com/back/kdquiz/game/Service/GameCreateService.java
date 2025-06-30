@@ -3,7 +3,7 @@ package com.back.kdquiz.game.Service;
 import com.back.kdquiz.game.Repository.GameLobbyRedis;
 import com.back.kdquiz.game.dto.GameCreateDto;
 import com.back.kdquiz.quiz.dto.get.QuizGetDto;
-import com.back.kdquiz.quiz.service.quizSerivce.QuizGetService;
+import com.back.kdquiz.quiz.service.quizSerivce.get.QuizGetServiceImpl;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.security.SecureRandom;
 @AllArgsConstructor
 public class GameCreateService {
 
-    private final QuizGetService quizGetService;
+    private final QuizGetServiceImpl quizGetServiceImpl;
     private final GameLobbyRedis gameLobbyRedis;
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int CODE_LENGTH = 8;
@@ -30,7 +30,7 @@ public class GameCreateService {
                 sb.append(CHARACTERS.charAt(index));
             }
             GameCreateDto gameCreateDto = new GameCreateDto();
-            ResponseDto responseDto = quizGetService.quizGet(quizId);
+            ResponseDto responseDto = quizGetServiceImpl.quizGet(quizId);
             if(responseDto.getData()!=null){
                 gameCreateDto.setQuizGetDto((QuizGetDto) responseDto.getData());
                 gameCreateDto.setGameId(sb.toString());

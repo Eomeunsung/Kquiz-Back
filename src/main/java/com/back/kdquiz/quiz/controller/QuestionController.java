@@ -5,6 +5,7 @@ import com.back.kdquiz.quiz.service.questionService.*;
 import com.back.kdquiz.quiz.service.questionService.create.QuestionCreateService;
 import com.back.kdquiz.quiz.service.questionService.get.QuestionGetIdService;
 import com.back.kdquiz.quiz.service.questionService.get.QuestionGetService;
+import com.back.kdquiz.quiz.service.questionService.update.QuestionUpdateService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,22 +25,12 @@ public class QuestionController {
 
     @GetMapping("/create/{quizId}")
     public ResponseEntity<ResponseDto<?>> questionCreate(@PathVariable Long quizId){
-        ResponseDto responseDto = questionCreateService.questionCreate(quizId);
-        if(responseDto.getCode().equals("Q200")){
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-        }
+        return questionCreateService.questionCreateResponse(quizId);
     }
 
     @DeleteMapping("/delete/{questionId}")
     public ResponseEntity<ResponseDto<?>> questionDelete(@PathVariable Long questionId){
         ResponseDto responseDto = questionDeleteService.questionDelete(questionId);
-        if(responseDto.getCode().equals("Q200")){
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-        }
     }
 
     @GetMapping("/get/{questionId}")

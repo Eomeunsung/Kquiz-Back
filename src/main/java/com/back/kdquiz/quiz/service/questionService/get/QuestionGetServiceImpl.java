@@ -1,13 +1,11 @@
 package com.back.kdquiz.quiz.service.questionService.get;
 
-import com.back.kdquiz.domain.entity.Option;
 import com.back.kdquiz.domain.entity.Question;
 import com.back.kdquiz.domain.repository.QuestionRepository;
 import com.back.kdquiz.exception.questionException.QuestionNotFoundException;
 import com.back.kdquiz.quiz.dto.get.ChoiceGetDto;
 import com.back.kdquiz.quiz.dto.get.OptionGetDto;
 import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
-import com.back.kdquiz.quiz.service.choiceService.ChoiceGetService;
 import com.back.kdquiz.quiz.service.choiceService.get.ChoiceGetService;
 import com.back.kdquiz.quiz.service.optionService.get.OptionGetService;
 import com.back.kdquiz.response.ResponseDto;
@@ -32,17 +30,28 @@ public class QuestionGetServiceImpl implements QuestionGetService{
     @Transactional
     @Override
     public ResponseEntity questionGetResponse(Long questionId) {
+
+        QuestionGetDto questionGetDto = questionGetDto(questionId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseDto.setSuccess("Q200", "question 목록 조회 성공", questionGetDto));
+    }
+
+    @Transactional
+    @Override
+    public QuestionGetDto questionGetDto(Long questionId) {
         Optional<Question> questionOptional = questionRepository.findById(questionId);
         if(questionOptional.isEmpty()){
             throw new QuestionNotFoundException();
         }
         Question question = questionOptional.get();
 
-        List<ChoiceGetDto> choiceGetDtoList = choiceGetService.choiceGetDTO(questionId);
+        List<ChoiceGetDto> choiceGetDtoList = choiceGetService.choiceGetDto(questionId);
 
-        OptionGetDto optionGetDto = optionGetService.optionGetDTO(questionId);
+        OptionGetDto optionGetDto = optionGetService.optionGetDto(questionId);
 
-        QuestionGetDto questionGetDto = QuestionGetDto.builder()
+       return QuestionGetDto.builder()
                 .id(question.getId())
                 .title(question.getTitle())
                 .content(question.getContent())
@@ -50,14 +59,21 @@ public class QuestionGetServiceImpl implements QuestionGetService{
                 .choices(choiceGetDtoList)
                 .option(optionGetDto)
                 .build();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ResponseDto.setSuccess("Q200", "question 목록 조회 성공", questionGetDto));
-
     }
 
+    @Transactional
     @Override
-    public QuestionGetDto questionCreateDto(Long questionId) {
-        return null;
+    public QuestionGetDto questionGetDto(Question question) {
+        List<ChoiceGetDto> choiceGetDtoList = choiceGetService.choiceGetDto(question.getChoice());
+        OptionGetDto optionGetDto = optionGetService.optionGetDto(question.getOption());
+
+        return QuestionGetDto.builder()
+                .id(question.getId())
+                .title(question.getTitle())
+                .content(question.getContent())
+                .updateAt(question.getUpdatedAt())
+                .choices(choiceGetDtoList)
+                .option(optionGetDto)
+                .build();
     }
 }

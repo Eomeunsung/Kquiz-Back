@@ -1,7 +1,6 @@
-package com.back.kdquiz.exception.gobalException;
+package com.back.kdquiz.exception.gobal;
 
 import com.back.kdquiz.exception.roleException.RoleNotFoundException;
-import com.back.kdquiz.exception.userException.UserDisabledException;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

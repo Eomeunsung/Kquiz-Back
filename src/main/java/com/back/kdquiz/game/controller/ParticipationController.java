@@ -19,11 +19,6 @@ public class ParticipationController {
 
     @GetMapping("/participation/{roomId}")
     public ResponseEntity<ResponseDto<?>> participation(@PathVariable String roomId){
-        ResponseDto responseDto = participationService.participation(roomId);
-        if(responseDto.getCode().equals("P200")){
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-        }
+        return participationService.participationResponse(roomId);
     }
 }

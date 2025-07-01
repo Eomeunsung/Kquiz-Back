@@ -21,12 +21,6 @@ public class GameController {
 
     @GetMapping("/create/{quizId}")
     public ResponseEntity<ResponseDto<GameCreateDto>> gameCreate(@PathVariable Long quizId){
-        ResponseDto<GameCreateDto> responseDto = gameCreateService.gameCreate(quizId);
-
-        if(responseDto.getCode().equals("G200")){
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-        }
+        return gameCreateService.gameCreateResponse(quizId);
     }
 }

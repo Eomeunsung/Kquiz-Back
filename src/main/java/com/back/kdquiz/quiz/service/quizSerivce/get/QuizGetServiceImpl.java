@@ -26,6 +26,7 @@ public class QuizGetServiceImpl implements QuizGetService {
     private final QuizRepository quizRepository;
     private final QuestionGetService questionGetService;
 
+    @Transactional
     @Override
     public ResponseEntity quizGetResponse(Long quizId) {
 
@@ -54,6 +55,24 @@ public class QuizGetServiceImpl implements QuizGetService {
 
     @Override
     public QuizGetDto quizGetDto(Long quizId) {
-        return null;
+
+        Optional<Quiz> quizOptional = quizRepository.findById(quizId);
+        if(quizOptional.isEmpty()){
+            throw new QuizNotFoundException();
+        }
+        Quiz quiz = quizOptional.get();
+
+        QuizGetDto quizGetDto = new QuizGetDto();
+        quizGetDto.setId(quiz.getId());
+        quizGetDto.setTitle(quiz.getTitle());
+        List<QuestionGetDto> questionGetDtoList = new ArrayList<>();
+
+        for(Question question : quiz.getQuestions()){
+            QuestionGetDto questionGetDto = questionGetService.questionGetDto(question);
+            questionGetDtoList.add(questionGetDto);
+        }
+
+        quizGetDto.setQuestions(questionGetDtoList);
+        return quizGetDto;
     }
 }

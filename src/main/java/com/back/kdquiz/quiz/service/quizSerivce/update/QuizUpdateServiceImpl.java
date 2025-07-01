@@ -37,7 +37,7 @@ public class QuizUpdateServiceImpl implements QuizUpdateService{
         quiz.setUpdatedAt(LocalDateTime.now());
         quizRepository.save(quiz);
         for(QuestionUpdateDto questionUpdateDto : quizUpdateDto.getQuestions()){
-            questionUpdateService.questionUpdate(questionUpdateDto);
+            questionUpdateService.questionUpdateDto(questionUpdateDto);
         }
         return ResponseEntity
                 .status(HttpStatus.OK)

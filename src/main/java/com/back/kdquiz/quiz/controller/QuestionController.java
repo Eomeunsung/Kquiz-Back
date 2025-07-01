@@ -1,8 +1,8 @@
 package com.back.kdquiz.quiz.controller;
 
 import com.back.kdquiz.quiz.dto.update.QuestionUpdateDto;
-import com.back.kdquiz.quiz.service.questionService.*;
 import com.back.kdquiz.quiz.service.questionService.create.QuestionCreateService;
+import com.back.kdquiz.quiz.service.questionService.delete.QuestionDeleteService;
 import com.back.kdquiz.quiz.service.questionService.get.QuestionGetIdService;
 import com.back.kdquiz.quiz.service.questionService.get.QuestionGetService;
 import com.back.kdquiz.quiz.service.questionService.update.QuestionUpdateService;
@@ -30,27 +30,17 @@ public class QuestionController {
 
     @DeleteMapping("/delete/{questionId}")
     public ResponseEntity<ResponseDto<?>> questionDelete(@PathVariable Long questionId){
-        ResponseDto responseDto = questionDeleteService.questionDelete(questionId);
+        return questionDeleteService.questionDeleteResponse(questionId);
     }
 
     @GetMapping("/get/{questionId}")
     public ResponseEntity<ResponseDto<?>> questionGet(@PathVariable Long questionId){
-        ResponseDto responseDto = questionGetService.questionGet(questionId);
-        if(responseDto.getCode().equals("Q200")){
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-        }
+        return questionGetService.questionGetResponse(questionId);
     }
 
     @PutMapping("/update")
     public ResponseEntity<ResponseDto<?>> questionUpdate(@RequestBody QuestionUpdateDto questionUpdateDto){
-        ResponseDto responseDto = questionUpdateService.questionUpdate(questionUpdateDto);
-        if(responseDto.getCode().equals("Q200")){
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-        }
+        return questionUpdateService.questionUpdateResponse(questionUpdateDto);
     }
 
     //일단 안쓰는거

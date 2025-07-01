@@ -6,5 +6,5 @@ import org.springframework.http.ResponseEntity;
 public interface QuestionUpdateService {
     ResponseEntity questionUpdateResponse(QuestionUpdateDto questionUpdateDto);
 
-    void questionUpdateDto(QuestionUpdateDto questionUpdateDto);
+    Boolean questionUpdateDto(QuestionUpdateDto questionUpdateDto);
 }

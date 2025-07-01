@@ -1,4 +1,4 @@
-package com.back.kdquiz.exception.gobalException;
+package com.back.kdquiz.exception.gobal;
 
 import com.back.kdquiz.exception.choiceException.ChoiceCreateFailedException;
 import com.back.kdquiz.exception.choiceException.ChoiceNotFoundException;

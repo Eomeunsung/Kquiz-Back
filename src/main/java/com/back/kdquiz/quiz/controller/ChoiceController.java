@@ -1,10 +1,9 @@
 package com.back.kdquiz.quiz.controller;
 
-import com.back.kdquiz.quiz.service.choiceService.ChoiceCreateService;
+import com.back.kdquiz.quiz.service.choiceService.create.ChoiceCreateService;
 import com.back.kdquiz.quiz.service.choiceService.delete.ChoiceDeleteService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,21 +17,11 @@ public class ChoiceController {
 
     @GetMapping("/create/{questionId}")
     public ResponseEntity<ResponseDto<?>> choiceCreate(@PathVariable Long questionId){
-        ResponseDto responseDto = choiceCreateService.choiceCreate(questionId);
-        if(responseDto.getCode().equals("Q200")){
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-        }
+        return choiceCreateService.choiceCreateResponse(questionId);
     }
 
     @DeleteMapping("/delete/{choiceId}")
     public ResponseEntity<ResponseDto<?>> choiceDelete(@PathVariable Long choiceId){
-        ResponseDto responseDto = choiceDeleteService.deleteChoice(choiceId);
-        if(responseDto.getCode().equals("C200")){
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-        }
+        return choiceDeleteService.deleteChoiceResponse(choiceId);
     }
 }

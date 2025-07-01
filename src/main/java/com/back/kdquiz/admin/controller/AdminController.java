@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
@@ -28,8 +30,8 @@ public class AdminController {
     }
 
     @DeleteMapping("/quiz/delete/{quizId}")
-    public ResponseEntity<ResponseDto<?>> quizDelete(@PathVariable Long quizId){
-        return quizDeleteService.quizDelete(quizId);
+    public ResponseEntity<ResponseDto<?>> quizDelete(@PathVariable Long quizId) throws IOException {
+        return quizDeleteService.quizDeleteResponse(quizId);
     }
 
     @GetMapping("/user/list")

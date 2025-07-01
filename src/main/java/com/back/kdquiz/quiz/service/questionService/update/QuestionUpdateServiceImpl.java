@@ -41,7 +41,7 @@ public class QuestionUpdateServiceImpl implements QuestionUpdateService{
         question.setUpdatedAt(LocalDateTime.now());
         questionRepository.save(question);
         for(ChoiceUpdateDto choiceUpdateDto : questionUpdateDto.getChoices()){
-            choiceUpdateService.choiceUpdate(choiceUpdateDto);
+            choiceUpdateService.choiceUpdateDto(choiceUpdateDto);
         }
         optionUpdateService.optionUpdate(questionUpdateDto.getOption());
         return ResponseEntity
@@ -51,7 +51,20 @@ public class QuestionUpdateServiceImpl implements QuestionUpdateService{
 
     @Transactional
     @Override
-    public void questionUpdateDto(QuestionUpdateDto questionUpdateDto) {
-
+    public Boolean questionUpdateDto(QuestionUpdateDto questionUpdateDto) {
+        Optional<Question> questionOptional = questionRepository.findById(questionUpdateDto.getId());
+        if(questionOptional.isEmpty()){
+            throw new QuestionNotFoundException();
+        }
+        Question question = questionOptional.get();
+        question.setTitle(questionUpdateDto.getTitle());
+        question.setContent(questionUpdateDto.getContent());
+        question.setUpdatedAt(LocalDateTime.now());
+        questionRepository.save(question);
+        for(ChoiceUpdateDto choiceUpdateDto : questionUpdateDto.getChoices()){
+            choiceUpdateService.choiceUpdateDto(choiceUpdateDto);
+        }
+        optionUpdateService.optionUpdate(questionUpdateDto.getOption());
+        return true;
     }
 }

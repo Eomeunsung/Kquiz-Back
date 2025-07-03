@@ -26,7 +26,7 @@ public class GamePlayService {
         gameLobbyRedis.addScore(roomId, scoreDto.getUserId(), scoreDto.getScore());
         int score = gameLobbyRedis.getScore(roomId,scoreDto.getUserId());
         log.info("유저 점수 " + gameLobbyRedis.getScore(roomId, scoreDto.getUserId()) + "유저 아이디 " + scoreDto.getUserId());
-        messagingTemplate.convertAndSend("/topic/game/" + roomId, score);
+        messagingTemplate.convertAndSend("/topic/game/" +scoreDto.getUserId(), score);
     }
 
     public void gamePlayEnd(String roomId){

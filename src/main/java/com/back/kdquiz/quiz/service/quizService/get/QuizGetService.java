@@ -1,4 +1,4 @@
-package com.back.kdquiz.quiz.service.quizSerivce.get;
+package com.back.kdquiz.quiz.service.quizService.get;
 
 import com.back.kdquiz.quiz.dto.get.QuizGetDto;
 import org.springframework.http.ResponseEntity;

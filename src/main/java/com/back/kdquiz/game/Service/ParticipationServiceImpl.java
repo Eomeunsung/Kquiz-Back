@@ -23,6 +23,7 @@ public class ParticipationServiceImpl implements ParticipationService{
 
         String gameId = gameLobbyRedis.getQuiz(roomId);
 //            Long id = Long.parseLong(gameId);
+        log.info("서비스에서 게임 아이디 조회: "+gameId);
         if(gameId==null || gameId.equals("")){
             throw new GameNotFoundException();
         }

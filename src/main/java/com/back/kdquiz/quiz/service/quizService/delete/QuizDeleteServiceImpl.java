@@ -1,4 +1,4 @@
-package com.back.kdquiz.quiz.service.quizSerivce.delete;
+package com.back.kdquiz.quiz.service.quizService.delete;
 
 import com.back.kdquiz.config.util.CustomFileUtil;
 import com.back.kdquiz.domain.entity.ImgUrl;

@@ -6,7 +6,7 @@ import com.back.kdquiz.config.websocket.room.enums.TypeEnum;
 import com.back.kdquiz.game.Repository.GameLobbyRedis;
 import com.back.kdquiz.quiz.dto.get.QuestionGetIdDto;
 import com.back.kdquiz.quiz.service.questionService.get.QuestionGetIdService;
-import com.back.kdquiz.quiz.service.quizSerivce.get.QuizGetServiceImpl;
+import com.back.kdquiz.quiz.service.quizService.get.QuizGetServiceImpl;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

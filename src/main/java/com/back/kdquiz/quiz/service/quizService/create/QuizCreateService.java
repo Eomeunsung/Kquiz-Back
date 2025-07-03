@@ -1,4 +1,4 @@
-package com.back.kdquiz.quiz.service.quizSerivce.create;
+package com.back.kdquiz.quiz.service.quizService.create;
 
 import com.back.kdquiz.config.custom.CustomUserDetails;
 import com.back.kdquiz.quiz.dto.create.QuizCreateDto;

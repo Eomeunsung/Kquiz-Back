@@ -1,4 +1,4 @@
-package com.back.kdquiz.exception.gobal;
+package com.back.kdquiz.exception.global;
 
 import com.back.kdquiz.exception.quizException.QuizCreateFailedException;
 import com.back.kdquiz.exception.quizException.QuizNotFoundException;

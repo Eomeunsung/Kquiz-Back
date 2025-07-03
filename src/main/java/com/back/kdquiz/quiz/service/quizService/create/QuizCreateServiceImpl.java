@@ -1,14 +1,12 @@
-package com.back.kdquiz.quiz.service.quizSerivce.create;
+package com.back.kdquiz.quiz.service.quizService.create;
 
 import com.back.kdquiz.config.custom.CustomUserDetails;
 import com.back.kdquiz.domain.entity.Quiz;
 import com.back.kdquiz.domain.entity.Users;
 import com.back.kdquiz.domain.repository.QuizRepository;
 import com.back.kdquiz.domain.repository.UsersRepository;
-import com.back.kdquiz.exception.quizException.QuizCreateFailedException;
 import com.back.kdquiz.exception.userException.UserNotFoundException;
 import com.back.kdquiz.quiz.dto.create.QuizCreateDto;
-import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
 import com.back.kdquiz.quiz.service.questionService.create.QuestionCreateService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;

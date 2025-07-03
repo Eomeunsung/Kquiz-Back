@@ -3,8 +3,7 @@ package com.back.kdquiz.game.Service;
 import com.back.kdquiz.game.Repository.GameLobbyRedis;
 import com.back.kdquiz.game.dto.GameCreateDto;
 import com.back.kdquiz.quiz.dto.get.QuizGetDto;
-import com.back.kdquiz.quiz.service.quizSerivce.get.QuizGetService;
-import com.back.kdquiz.quiz.service.quizSerivce.get.QuizGetServiceImpl;
+import com.back.kdquiz.quiz.service.quizService.get.QuizGetService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,6 +35,7 @@ public class GameCreateServiceImpl implements GameCreateService {
         QuizGetDto quizGetDto = quizGetService.quizGetDto(quizId);
         gameCreateDto.setQuizGetDto(quizGetDto);
         gameCreateDto.setGameId(sb.toString());
+        gameLobbyRedis.gameCreate(sb.toString(), String.valueOf(quizId));
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ResponseDto.setSuccess("G200", "게임 생성 성공", gameCreateDto));

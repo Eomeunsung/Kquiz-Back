@@ -1,4 +1,4 @@
-package com.back.kdquiz.quiz.service.quizSerivce.update;
+package com.back.kdquiz.quiz.service.quizService.update;
 
 import com.back.kdquiz.domain.entity.Quiz;
 import com.back.kdquiz.domain.repository.QuizRepository;

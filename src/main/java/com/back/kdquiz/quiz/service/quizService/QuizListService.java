@@ -26,19 +26,15 @@ public class QuizListService {
     @Transactional
     public ResponseEntity<ResponseDto<?>> quizAllList(){
         ResponseDto responseDto;
-        try{
-            List<Quiz> quizList = quizRepository.findAll();
-            if(quizList.isEmpty()){
-                responseDto = ResponseDto.setFailed("Q000", "퀴즈가 없음");
-                return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
-            }
+        List<Quiz> quizList = quizRepository.findAll();
+        if(quizList.isEmpty()){
+            responseDto =  ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", null);
+        }else{
             List<QuizAllGetDto> quizAllGetDtoList = buildQuizAllListResponse(quizList);
             responseDto =  ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", quizAllGetDtoList);
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        } catch (Exception e){
-            responseDto = ResponseDto.setFailed("Q000", "퀴즈 조회 오류"+e.getMessage());
-            return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+
     }
 
     @Transactional

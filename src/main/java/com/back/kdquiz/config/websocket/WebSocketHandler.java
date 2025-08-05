@@ -3,6 +3,8 @@ package com.back.kdquiz.config.websocket;
 import com.back.kdquiz.config.websocket.room.dto.ChatMessageDto;
 import com.back.kdquiz.config.websocket.room.dto.GameRequestDto;
 import com.back.kdquiz.config.websocket.room.enums.TypeEnum;
+import com.back.kdquiz.config.websocket.room.service.JoinService;
+import com.back.kdquiz.config.websocket.room.service.LobbyService;
 import com.back.kdquiz.game.Repository.GameLobbyRedis;
 import com.back.kdquiz.quiz.dto.get.QuestionGetIdDto;
 import com.back.kdquiz.quiz.service.questionService.get.QuestionGetIdService;
@@ -29,6 +31,7 @@ public class WebSocketHandler {
     private final GameLobbyRedis gameLobbyRedis;
     private final QuizGetServiceImpl quizGetServiceImpl;
     private final QuestionGetIdService questionGetIdService;
+    private final JoinService joinService;
 
     @EventListener
     public void handleSessionConnect(SessionConnectEvent event) {
@@ -40,11 +43,12 @@ public class WebSocketHandler {
         String userId = accessor.getFirstNativeHeader("userId");
         String type = accessor.getFirstNativeHeader("type");
 
-        log.info("타입 "+type+" "+type.equals(TypeEnum.CHAT));
+        log.info("타입 "+type+" "+type.equals(TypeEnum.LOBBY));
 
-        //CHAT 으로 접속 했을 경우
-        if(TypeEnum.valueOf(type) == TypeEnum.CHAT){
+        //LOBBY
+        if(TypeEnum.valueOf(type) == TypeEnum.LOBBY){
             log.info("user아이디 "+userId);
+            joinService.joinRoom(roomId, userId, name);
             ChatMessageDto chatMessageDto = new ChatMessageDto();
             if(userId==null || userId.equals("null")){
                 Long newId =  gameLobbyRedis.addUser(roomId,name);

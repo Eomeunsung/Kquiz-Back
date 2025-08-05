@@ -34,6 +34,6 @@ public class KickService {
         chatMessageDto.setType(TypeEnum.KICK);
 
         messagingTemplate.convertAndSend("/topic/chat/" + roomId, chatMessageDto);
-        messagingTemplate.convertAndSend("/topic/kick/" + userId, "KICKED");
+        messagingTemplate.convertAndSend("/topic/kick/" + roomId+"/"+userId, "KICKED");
     }
 }

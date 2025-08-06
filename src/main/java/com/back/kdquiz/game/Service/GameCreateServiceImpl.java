@@ -37,6 +37,10 @@ public class GameCreateServiceImpl implements GameCreateService {
         gameCreateDto.setGameId(sb.toString());
         gameLobbyRedis.gameCreate(sb.toString(), String.valueOf(quizId));
 
+        Long userId = gameLobbyRedis.addUser(String.valueOf(quizId), "HOST");
+
+        gameCreateDto.setUserId(userId);
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ResponseDto.setSuccess("G200", "게임 생성 성공", gameCreateDto));
     }

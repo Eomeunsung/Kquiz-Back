@@ -29,7 +29,6 @@ import java.util.TimerTask;
 public class WebSocketHandler {
     private final SimpMessagingTemplate messagingTemplate;
     private final GameLobbyRedis gameLobbyRedis;
-    private final QuizGetServiceImpl quizGetServiceImpl;
     private final QuestionGetIdService questionGetIdService;
     private final JoinService joinService;
 
@@ -45,38 +44,12 @@ public class WebSocketHandler {
 
         log.info("타입 "+type+" "+type.equals(TypeEnum.LOBBY));
 
-        //LOBBY
+        log.info("웹 소켓 연결된 룸 아이디 "+roomId);
+        //LOBBY 방 참여
         if(TypeEnum.valueOf(type) == TypeEnum.LOBBY){
-            log.info("user아이디 "+userId);
             joinService.joinRoom(roomId, userId, name);
-            ChatMessageDto chatMessageDto = new ChatMessageDto();
-            if(userId==null || userId.equals("null")){
-                Long newId =  gameLobbyRedis.addUser(roomId,name);
-                String strId = String.valueOf(newId);
-//                gameLobbyRedis.saveUsername(roomId, strId, name);
-                chatMessageDto.setUserId(newId);
-            }else{
-                Long Id = Long.parseLong(userId);
-                chatMessageDto.setUserId(Id);
-            }
-
-            log.info("[SessionConnected]: nickname = " + name);
-            log.info("룸 아이디 "+roomId);
-            Map<String, Object> users = gameLobbyRedis.getAllUsers(roomId);
-
-            chatMessageDto.setName(name);
-            chatMessageDto.setUserList(users);
-            chatMessageDto.setContent(name+" 님이 참가하였습니다.");
-            log.info("메시지 전송 {}",chatMessageDto.getUserId());
-            log.info("보낼 주소 "+String.format("/topic/chat/%s", roomId));
-            //바로 클라이언트로 보내면 받지 못할 수도 있음으로 딜레이 주면서 보내기
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    messagingTemplate.convertAndSend(String.format("/topic/chat/%s", roomId), chatMessageDto);
-                }
-            }, 200); // 200ms 딜레이
         }
+
         //GAME 으로 접속 했을 경우
         else if(TypeEnum.valueOf(type)==TypeEnum.GAME){
             GameRequestDto gameRequestDto = new GameRequestDto();

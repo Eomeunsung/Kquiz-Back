@@ -44,6 +44,8 @@ public class GameLobbyRedis {
         Long newIndex = redisTemplate.opsForValue().increment("game:users:index:"+gameId); //기존에 유저 값이 있으면 +1 해서 새로운 유저 id 생성
 
         hashOps.put("game:users:"+gameId, String.valueOf(newIndex), username);
+        String key = "game:users:" + gameId;
+        System.out.println("✅ Added: key = " + key + ", index = " + newIndex + ", username = " + username);
         return newIndex;
     }
 
@@ -55,6 +57,9 @@ public class GameLobbyRedis {
 
     //모든 유저 id 가져오기
     public Map<String, Object> getAllUsers(String gameId){
+        String key = "game:users:" + gameId;
+        Map<String, Object> users = hashOps.entries(key);
+        System.out.println("🔍 All users for key = " + key + " => " + users);
         return hashOps.entries("game:users:"+gameId);
     }
 

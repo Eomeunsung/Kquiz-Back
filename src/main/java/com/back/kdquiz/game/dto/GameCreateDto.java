@@ -9,4 +9,5 @@ import lombok.Setter;
 public class GameCreateDto {
     private String gameId;
     private QuizGetDto quizGetDto;
+    private Long userId;
 }

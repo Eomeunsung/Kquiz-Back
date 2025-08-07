@@ -3,6 +3,7 @@ package com.back.kdquiz.config.custom;
 import com.back.kdquiz.domain.entity.Users;
 import com.back.kdquiz.domain.repository.UsersRepository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,15 +12,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 
-@Service
+@Service("userDetailService")
+@RequiredArgsConstructor
 @Slf4j
 public class CustomUserDetailService implements UserDetailsService {
     private final UsersRepository usersRepository;
 
-    @Autowired
-    public CustomUserDetailService(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
-    }
 
     @Override
     @Transactional

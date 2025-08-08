@@ -24,7 +24,7 @@ public class JoinService{
         log.info("들어온 값 "+roomId+" "+userId+" "+name);
         ChatMessageDto chatMessageDto = new ChatMessageDto();
 
-        Map<String, Object> users = gameLobbyRedis.getAllUsers(roomId);
+        Map<String, Object> users = gameLobbyRedis. getAllUsers(roomId);
 
         if(users.isEmpty()){
             log.info("유저가 비어 있는 오류 발생");
@@ -41,7 +41,7 @@ public class JoinService{
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                messagingTemplate.convertAndSend(String.format("/topic/chat/%s", roomId), chatMessageDto);
+                messagingTemplate.convertAndSend(String.format("/topic/lobby/%s", roomId), chatMessageDto);
             }
         }, 200); // 200ms 딜레이
 

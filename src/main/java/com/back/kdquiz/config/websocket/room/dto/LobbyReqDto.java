@@ -1,6 +1,5 @@
 package com.back.kdquiz.config.websocket.room.dto;
 
-import com.back.kdquiz.config.websocket.room.enums.TypeEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class LobbyResDto {
-    private TypeEnum typeEnum;
+public class LobbyReqDto {
+    private String Content;
 }

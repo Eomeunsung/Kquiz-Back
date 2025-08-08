@@ -31,8 +31,8 @@ public class ChatMessageController {
 
     //전체
     @MessageMapping("/lobby/{roomId}")
-    public void lobbyMessage(ChatMessageDto chatMessageDto, @DestinationVariable String roomId){
-        lobbyService.lobby(chatMessageDto, roomId);
+    public void lobbyMessage(LobbyReqDto lobbyReqDto, @DestinationVariable String roomId){
+        lobbyService.lobby(lobbyReqDto, roomId);
     }
 
     //강퇴 개별

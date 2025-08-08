@@ -33,7 +33,7 @@ public class KickService {
         chatMessageDto.setContent(userName+" 님이 강퇴 당했습니다.");
         chatMessageDto.setType(TypeEnum.KICK);
 
-        messagingTemplate.convertAndSend("/topic/chat/" + roomId, chatMessageDto);
+        messagingTemplate.convertAndSend("/topic/lobby/" + roomId, chatMessageDto);
         messagingTemplate.convertAndSend("/topic/kick/" + roomId+"/"+userId, "KICKED");
     }
 }

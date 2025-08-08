@@ -16,7 +16,9 @@ public class LobbyService {
     private final SimpMessagingTemplate messagingTemplate;
 
     public void lobby(ChatMessageDto chatMessageDto, String roomId){
-        String destination = "/topic/chat/"+roomId;
+        String destination = "/topic/lobby/"+roomId;
+
+        if(TypeEnum.valueOf(chatMessageDto.getType())==TypeEnum.GAME)
         if(chatMessageDto.getContent().equals(TypeEnum.GAME.name())){
             GameRequestDto gameRequestDto = new GameRequestDto();
             gameRequestDto.setType(TypeEnum.GAME);

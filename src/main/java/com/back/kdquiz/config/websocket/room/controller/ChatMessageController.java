@@ -30,7 +30,7 @@ public class ChatMessageController {
     private final GamePlayService gamePlayService;
 
     //전체
-    @MessageMapping("/chat/{roomId}")
+    @MessageMapping("/lobby/{roomId}")
     public void lobbyMessage(ChatMessageDto chatMessageDto, @DestinationVariable String roomId){
         lobbyService.lobby(chatMessageDto, roomId);
     }

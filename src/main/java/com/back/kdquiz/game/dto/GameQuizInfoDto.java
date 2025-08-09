@@ -1,13 +1,13 @@
 package com.back.kdquiz.game.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class GameCreateDto {
-    private String gameId;
+@Builder
+public class GameQuizInfoDto {
     private String quizTitle;
     private int questionSize;
-    private Long userId;
 }

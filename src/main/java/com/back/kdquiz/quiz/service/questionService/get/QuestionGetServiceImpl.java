@@ -2,6 +2,7 @@ package com.back.kdquiz.quiz.service.questionService.get;
 
 import com.back.kdquiz.domain.entity.Question;
 import com.back.kdquiz.domain.repository.QuestionRepository;
+import com.back.kdquiz.domain.repository.QuizRepository;
 import com.back.kdquiz.exception.questionException.QuestionNotFoundException;
 import com.back.kdquiz.quiz.dto.get.ChoiceGetDto;
 import com.back.kdquiz.quiz.dto.get.OptionGetDto;
@@ -26,6 +27,7 @@ public class QuestionGetServiceImpl implements QuestionGetService{
     private final QuestionRepository questionRepository;
     private final ChoiceGetService choiceGetService;
     private final OptionGetService optionGetService;
+    private final QuizRepository quizRepository;
 
     @Transactional
     @Override
@@ -76,4 +78,5 @@ public class QuestionGetServiceImpl implements QuestionGetService{
                 .option(optionGetDto)
                 .build();
     }
+
 }

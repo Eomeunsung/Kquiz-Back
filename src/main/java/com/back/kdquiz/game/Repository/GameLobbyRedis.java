@@ -40,6 +40,15 @@ public class GameLobbyRedis {
         redisTemplate.delete(scoresKey);
     }
 
+    public void quizTitle(String gameId, String quizTitle){
+        valueOperations.set("game:quizTitle:"+gameId, quizTitle);
+    }
+
+    public String quizTitleGet(String gameId){
+        String key = "game:quizTitle:"+gameId;
+        return (String) valueOperations.get(key);
+    }
+
     public Long addUser(String gameId, String username){
         Long newIndex = redisTemplate.opsForValue().increment("game:users:index:"+gameId); //기존에 유저 값이 있으면 +1 해서 새로운 유저 id 생성
 

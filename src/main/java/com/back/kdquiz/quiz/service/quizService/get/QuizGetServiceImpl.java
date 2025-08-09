@@ -10,6 +10,7 @@ import com.back.kdquiz.quiz.dto.get.QuizGetDto;
 import com.back.kdquiz.quiz.service.questionService.get.QuestionGetService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class QuizGetServiceImpl implements QuizGetService {
 
     private final QuizRepository quizRepository;
@@ -45,6 +47,7 @@ public class QuizGetServiceImpl implements QuizGetService {
             QuestionGetDto questionGetDto = questionGetService.questionGetDto(question);
             questionGetDtoList.add(questionGetDto);
         }
+        log.info("퀘스천 갯수 "+ quiz.getQuestions().size());
 
         quizGetDto.setQuestions(questionGetDtoList);
         return ResponseEntity

@@ -11,4 +11,6 @@ public interface QuestionGetService {
     QuestionGetDto questionGetDto(Long questionId);
 
     QuestionGetDto questionGetDto(Question question);
+
+
 }

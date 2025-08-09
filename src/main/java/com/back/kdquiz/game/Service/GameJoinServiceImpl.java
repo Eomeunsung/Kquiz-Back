@@ -3,6 +3,7 @@ package com.back.kdquiz.game.Service;
 import com.back.kdquiz.exception.gameException.GameNotFoundException;
 import com.back.kdquiz.game.Repository.GameLobbyRedis;
 import com.back.kdquiz.game.dto.GameJoinDto;
+import com.back.kdquiz.game.dto.GameJoinResDto;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,10 +31,16 @@ public class GameJoinServiceImpl implements GameJoinService {
         }
 
         Long newId = gameLobbyRedis.addUser(gameJoinDto.getGameId(), gameJoinDto.getName());
+        String quizTitle = gameLobbyRedis.quizTitleGet(gameJoinDto.getGameId());
 
+        GameJoinResDto gameJoinResDto = GameJoinResDto
+                .builder()
+                .quizTitle(quizTitle)
+                .userId(newId)
+                .build();
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ResponseDto.setSuccess("P200", "게임 접속 성공", newId));
+                .body(ResponseDto.setSuccess("P200", "게임 접속 성공", gameJoinResDto));
 
     }
 }

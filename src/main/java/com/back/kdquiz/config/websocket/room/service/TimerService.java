@@ -44,4 +44,14 @@ public class TimerService {
 
         messagingTemplate.convertAndSend("/topic/timer/"+roomId, timerResDto);
     }
+
+    @Transactional
+    public void QuestionTimer(String roomId, int time){
+        TimerResDto timerResDto = TimerResDto
+                .builder()
+                .type(TypeEnum.QUESTION_TIMER)
+                .timer(time-1)
+                .build();
+        messagingTemplate.convertAndSend("/topic/timer/"+roomId, timerResDto);
+    }
 }

@@ -8,6 +8,7 @@ public enum TypeEnum {
     QUESTION,
     SCORE,
     ERROR,
-    READY_COUNT
+    READY_COUNT,
+    QUESTION_TIMER
 
 }

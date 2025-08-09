@@ -74,9 +74,8 @@ public class ChatMessageController {
             timerService.counter(roomId, timerDto.getTime());
         } else if(timerDto.getType().equals("START") && timerDto.getTime() == 0){ //카운터 끝난 후 게임 시작
             timerService.startQuiz(roomId);
-        }else if(timerDto.getType().equals("TIMER")){ //question 타이머
-            response.setTime(timerDto.getTime());
-            response.setType("TIMER");
+        }else if(timerDto.getType().equals("QUESTION_TIMER")){ //question 타이머
+            timerService.QuestionTimer(roomId, timerDto.getTime());
         }
 
         messagingTemplate.convertAndSend("/topic/timer/"+roomId, response);

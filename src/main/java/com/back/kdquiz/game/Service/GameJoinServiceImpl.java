@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -43,4 +45,6 @@ public class GameJoinServiceImpl implements GameJoinService {
                 .body(ResponseDto.setSuccess("P200", "게임 접속 성공", gameJoinResDto));
 
     }
+
+
 }

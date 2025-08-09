@@ -9,5 +9,5 @@ import lombok.Setter;
 @Builder
 public class GameQuizInfoDto {
     private String quizTitle;
-    private int questionSize;
+    private Long questionSize;
 }

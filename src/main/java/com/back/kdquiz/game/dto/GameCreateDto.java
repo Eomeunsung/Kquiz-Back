@@ -8,6 +8,6 @@ import lombok.Setter;
 public class GameCreateDto {
     private String gameId;
     private String quizTitle;
-    private int questionSize;
+    private Long questionSize;
     private Long userId;
 }

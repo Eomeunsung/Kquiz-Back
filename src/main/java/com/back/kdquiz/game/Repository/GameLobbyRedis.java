@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -104,4 +105,29 @@ public class GameLobbyRedis {
     }
 
 
+    public Long saveQuestionIndex(String roomId, List<Long> questionIndex){
+        Long newIndex = redisTemplate.opsForValue().increment("game:question:index:"+roomId);
+
+        for(Long questionId : questionIndex){
+            hashOps.put("game:question:"+roomId, String.valueOf(newIndex), questionId);
+            newIndex++;
+        }
+
+        newIndex--;
+        String key = "game:question:" + roomId;
+        Map<String, Object> questions = hashOps.entries(key);
+        System.out.println("🔍 All questionIndex for key = " + key + " => " + questions);
+        return newIndex;
+    }
+
+    public Long findQuestionIndex(String roomId, String Index){
+        String key = "game:question:" + roomId;
+        Object value = hashOps.get(key, Index);
+
+        if(value==null){
+            return -1L;
+        }else{
+            return Long.parseLong(value.toString()); // 문자열 → Long 변환
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.back.kdquiz.game.Service;
 
+import com.back.kdquiz.domain.entity.Question;
 import com.back.kdquiz.domain.entity.Quiz;
 import com.back.kdquiz.domain.repository.QuizRepository;
 import com.back.kdquiz.exception.quizException.QuizNotFoundException;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,32 +38,44 @@ public class GameCreateServiceImpl implements GameCreateService {
             sb.append(CHARACTERS.charAt(index));
         }
         GameCreateDto gameCreateDto = new GameCreateDto();
-        GameQuizInfoDto quizInfoDto = gameQuizInfo(quizId);
+        GameQuizInfoDto quizInfoDto = gameQuizInfo(quizId, sb.toString());
+        gameLobbyRedis.gameCreate(sb.toString(), String.valueOf(quizId));
+        Long userId = gameLobbyRedis.addUser(String.valueOf(quizId), "HOST");
 
         gameCreateDto.setGameId(sb.toString());
         gameCreateDto.setQuizTitle(quizInfoDto.getQuizTitle());
         gameCreateDto.setQuestionSize(quizInfoDto.getQuestionSize());
-        gameLobbyRedis.gameCreate(sb.toString(), String.valueOf(quizId));
-        Long userId = gameLobbyRedis.addUser(String.valueOf(quizId), "HOST");
         gameCreateDto.setUserId(userId);
 
-        gameLobbyRedis.quizTitle(sb.toString(), quizInfoDto.getQuizTitle());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ResponseDto.setSuccess("G200", "게임 생성 성공", gameCreateDto));
     }
 
     @Override
-    public GameQuizInfoDto gameQuizInfo(Long quizId) {
+    public GameQuizInfoDto gameQuizInfo(Long quizId, String roomId) {
         Optional<Quiz> quiz = quizRepository.findById(quizId);
         if(quiz.isEmpty()){
             throw new QuizNotFoundException();
         }
-
+        Long questionSize = questionIndexRedisSave(quiz.get().getQuestions(), roomId);
         return GameQuizInfoDto
                 .builder()
                 .quizTitle(quiz.get().getTitle())
-                .questionSize(quiz.get().getQuestions().size())
+                .questionSize(questionSize)
                 .build();
+    }
+
+    @Transactional
+    public Long questionIndexRedisSave(List<Question> questionList, String roomId){
+
+
+        List<Long> questionIndexList = new ArrayList<>();
+
+        for(Question question : questionList){
+            questionIndexList.add(question.getId());
+        }
+
+       return gameLobbyRedis.saveQuestionIndex(roomId, questionIndexList);
     }
 }

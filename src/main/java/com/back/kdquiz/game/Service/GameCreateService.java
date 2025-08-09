@@ -7,7 +7,7 @@ public interface GameCreateService {
 
     ResponseEntity gameCreateResponse(Long quizId);
 
-    GameQuizInfoDto gameQuizInfo(Long quizId);
+    GameQuizInfoDto gameQuizInfo(Long quizId, String roomId);
 
 
 

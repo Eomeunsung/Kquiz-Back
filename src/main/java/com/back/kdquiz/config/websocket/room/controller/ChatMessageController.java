@@ -6,7 +6,9 @@ import com.back.kdquiz.config.websocket.room.service.GamePlayService;
 import com.back.kdquiz.config.websocket.room.service.KickService;
 import com.back.kdquiz.config.websocket.room.service.LobbyService;
 import com.back.kdquiz.config.websocket.room.service.TimerService;
+import com.back.kdquiz.game.Repository.GameLobbyRedis;
 import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
+import com.back.kdquiz.quiz.service.questionService.get.QuestionGetService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -24,6 +26,8 @@ public class ChatMessageController {
     private final LobbyService lobbyService;
     private final GamePlayService gamePlayService;
     private final TimerService timerService;
+    private final GameLobbyRedis gameLobbyRedis;
+    private final QuestionGetService questionGetService;
 
 
     //전체
@@ -51,11 +55,13 @@ public class ChatMessageController {
     //question 가져오기
     @MessageMapping("/quiz/{roomId}")
     public void questionGet(@DestinationVariable String roomId, @Payload Long questionKey){
-        QuestionTypeDto questionTypeDto = new QuestionTypeDto();
-        questionTypeDto.setQuestion(questionGetDto);
-        questionTypeDto.setType(TypeEnum.QUESTION);
+        String questionIndex = String.valueOf(questionKey);
+        Long questionId = gameLobbyRedis.findQuestionIndex(roomId, questionIndex);
+        QuestionGetDto questionGetDto = questionGetService.questionGetDto(questionId);
+
+//        questionTypeDto.setType(TypeEnum.QUESTION);
         log.info("게임 주소 "+roomId);
-        messagingTemplate.convertAndSend("/topic/quiz/"+roomId, questionTypeDto);
+        messagingTemplate.convertAndSend("/topic/quiz/"+roomId, questionGetDto);
     }
 
     //timer

@@ -5,10 +5,13 @@ public enum TypeEnum {
     LOBBY,
     KICK,
     GAME,
+    GAME_START,
+    START,
     QUESTION,
     SCORE,
     ERROR,
     READY_COUNT,
-    QUESTION_TIMER
+    QUESTION_TIMER,
+    QUESTION_WAIT,
 
 }

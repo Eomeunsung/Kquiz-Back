@@ -20,6 +20,7 @@ public class LobbyService {
 
     public void lobby(LobbyReqDto lobbyReqDto, String roomId){
         String destination = "/topic/lobby/"+roomId;
+        log.info("타입 "+lobbyReqDto.getContent()+" roomId "+roomId);
 
         if(lobbyReqDto.getContent().equals("GAME")){
             LobbyResDto lobbyResDto = LobbyResDto

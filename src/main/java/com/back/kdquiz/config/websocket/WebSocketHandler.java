@@ -3,12 +3,13 @@ package com.back.kdquiz.config.websocket;
 import com.back.kdquiz.config.websocket.room.dto.ChatMessageDto;
 import com.back.kdquiz.config.websocket.room.dto.GameRequestDto;
 import com.back.kdquiz.config.websocket.room.enums.TypeEnum;
-import com.back.kdquiz.config.websocket.room.service.JoinService;
-import com.back.kdquiz.config.websocket.room.service.LobbyService;
+import com.back.kdquiz.config.websocket.room.service.GamePlayJoinService;
+import com.back.kdquiz.config.websocket.room.service.LobbyJoinService;
+import com.back.kdquiz.config.websocket.room.service.TimerService;
 import com.back.kdquiz.game.Repository.GameLobbyRedis;
+import com.back.kdquiz.game.Service.GameJoinService;
 import com.back.kdquiz.quiz.dto.get.QuestionGetIdDto;
 import com.back.kdquiz.quiz.service.questionService.get.QuestionGetIdService;
-import com.back.kdquiz.quiz.service.quizService.get.QuizGetServiceImpl;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -28,9 +28,9 @@ import java.util.TimerTask;
 @Slf4j
 public class WebSocketHandler {
     private final SimpMessagingTemplate messagingTemplate;
-    private final GameLobbyRedis gameLobbyRedis;
-    private final QuestionGetIdService questionGetIdService;
-    private final JoinService joinService;
+    private final LobbyJoinService lobbyJoinService;
+    private final GamePlayJoinService gamePlayJoinService;
+    private final TimerService timerService;
 
     @EventListener
     public void handleSessionConnect(SessionConnectEvent event) {
@@ -47,32 +47,15 @@ public class WebSocketHandler {
         log.info("웹 소켓 연결된 룸 아이디 "+roomId);
         //LOBBY 방 참여
         if(TypeEnum.valueOf(type) == TypeEnum.LOBBY){
-            joinService.joinRoom(roomId, userId, name);
+            lobbyJoinService.joinRoom(roomId, userId, name);
         }
-
-        //GAME 으로 접속 했을 경우
         else if(TypeEnum.valueOf(type)==TypeEnum.GAME){
-            GameRequestDto gameRequestDto = new GameRequestDto();
-            gameRequestDto.setContent("곧 있으면 게임이 시작 됩니다.");
-            gameRequestDto.setType(TypeEnum.GAME);
-            String strId = gameLobbyRedis.getQuiz(roomId);
-            Long quizId = Long.parseLong(strId);
-            QuestionGetIdDto questionGetIdDto = new QuestionGetIdDto();
-            ResponseDto responseDto = questionGetIdService.questionGetId(quizId);
-            if(responseDto.getCode().equals("Q200")){
-                questionGetIdDto = (QuestionGetIdDto) responseDto.getData();
-            }
-            //바로 클라이언트로 보내면 받지 못할 수도 있음으로 딜레이 주면서 보내기
-            QuestionGetIdDto finalQuestionGetIdDto = questionGetIdDto;
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    messagingTemplate.convertAndSend(String.format("/topic/game/%s", roomId), gameRequestDto);
-                    messagingTemplate.convertAndSend(String.format("/topic/quiz/%s",roomId), finalQuestionGetIdDto);
-                }
-            }, 200); // 200ms 딜레이
+            gamePlayJoinService.gameJoinService(roomId);
         }
+        else if(TypeEnum.valueOf(type) == TypeEnum.GAME_START){
+            timerService.readyCount(roomId);
 
+        }
 
     }
 

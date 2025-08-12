@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -113,12 +114,18 @@ public class GameLobbyRedis {
             newIndex++;
         }
 
-        newIndex--;
+
         String key = "game:question:" + roomId;
         Map<String, Object> questions = hashOps.entries(key);
         System.out.println("🔍 All questionIndex for key = " + key + " => " + questions);
         return newIndex;
     }
+
+//    @Transactional
+//    public Map<String, Object> questionGetAllIndex(String roomId){
+//        String key = "game:question:" + roomId;
+//        return hashOps.entries(key);
+//    }
 
     public Long findQuestionIndex(String roomId, String Index){
         String key = "game:question:" + roomId;

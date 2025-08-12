@@ -7,6 +7,5 @@ import lombok.Setter;
 @Setter
 public class TimerDto {
     private int time;
-    private Boolean flag;
     private String type;
 }

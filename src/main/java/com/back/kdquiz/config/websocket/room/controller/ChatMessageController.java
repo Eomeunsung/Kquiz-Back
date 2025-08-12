@@ -32,7 +32,7 @@ public class ChatMessageController {
 
     //전체
     @MessageMapping("/lobby/{roomId}")
-    public void lobbyMessage(LobbyReqDto lobbyReqDto, @DestinationVariable String roomId){
+    public void lobbyMessage(@Payload LobbyReqDto lobbyReqDto, @DestinationVariable String roomId){
         lobbyService.lobby(lobbyReqDto, roomId);
     }
 
@@ -58,27 +58,31 @@ public class ChatMessageController {
         String questionIndex = String.valueOf(questionKey);
         Long questionId = gameLobbyRedis.findQuestionIndex(roomId, questionIndex);
         QuestionGetDto questionGetDto = questionGetService.questionGetDto(questionId);
-
-//        questionTypeDto.setType(TypeEnum.QUESTION);
+        QuestionTypeDto questionTypeDto = QuestionTypeDto
+                .builder()
+                .question(questionGetDto)
+                .type(TypeEnum.QUESTION)
+                .build();
         log.info("게임 주소 "+roomId);
-        messagingTemplate.convertAndSend("/topic/quiz/"+roomId, questionGetDto);
+        messagingTemplate.convertAndSend("/topic/quiz/"+roomId, questionTypeDto);
     }
 
     //timer
     @MessageMapping("/timer/{roomId}")
     public void timer(@DestinationVariable String roomId, @Payload TimerDto timerDto){
-        TimerDto response = new TimerDto();
+        log.info("받은 방 번호 "+roomId+" timer "+timerDto.getTime());
+//        TimerDto response = new TimerDto();
         if(timerDto.getType().equals("READY")){     //게임 시작전 카운터
             timerService.readyCount(roomId);
         }else if(timerDto.getType().equals("READY_COUNT") && timerDto.getTime()>0){
             timerService.counter(roomId, timerDto.getTime());
-        } else if(timerDto.getType().equals("START") && timerDto.getTime() == 0){ //카운터 끝난 후 게임 시작
+        } else if(timerDto.getType().equals("READY_COUNT") && timerDto.getTime() == 0){ //카운터 끝난 후 게임 시작
             timerService.startQuiz(roomId);
         }else if(timerDto.getType().equals("QUESTION_TIMER")){ //question 타이머
             timerService.QuestionTimer(roomId, timerDto.getTime());
         }
 
-        messagingTemplate.convertAndSend("/topic/timer/"+roomId, response);
+//        messagingTemplate.convertAndSend("/topic/timer/"+roomId, response);
 
     }
     //

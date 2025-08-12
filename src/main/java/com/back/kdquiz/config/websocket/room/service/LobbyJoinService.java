@@ -15,7 +15,7 @@ import java.util.TimerTask;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class JoinService{
+public class LobbyJoinService {
     private final SimpMessagingTemplate messagingTemplate;
     private final GameLobbyRedis gameLobbyRedis;
 
@@ -32,7 +32,6 @@ public class JoinService{
         for (Map.Entry<String, Object> entry : users.entrySet()) {
             System.out.println("key = " + entry.getKey() + ", value = " + entry.getValue());
         }
-
 
         chatMessageDto.setName(name);
         chatMessageDto.setUserList(users);

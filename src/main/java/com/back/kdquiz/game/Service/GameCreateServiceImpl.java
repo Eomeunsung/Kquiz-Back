@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -69,7 +70,6 @@ public class GameCreateServiceImpl implements GameCreateService {
     @Transactional
     public Long questionIndexRedisSave(List<Question> questionList, String roomId){
 
-
         List<Long> questionIndexList = new ArrayList<>();
 
         for(Question question : questionList){
@@ -78,4 +78,6 @@ public class GameCreateServiceImpl implements GameCreateService {
 
        return gameLobbyRedis.saveQuestionIndex(roomId, questionIndexList);
     }
+
+
 }

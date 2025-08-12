@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
 public class LobbyReqDto {
-    private String Content;
+    private String content;
+
 }

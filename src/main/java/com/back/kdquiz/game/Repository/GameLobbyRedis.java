@@ -108,24 +108,17 @@ public class GameLobbyRedis {
 
     public Long saveQuestionIndex(String roomId, List<Long> questionIndex){
         Long newIndex = redisTemplate.opsForValue().increment("game:question:index:"+roomId);
-
+        String key = "game:question:" + roomId;
         for(Long questionId : questionIndex){
-            hashOps.put("game:question:"+roomId, String.valueOf(newIndex), questionId);
+            hashOps.put(key, String.valueOf(newIndex), questionId);
             newIndex++;
         }
 
 
-        String key = "game:question:" + roomId;
         Map<String, Object> questions = hashOps.entries(key);
         System.out.println("🔍 All questionIndex for key = " + key + " => " + questions);
         return newIndex;
     }
-
-//    @Transactional
-//    public Map<String, Object> questionGetAllIndex(String roomId){
-//        String key = "game:question:" + roomId;
-//        return hashOps.entries(key);
-//    }
 
     public Long findQuestionIndex(String roomId, String Index){
         String key = "game:question:" + roomId;
@@ -137,4 +130,10 @@ public class GameLobbyRedis {
             return Long.parseLong(value.toString()); // 문자열 → Long 변환
         }
     }
+
+    //    @Transactional
+//    public Map<String, Object> questionGetAllIndex(String roomId){
+//        String key = "game:question:" + roomId;
+//        return hashOps.entries(key);
+//    }
 }

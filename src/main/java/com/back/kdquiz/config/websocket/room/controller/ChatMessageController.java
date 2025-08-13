@@ -47,16 +47,18 @@ public class ChatMessageController {
     public void gamePlay(@DestinationVariable String roomId, @Payload ScoreDto scoreDto){
         if(scoreDto.getType().equals("SCORE")){
             gamePlayService.gamePlayScore(roomId, scoreDto);
-        }else if(scoreDto.getType().equals("END")){
-            gamePlayService.gamePlayEnd(roomId);
+        }else if(scoreDto.getType().equals("GAME_OVER")){
+            gamePlayService.gameOver(roomId);
         }
     }
 
     //question 가져오기
     @MessageMapping("/quiz/{roomId}")
-    public void questionGet(@DestinationVariable String roomId, @Payload Long questionKey){
-        String questionIndex = String.valueOf(questionKey);
+    public void questionGet(@DestinationVariable String roomId, @Payload QuestionKeyDto questionKeyDto){
+        log.info("받아온 question_MAP 키값 "+questionKeyDto.getQuestionKey());
+        String questionIndex = String.valueOf(questionKeyDto.getQuestionKey()+1);
         Long questionId = gameLobbyRedis.findQuestionIndex(roomId, questionIndex);
+        log.info("가져온 퀘스천 아이디 "+questionId);
         QuestionGetDto questionGetDto = questionGetService.questionGetDto(questionId);
         QuestionTypeDto questionTypeDto = QuestionTypeDto
                 .builder()

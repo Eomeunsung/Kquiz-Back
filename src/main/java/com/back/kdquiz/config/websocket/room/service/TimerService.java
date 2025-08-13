@@ -32,7 +32,7 @@ public class TimerService {
             public void run() {
                 messagingTemplate.convertAndSend("/topic/timer/"+roomId, timerResDto);
             }
-        }, 200); // 200ms 딜레이
+        }, 1000); // 1초 딜레이
     }
 
     @Transactional
@@ -43,7 +43,12 @@ public class TimerService {
                 .timer(time-1)
                 .build();
 
-        messagingTemplate.convertAndSend("/topic/timer/"+roomId, timerResDto);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                messagingTemplate.convertAndSend("/topic/timer/"+roomId, timerResDto);
+            }
+        }, 1000); // 1초 딜레이
     }
 
     @Transactional
@@ -54,7 +59,12 @@ public class TimerService {
                 .timer(0)
                 .build();
 
-        messagingTemplate.convertAndSend("/topic/timer/"+roomId, timerResDto);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                messagingTemplate.convertAndSend("/topic/timer/"+roomId, timerResDto);
+            }
+        }, 1000); // 1초 딜레이
     }
 
     @Transactional
@@ -74,6 +84,11 @@ public class TimerService {
                     .build();
         }
 
-        messagingTemplate.convertAndSend("/topic/timer/"+roomId, timerResDto);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                messagingTemplate.convertAndSend("/topic/timer/"+roomId, timerResDto);
+            }
+        }, 1000); // 1초 딜레이
     }
 }

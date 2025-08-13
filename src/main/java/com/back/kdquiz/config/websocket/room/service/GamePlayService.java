@@ -29,7 +29,7 @@ public class GamePlayService {
         messagingTemplate.convertAndSend("/topic/game/" +scoreDto.getUserId(), score);
     }
 
-    public void gamePlayEnd(String roomId){
+    public void gameOver(String roomId){
         Map<String, Object> scoreMap = gameLobbyRedis.getAllScores(roomId);
         Map<String, Object> userMap = gameLobbyRedis.getAllUsers(roomId);
         UserScoreDto result = new UserScoreDto();
@@ -49,7 +49,7 @@ public class GamePlayService {
         endScoreDtos.sort((a, b) -> Integer.compare(b.getScore(), a.getScore()));
 
         result.setScores(endScoreDtos);
-        result.setType(TypeEnum.SCORE);
+        result.setType(TypeEnum.GAME_OVER);
         gameLobbyRedis.gameDelete(roomId);
         messagingTemplate.convertAndSend("/topic/game/" + roomId, result);
     }

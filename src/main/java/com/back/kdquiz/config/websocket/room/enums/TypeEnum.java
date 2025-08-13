@@ -6,6 +6,7 @@ public enum TypeEnum {
     KICK,
     GAME,
     GAME_START,
+    GAME_OVER,
     START,
     QUESTION,
     SCORE,

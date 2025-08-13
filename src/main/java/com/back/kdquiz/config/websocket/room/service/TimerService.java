@@ -16,6 +16,7 @@ import java.util.TimerTask;
 @Slf4j
 public class TimerService {
     private final SimpMessagingTemplate messagingTemplate;
+    private final GamePlayService gamePlayService;
 
     @Transactional
     public void readyCount(String roomId){
@@ -68,7 +69,7 @@ public class TimerService {
     }
 
     @Transactional
-    public void QuestionTimer(String roomId, int time){
+    public void questionTimer(String roomId, int time){
         TimerResDto timerResDto;
         if(time > 0){
             timerResDto = TimerResDto
@@ -90,5 +91,27 @@ public class TimerService {
                 messagingTemplate.convertAndSend("/topic/timer/"+roomId, timerResDto);
             }
         }, 1000); // 1초 딜레이
+    }
+
+    @Transactional
+    public void questionLastTimer(String roomId, int time){
+        TimerResDto timerResDto;
+        if(time > 0){
+            timerResDto = TimerResDto
+                    .builder()
+                    .type(TypeEnum.QUESTION_TIMER)
+                    .timer(time-1)
+                    .build();
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    messagingTemplate.convertAndSend("/topic/timer/"+roomId, timerResDto);
+                }
+            }, 1000); // 1초 딜레이
+        }else {
+            gamePlayService.gameOver(roomId);
+        }
+
+
     }
 }

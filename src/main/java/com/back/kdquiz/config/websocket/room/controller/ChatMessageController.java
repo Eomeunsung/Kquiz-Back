@@ -81,7 +81,9 @@ public class ChatMessageController {
         } else if(timerDto.getType().equals("READY_COUNT") && timerDto.getTime() == 0){ //카운터 끝난 후 게임 시작
             timerService.startQuiz(roomId);
         }else if(timerDto.getType().equals("QUESTION_TIMER")){ //question 타이머
-            timerService.QuestionTimer(roomId, timerDto.getTime());
+            timerService.questionTimer(roomId, timerDto.getTime());
+        }else if(timerDto.getType().equals("QUESTION_LAST_TIMER")){
+            timerService.questionLastTimer(roomId, timerDto.getTime());
         }
 
 //        messagingTemplate.convertAndSend("/topic/timer/"+roomId, response);

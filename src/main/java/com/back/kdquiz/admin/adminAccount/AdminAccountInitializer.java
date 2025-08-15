@@ -29,23 +29,30 @@ public class AdminAccountInitializer implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         if(usersRepository.findByEmail("admin")==null){
-            Role role = roleRepository.findByRoleName("ROLE_ADMIN");
-            if(role==null){
+            Role role_admin = roleRepository.findByRoleName("ROLE_ADMIN");
+            if(role_admin==null){
+                role_admin = new Role();
+                role_admin.setRoleName("ROLE_ADMIN");
+                roleRepository.save(role_admin);
                 log.info("아직 DB에 권한들이 등록되지 않았습니다.");
-            }else{
-                Set<Role> roleSet = new HashSet<>();
-                roleSet.add(role);
-
-                Users users = new Users();
-                users.setEmail("admin");
-                users.setNickName("admin");
-                users.setPassword(passwordEncoder.encode("1234"));
-                users.setEnabled(true);
-                users.setUserRoles(roleSet);
-                users.setCreateAt(LocalDate.now());
-                usersRepository.save(users);
-                log.info("관리자 계정 생성");
             }
+            Set<Role> roleSet = new HashSet<>();
+            roleSet.add(role_admin);
+
+            Users users = new Users();
+            users.setEmail("admin");
+            users.setNickName("admin");
+            users.setPassword(passwordEncoder.encode("1234"));
+            users.setEnabled(true);
+            users.setUserRoles(roleSet);
+            users.setCreateAt(LocalDate.now());
+            usersRepository.save(users);
+            log.info("관리자 계정 생성");
+
+            Role role_user = new Role();
+            role_user.setRoleName("ROLE_USER");
+            roleRepository.save(role_user);
+
         }else{
             log.info("관리자 계정 존재");
         }

@@ -1,10 +1,10 @@
-package com.back.kdquiz.config.websocket.room.service;
+package com.back.kdquiz.game.Service;
 
-import com.back.kdquiz.config.websocket.room.dto.EndScoreDto;
-import com.back.kdquiz.config.websocket.room.dto.ScoreDto;
-import com.back.kdquiz.config.websocket.room.dto.UserScoreDto;
-import com.back.kdquiz.config.websocket.room.enums.TypeEnum;
-import com.back.kdquiz.game.Repository.GameLobbyRedis;
+import com.back.kdquiz.game.dto.room.EndScoreDto;
+import com.back.kdquiz.game.dto.room.ScoreDto;
+import com.back.kdquiz.game.dto.room.UserScoreDto;
+import com.back.kdquiz.game.enums.TypeEnum;
+import com.back.kdquiz.game.Repository.GameRepositoryRedis;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -20,18 +20,18 @@ import java.util.Map;
 public class GamePlayService {
 
     private final SimpMessagingTemplate messagingTemplate;
-    private final GameLobbyRedis gameLobbyRedis;
+    private final GameRepositoryRedis gameRepositoryRedis;
 
     public void gamePlayScore(String roomId, ScoreDto scoreDto) {
-        gameLobbyRedis.addScore(roomId, scoreDto.getUserId(), scoreDto.getScore());
-        int score = gameLobbyRedis.getScore(roomId,scoreDto.getUserId());
-        log.info("유저 점수 " + gameLobbyRedis.getScore(roomId, scoreDto.getUserId()) + "유저 아이디 " + scoreDto.getUserId());
+        gameRepositoryRedis.addScore(roomId, scoreDto.getUserId(), scoreDto.getScore());
+        int score = gameRepositoryRedis.getScore(roomId,scoreDto.getUserId());
+        log.info("유저 점수 " + gameRepositoryRedis.getScore(roomId, scoreDto.getUserId()) + "유저 아이디 " + scoreDto.getUserId());
         messagingTemplate.convertAndSend("/topic/game/" +scoreDto.getUserId(), score);
     }
 
     public void gameOver(String roomId){
-        Map<String, Object> scoreMap = gameLobbyRedis.getAllScores(roomId);
-        Map<String, Object> userMap = gameLobbyRedis.getAllUsers(roomId);
+        Map<String, Object> scoreMap = gameRepositoryRedis.getAllScores(roomId);
+        Map<String, Object> userMap = gameRepositoryRedis.getAllUsers(roomId);
         UserScoreDto result = new UserScoreDto();
         List<EndScoreDto> endScoreDtos = new ArrayList<>();
         for (Map.Entry<String, Object> entry : userMap.entrySet()) {
@@ -50,7 +50,7 @@ public class GamePlayService {
 
         result.setScores(endScoreDtos);
         result.setType(TypeEnum.GAME_OVER);
-        gameLobbyRedis.gameDelete(roomId);
+        gameRepositoryRedis.gameDelete(roomId);
         messagingTemplate.convertAndSend("/topic/game/" + roomId, result);
     }
 }

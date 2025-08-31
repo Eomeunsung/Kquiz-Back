@@ -1,13 +1,15 @@
-package com.back.kdquiz.config.websocket.room.dto;
+package com.back.kdquiz.game.dto.room;
 
-import com.back.kdquiz.config.websocket.room.enums.TypeEnum;
-import lombok.Getter;
-import lombok.Setter;
+import com.back.kdquiz.game.enums.TypeEnum;
+import lombok.*;
 
 import java.util.Map;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ChatMessageDto {
     private String roomId;
     private Long userId;
@@ -15,4 +17,5 @@ public class ChatMessageDto {
     private String content;
     private TypeEnum type;
     private Map<String, Object> userList;
+
 }

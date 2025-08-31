@@ -1,12 +1,9 @@
-package com.back.kdquiz.config.websocket.room.controller;
+package com.back.kdquiz.game.controller;
 
-import com.back.kdquiz.config.websocket.room.dto.*;
-import com.back.kdquiz.config.websocket.room.enums.TypeEnum;
-import com.back.kdquiz.config.websocket.room.service.GamePlayService;
-import com.back.kdquiz.config.websocket.room.service.KickService;
-import com.back.kdquiz.config.websocket.room.service.LobbyService;
-import com.back.kdquiz.config.websocket.room.service.TimerService;
-import com.back.kdquiz.game.Repository.GameLobbyRedis;
+import com.back.kdquiz.game.Repository.GameRepositoryRedis;
+import com.back.kdquiz.game.Service.*;
+import com.back.kdquiz.game.dto.room.*;
+import com.back.kdquiz.game.enums.TypeEnum;
 import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
 import com.back.kdquiz.quiz.service.questionService.get.QuestionGetService;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +17,15 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class ChatMessageController {
+public class RoomController {
     private final SimpMessagingTemplate messagingTemplate;
     private final KickService kickService;
     private final LobbyService lobbyService;
     private final GamePlayService gamePlayService;
     private final TimerService timerService;
-    private final GameLobbyRedis gameLobbyRedis;
+    private final GameRepositoryRedis gameRepositoryRedis;
     private final QuestionGetService questionGetService;
+    private final LeaveService leaveService;
 
 
     //전체
@@ -40,6 +38,12 @@ public class ChatMessageController {
     @MessageMapping("/kick/{roomId}")
     public void kickUser(@Payload KickRequestDto kickRequestDto, @DestinationVariable String roomId){
         kickService.kick(kickRequestDto, roomId);
+    }
+
+    //방 나가기
+    @MessageMapping("/leave/{roomId}/{userId}")
+    public void leaveRoom(@DestinationVariable String roomId, @DestinationVariable String userId){
+        leaveService.leaveRoom(roomId, userId);
     }
 
     //게임 시작
@@ -57,7 +61,7 @@ public class ChatMessageController {
     public void questionGet(@DestinationVariable String roomId, @Payload QuestionKeyDto questionKeyDto){
         log.info("받아온 question_MAP 키값 "+questionKeyDto.getQuestionKey());
         String questionIndex = String.valueOf(questionKeyDto.getQuestionKey()+1);
-        Long questionId = gameLobbyRedis.findQuestionIndex(roomId, questionIndex);
+        Long questionId = gameRepositoryRedis.findQuestionIndex(roomId, questionIndex);
         log.info("가져온 퀘스천 아이디 "+questionId);
         QuestionGetDto questionGetDto = questionGetService.questionGetDto(questionId);
         QuestionTypeDto questionTypeDto = QuestionTypeDto
@@ -86,9 +90,5 @@ public class ChatMessageController {
             timerService.questionLastTimer(roomId, timerDto.getTime());
         }
 
-//        messagingTemplate.convertAndSend("/topic/timer/"+roomId, response);
-
     }
-    //
-
 }

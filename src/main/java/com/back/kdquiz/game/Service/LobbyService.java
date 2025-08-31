@@ -1,11 +1,8 @@
-package com.back.kdquiz.config.websocket.room.service;
+package com.back.kdquiz.game.Service;
 
-import com.back.kdquiz.config.websocket.room.dto.ChatMessageDto;
-import com.back.kdquiz.config.websocket.room.dto.GameRequestDto;
-import com.back.kdquiz.config.websocket.room.dto.LobbyReqDto;
-import com.back.kdquiz.config.websocket.room.dto.LobbyResDto;
-import com.back.kdquiz.config.websocket.room.enums.TypeEnum;
-import jakarta.persistence.Lob;
+import com.back.kdquiz.game.dto.room.LobbyReqDto;
+import com.back.kdquiz.game.dto.room.LobbyResDto;
+import com.back.kdquiz.game.enums.TypeEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

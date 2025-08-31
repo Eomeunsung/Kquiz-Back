@@ -1,7 +1,7 @@
-package com.back.kdquiz.config.websocket.room.service;
+package com.back.kdquiz.game.Service;
 
-import com.back.kdquiz.config.websocket.room.dto.TimerResDto;
-import com.back.kdquiz.config.websocket.room.enums.TypeEnum;
+import com.back.kdquiz.game.dto.room.TimerResDto;
+import com.back.kdquiz.game.enums.TypeEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -17,7 +17,7 @@ import java.util.TimerTask;
 public class TimerService {
     private final SimpMessagingTemplate messagingTemplate;
     private final GamePlayService gamePlayService;
-
+    
     @Transactional
     public void readyCount(String roomId){
         log.info(" Ready Counter 방 번호 "+roomId);

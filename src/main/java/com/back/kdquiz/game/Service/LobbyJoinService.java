@@ -1,7 +1,7 @@
-package com.back.kdquiz.config.websocket.room.service;
+package com.back.kdquiz.game.Service;
 
-import com.back.kdquiz.config.websocket.room.dto.ChatMessageDto;
-import com.back.kdquiz.game.Repository.GameLobbyRedis;
+import com.back.kdquiz.game.dto.room.ChatMessageDto;
+import com.back.kdquiz.game.Repository.GameRepositoryRedis;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -17,14 +17,14 @@ import java.util.TimerTask;
 @Slf4j
 public class LobbyJoinService {
     private final SimpMessagingTemplate messagingTemplate;
-    private final GameLobbyRedis gameLobbyRedis;
+    private final GameRepositoryRedis gameRepositoryRedis;
 
     @Transactional
     public void joinRoom(String roomId, String userId, String name){
         log.info("들어온 값 "+roomId+" "+userId+" "+name);
         ChatMessageDto chatMessageDto = new ChatMessageDto();
 
-        Map<String, Object> users = gameLobbyRedis. getAllUsers(roomId);
+        Map<String, Object> users = gameRepositoryRedis. getAllUsers(roomId);
 
         if(users.isEmpty()){
             log.info("유저가 비어 있는 오류 발생");

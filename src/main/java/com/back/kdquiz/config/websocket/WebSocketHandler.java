@@ -1,16 +1,10 @@
 package com.back.kdquiz.config.websocket;
 
-import com.back.kdquiz.config.websocket.room.dto.ChatMessageDto;
-import com.back.kdquiz.config.websocket.room.dto.GameRequestDto;
-import com.back.kdquiz.config.websocket.room.enums.TypeEnum;
-import com.back.kdquiz.config.websocket.room.service.GamePlayJoinService;
-import com.back.kdquiz.config.websocket.room.service.LobbyJoinService;
-import com.back.kdquiz.config.websocket.room.service.TimerService;
-import com.back.kdquiz.game.Repository.GameLobbyRedis;
-import com.back.kdquiz.game.Service.GameJoinService;
-import com.back.kdquiz.quiz.dto.get.QuestionGetIdDto;
-import com.back.kdquiz.quiz.service.questionService.get.QuestionGetIdService;
-import com.back.kdquiz.response.ResponseDto;
+import com.back.kdquiz.game.dto.room.ChatMessageDto;
+import com.back.kdquiz.game.enums.TypeEnum;
+import com.back.kdquiz.game.Service.GamePlayJoinService;
+import com.back.kdquiz.game.Service.LobbyJoinService;
+import com.back.kdquiz.game.Service.TimerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -19,9 +13,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 @Component
 @RequiredArgsConstructor

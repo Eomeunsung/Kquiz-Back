@@ -4,7 +4,7 @@ import com.back.kdquiz.domain.entity.Question;
 import com.back.kdquiz.domain.entity.Quiz;
 import com.back.kdquiz.domain.repository.QuizRepository;
 import com.back.kdquiz.exception.quizException.QuizNotFoundException;
-import com.back.kdquiz.game.Repository.GameLobbyRedis;
+import com.back.kdquiz.game.Repository.GameRepositoryRedis;
 import com.back.kdquiz.game.dto.GameCreateDto;
 import com.back.kdquiz.game.dto.GameQuizInfoDto;
 import com.back.kdquiz.response.ResponseDto;
@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -25,7 +24,7 @@ import java.util.Optional;
 public class GameCreateServiceImpl implements GameCreateService {
 
     private final QuizRepository quizRepository;
-    private final GameLobbyRedis gameLobbyRedis;
+    private final GameRepositoryRedis gameRepositoryRedis;
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int CODE_LENGTH = 8;
     private static final SecureRandom random = new SecureRandom();
@@ -40,8 +39,8 @@ public class GameCreateServiceImpl implements GameCreateService {
         }
         GameCreateDto gameCreateDto = new GameCreateDto();
         GameQuizInfoDto quizInfoDto = gameQuizInfo(quizId, sb.toString());
-        gameLobbyRedis.gameCreate(sb.toString(), String.valueOf(quizId));
-        Long userId = gameLobbyRedis.addUser(String.valueOf(quizId), "HOST");
+        gameRepositoryRedis.gameCreate(sb.toString(), String.valueOf(quizId));
+        Long userId = gameRepositoryRedis.addUser(String.valueOf(quizId), "HOST");
 
         gameCreateDto.setGameId(sb.toString());
         gameCreateDto.setQuizTitle(quizInfoDto.getQuizTitle());
@@ -76,7 +75,7 @@ public class GameCreateServiceImpl implements GameCreateService {
             questionIndexList.add(question.getId());
         }
 
-       return gameLobbyRedis.saveQuestionIndex(roomId, questionIndexList);
+       return gameRepositoryRedis.saveQuestionIndex(roomId, questionIndexList);
     }
 
 

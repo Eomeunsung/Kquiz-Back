@@ -6,14 +6,13 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
-public class GameLobbyRedis {
+public class GameRepositoryRedis {
     private final RedisTemplate<String, Object> redisTemplate;
     private ValueOperations<String, Object> valueOperations;
     private HashOperations<String, String, Object> hashOps;
@@ -61,9 +60,14 @@ public class GameLobbyRedis {
     }
 
 
-    //유저 id 가져오기
+    //유저 이름 가져오기
     public String getUser(String gameId, String index){
         return (String) hashOps.get("game:users:"+gameId, index);
+    }
+
+    public void deleteUser(String gameId, String userId){
+        String key = "game:users:"+gameId;
+        hashOps.delete(key, userId);
     }
 
     //모든 유저 id 가져오기
@@ -131,9 +135,4 @@ public class GameLobbyRedis {
         }
     }
 
-    //    @Transactional
-//    public Map<String, Object> questionGetAllIndex(String roomId){
-//        String key = "game:question:" + roomId;
-//        return hashOps.entries(key);
-//    }
 }

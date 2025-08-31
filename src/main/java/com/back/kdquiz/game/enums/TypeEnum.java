@@ -1,4 +1,4 @@
-package com.back.kdquiz.config.websocket.room.enums;
+package com.back.kdquiz.game.enums;
 
 public enum TypeEnum {
     SYSTEM,
@@ -14,5 +14,6 @@ public enum TypeEnum {
     READY_COUNT,
     QUESTION_TIMER,
     QUESTION_WAIT,
+    LEAVE
 
 }

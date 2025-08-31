@@ -1,6 +1,6 @@
-package com.back.kdquiz.config.websocket.room.dto;
+package com.back.kdquiz.game.dto.room;
 
-import com.back.kdquiz.config.websocket.room.enums.TypeEnum;
+import com.back.kdquiz.game.enums.TypeEnum;
 import com.back.kdquiz.quiz.dto.get.QuestionGetDto;
 import lombok.Builder;
 import lombok.Getter;

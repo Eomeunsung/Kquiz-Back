@@ -1,4 +1,4 @@
-package com.back.kdquiz.config.websocket.room.dto;
+package com.back.kdquiz.game.dto.room;
 
 import lombok.Builder;
 import lombok.Getter;

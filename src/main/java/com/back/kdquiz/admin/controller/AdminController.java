@@ -1,9 +1,7 @@
 package com.back.kdquiz.admin.controller;
 
 import com.back.kdquiz.admin.dto.UserUpdateDto;
-import com.back.kdquiz.admin.service.AdminUserGetService;
-import com.back.kdquiz.admin.service.AdminUserListService;
-import com.back.kdquiz.admin.service.AdminUserUpdateService;
+import com.back.kdquiz.admin.service.*;
 import com.back.kdquiz.quiz.service.quizService.delete.QuizDeleteService;
 import com.back.kdquiz.quiz.service.quizService.QuizListService;
 import com.back.kdquiz.response.ResponseDto;
@@ -23,6 +21,9 @@ public class AdminController {
     private final AdminUserListService adminUserListService;
     private final AdminUserGetService adminUserGetService;
     private final AdminUserUpdateService adminUserUpdateService;
+    private final AdminRoleGetService adminRoleGetService;
+    private final AdminResourceGetService adminResourceGetService;
+    private final AdminMappingGetService adminMappingGetService;
 
     @GetMapping("/quiz/list")
     public ResponseEntity<ResponseDto<?>> quizList(){
@@ -47,6 +48,22 @@ public class AdminController {
     @PutMapping("/user/update")
     public ResponseEntity<ResponseDto<?>> userUpdate(@RequestBody UserUpdateDto userUpdateDto){
         return adminUserUpdateService.userUpdate(userUpdateDto);
+    }
+
+    @GetMapping("/role/list")
+    public ResponseEntity<ResponseDto<?>> roleGet(){
+        return adminRoleGetService.roleGet();
+    }
+
+    @GetMapping("/resource/list")
+    public ResponseEntity<ResponseDto<?>> resourceGet(){
+        return adminResourceGetService.resourceGet();
+    }
+
+    //ResourceRole-Mapping
+    @GetMapping("/mapping/list")
+    public ResponseEntity<ResponseDto<?>> mappingGet(){
+        return adminMappingGetService.mappingGet();
     }
 
 }

@@ -1,7 +1,9 @@
 package com.back.kdquiz.admin.adminAccount;
 
+import com.back.kdquiz.domain.entity.Resources;
 import com.back.kdquiz.domain.entity.Role;
 import com.back.kdquiz.domain.entity.Users;
+import com.back.kdquiz.domain.repository.ResourcesRepository;
 import com.back.kdquiz.domain.repository.RoleRepository;
 import com.back.kdquiz.domain.repository.UsersRepository;
 import jakarta.transaction.Transactional;
@@ -24,6 +26,7 @@ public class AdminAccountInitializer implements CommandLineRunner {
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final ResourcesRepository resourcesRepository;
 
     @Override
     @Transactional
@@ -52,6 +55,12 @@ public class AdminAccountInitializer implements CommandLineRunner {
             Role role_user = new Role();
             role_user.setRoleName("ROLE_USER");
             roleRepository.save(role_user);
+
+
+            Resources resources = new Resources();
+            resources.setResourceName("/admin/**");
+            resources.setRoleSet(roleSet);
+            resourcesRepository.save(resources);
 
         }else{
             log.info("관리자 계정 존재");

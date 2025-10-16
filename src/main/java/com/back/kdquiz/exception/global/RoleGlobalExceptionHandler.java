@@ -1,5 +1,6 @@
 package com.back.kdquiz.exception.global;
 
+import com.back.kdquiz.exception.roleException.RoleDuplicationException;
 import com.back.kdquiz.exception.roleException.RoleNotFoundException;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class RoleGlobalExceptionHandler {
     @ExceptionHandler(RoleNotFoundException.class)
     public ResponseEntity<ResponseDto<?>> handlerRoleNotFoundException(RoleNotFoundException ex){
+        log.error("권한 에러 / 권한이 DB에 누락: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ResponseDto.setFailed(ex.getErrorCode(), ex.getMessage()));
+    }
+
+    @ExceptionHandler(RoleDuplicationException.class)
+    public ResponseEntity<ResponseDto<?>> handlerRoleNotDuplicationException(RoleDuplicationException ex){
         log.error("권한 에러 / 권한이 DB에 누락: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)

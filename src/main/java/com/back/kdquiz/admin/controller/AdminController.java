@@ -1,5 +1,7 @@
 package com.back.kdquiz.admin.controller;
 
+import com.back.kdquiz.admin.dto.ResourceCreateDto;
+import com.back.kdquiz.admin.dto.RoleCreateDto;
 import com.back.kdquiz.admin.dto.UserUpdateDto;
 import com.back.kdquiz.admin.service.*;
 import com.back.kdquiz.quiz.service.quizService.delete.QuizDeleteService;
@@ -24,6 +26,8 @@ public class AdminController {
     private final AdminRoleGetService adminRoleGetService;
     private final AdminResourceGetService adminResourceGetService;
     private final AdminMappingGetService adminMappingGetService;
+    private final AdminResourceCreateService adminResourceCreateService;
+    private final AdminRoleCreateService adminRoleCreateService;
 
     @GetMapping("/quiz/list")
     public ResponseEntity<ResponseDto<?>> quizList(){
@@ -64,6 +68,16 @@ public class AdminController {
     @GetMapping("/mapping/list")
     public ResponseEntity<ResponseDto<?>> mappingGet(){
         return adminMappingGetService.mappingGet();
+    }
+
+    @PostMapping("/resource/create")
+    public ResponseEntity<ResponseDto<?>> resourceCreate(@RequestBody ResourceCreateDto resourceCreateDto){
+        return adminResourceCreateService.resourceCreate(resourceCreateDto);
+    }
+
+    @PostMapping("/role/create")
+    public ResponseEntity<ResponseDto<?>> roleCreate(@RequestBody RoleCreateDto roleCreateDto){
+        return adminRoleCreateService.roleCreate(roleCreateDto);
     }
 
 }

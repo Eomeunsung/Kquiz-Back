@@ -36,7 +36,7 @@ public class AdminMappingGetService {
             for(Resources resources : repositoryList){
                 ResourceRoleMappingGetDto resourceRoleMappingGetDto = new ResourceRoleMappingGetDto();
                 ResourceGetDto resourceGetDto = new ResourceGetDto();
-//                resourceGetDto.setId(resources.getId());
+                resourceGetDto.setId(resources.getId());
                 resourceGetDto.setResource(resources.getResourceName());
 
                 Set<RoleGetDto> roleGetDtoSet = new HashSet<>();
@@ -46,8 +46,6 @@ public class AdminMappingGetService {
                     roleGetDto.setRole(role.getRoleName());
                     roleGetDtoSet.add(roleGetDto);
                 }
-
-
                 resourceRoleMappingGetDto.setResource(resourceGetDto);
                 resourceRoleMappingGetDto.setRoles(roleGetDtoSet);
                 resourceRoleMappingGetDtoList.add(resourceRoleMappingGetDto);

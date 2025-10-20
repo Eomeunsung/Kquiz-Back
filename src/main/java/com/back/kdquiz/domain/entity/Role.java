@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -28,4 +29,7 @@ public class Role implements GrantedAuthority ,Serializable {
     public String getAuthority() {
         return this.roleName;
     }
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roleSet", cascade = CascadeType.ALL)
+    private Set<Resources> resourcesSet = new LinkedHashSet<>();
 }

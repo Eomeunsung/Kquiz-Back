@@ -1,6 +1,7 @@
 package com.back.kdquiz.exception.global;
 
 import com.back.kdquiz.exception.resourceException.ResourceDuplicationException;
+import com.back.kdquiz.exception.resourceException.ResourceNotFoundException;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class ResourceGlobalException {
     @ExceptionHandler(ResourceDuplicationException.class)
-    public ResponseEntity<ResponseDto<?>> handlerRoleNotFoundException(ResourceDuplicationException ex){
+    public ResponseEntity<ResponseDto<?>> resourceDuplicationException(ResourceDuplicationException ex){
+        log.info("에러 "+ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ResponseDto.setFailed(ex.getErrorCode(), ex.getMessage()));
+    }
+
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ResponseDto<?>> resourceNotFoundException(ResourceNotFoundException ex){
         log.info("에러 "+ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)

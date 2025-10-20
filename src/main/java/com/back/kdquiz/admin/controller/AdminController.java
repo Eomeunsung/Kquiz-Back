@@ -1,5 +1,6 @@
 package com.back.kdquiz.admin.controller;
 
+import com.back.kdquiz.admin.dto.MappingUpdateDto;
 import com.back.kdquiz.admin.dto.ResourceCreateDto;
 import com.back.kdquiz.admin.dto.RoleCreateDto;
 import com.back.kdquiz.admin.dto.UserUpdateDto;
@@ -28,6 +29,7 @@ public class AdminController {
     private final AdminMappingGetService adminMappingGetService;
     private final AdminResourceCreateService adminResourceCreateService;
     private final AdminRoleCreateService adminRoleCreateService;
+    private final MappingUpdateService mappingUpdateService;
 
     @GetMapping("/quiz/list")
     public ResponseEntity<ResponseDto<?>> quizList(){
@@ -78,6 +80,11 @@ public class AdminController {
     @PostMapping("/role/create")
     public ResponseEntity<ResponseDto<?>> roleCreate(@RequestBody RoleCreateDto roleCreateDto){
         return adminRoleCreateService.roleCreate(roleCreateDto);
+    }
+
+    @PutMapping("/mapping/update")
+    public ResponseEntity<ResponseDto<?>> mappingUpdate(@RequestBody MappingUpdateDto mappingUpdateDto){
+        return mappingUpdateService.mappingUpdate(mappingUpdateDto);
     }
 
 }

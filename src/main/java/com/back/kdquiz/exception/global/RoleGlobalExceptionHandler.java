@@ -16,15 +16,15 @@ public class RoleGlobalExceptionHandler {
     public ResponseEntity<ResponseDto<?>> handlerRoleNotFoundException(RoleNotFoundException ex){
         log.error("권한 에러 / 권한이 DB에 누락: {}", ex.getMessage());
         return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ResponseDto.setFailed(ex.getErrorCode(), ex.getMessage()));
     }
 
     @ExceptionHandler(RoleDuplicationException.class)
-    public ResponseEntity<ResponseDto<?>> handlerRoleNotDuplicationException(RoleDuplicationException ex){
+    public ResponseEntity<ResponseDto<?>> handlerRoleDuplicationException(RoleDuplicationException ex){
         log.error("권한 에러 / 권한이 DB에 누락: {}", ex.getMessage());
         return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ResponseDto.setFailed(ex.getErrorCode(), ex.getMessage()));
     }
 }

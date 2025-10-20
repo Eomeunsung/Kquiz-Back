@@ -1,8 +1,8 @@
 package com.back.kdquiz.admin.service;
 
-import com.back.kdquiz.admin.dto.ResourceGetDto;
-import com.back.kdquiz.admin.dto.ResourceRoleMappingGetDto;
-import com.back.kdquiz.admin.dto.RoleGetDto;
+import com.back.kdquiz.admin.dto.resourceDto.ResourceGetDto;
+import com.back.kdquiz.admin.dto.MappingGetDto;
+import com.back.kdquiz.admin.dto.roleDto.RoleGetDto;
 import com.back.kdquiz.domain.entity.Resources;
 import com.back.kdquiz.domain.entity.Role;
 import com.back.kdquiz.domain.repository.ResourcesRepository;
@@ -20,7 +20,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class AdminMappingGetService {
+public class MappingGetService {
 
     private final ResourcesRepository resourcesRepository;
 
@@ -32,9 +32,9 @@ public class AdminMappingGetService {
         if(repositoryList.isEmpty()){
             responseDto = ResponseDto.setSuccess("A000", "매핑 목록", null);
         }else{
-            List<ResourceRoleMappingGetDto> resourceRoleMappingGetDtoList = new ArrayList<>();
+            List<MappingGetDto> mappingGetDtoList = new ArrayList<>();
             for(Resources resources : repositoryList){
-                ResourceRoleMappingGetDto resourceRoleMappingGetDto = new ResourceRoleMappingGetDto();
+                MappingGetDto mappingGetDto = new MappingGetDto();
                 ResourceGetDto resourceGetDto = new ResourceGetDto();
                 resourceGetDto.setId(resources.getId());
                 resourceGetDto.setResource(resources.getResourceName());
@@ -46,11 +46,11 @@ public class AdminMappingGetService {
                     roleGetDto.setRole(role.getRoleName());
                     roleGetDtoSet.add(roleGetDto);
                 }
-                resourceRoleMappingGetDto.setResource(resourceGetDto);
-                resourceRoleMappingGetDto.setRoles(roleGetDtoSet);
-                resourceRoleMappingGetDtoList.add(resourceRoleMappingGetDto);
+                mappingGetDto.setResource(resourceGetDto);
+                mappingGetDto.setRoles(roleGetDtoSet);
+                mappingGetDtoList.add(mappingGetDto);
             }
-            responseDto = ResponseDto.setSuccess("A000", "매핑 목록", resourceRoleMappingGetDtoList);
+            responseDto = ResponseDto.setSuccess("A000", "매핑 목록", mappingGetDtoList);
         }
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }

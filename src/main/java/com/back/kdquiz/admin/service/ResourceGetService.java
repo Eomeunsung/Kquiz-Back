@@ -1,7 +1,7 @@
 package com.back.kdquiz.admin.service;
 
 
-import com.back.kdquiz.admin.dto.ResourceGetDto;
+import com.back.kdquiz.admin.dto.resourceDto.ResourceGetDto;
 import com.back.kdquiz.domain.entity.Resources;
 import com.back.kdquiz.domain.repository.ResourcesRepository;
 import com.back.kdquiz.response.ResponseDto;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AdminResourceGetService {
+public class ResourceGetService {
 
     private final ResourcesRepository resourcesRepository;
 

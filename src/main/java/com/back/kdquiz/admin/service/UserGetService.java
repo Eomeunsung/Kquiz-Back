@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AdminUserGetService {
+public class UserGetService {
 
     private final UsersRepository usersRepository;
     @Transactional

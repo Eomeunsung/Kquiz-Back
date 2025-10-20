@@ -1,12 +1,10 @@
-package com.back.kdquiz.admin.dto;
+package com.back.kdquiz.admin.dto.resourceDto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ResourceGetDto {
-    private Long id;
+public class ResourceCreateDto {
     private String resource;
-
 }

@@ -1,6 +1,6 @@
 package com.back.kdquiz.admin.service;
 
-import com.back.kdquiz.admin.dto.ResourceCreateDto;
+import com.back.kdquiz.admin.dto.resourceDto.ResourceCreateDto;
 import com.back.kdquiz.domain.entity.Resources;
 import com.back.kdquiz.domain.repository.ResourcesRepository;
 import com.back.kdquiz.exception.resourceException.ResourceDuplicationException;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class AdminResourceCreateService {
+public class ResourceCreateService {
 
     private final ResourcesRepository resourcesRepository;
 

@@ -1,6 +1,6 @@
-package com.back.kdquiz.admin.service;
+package com.back.kdquiz.admin.service.roleService;
 
-import com.back.kdquiz.admin.dto.RoleGetDto;
+import com.back.kdquiz.admin.dto.roleDto.RoleGetDto;
 import com.back.kdquiz.domain.entity.Role;
 import com.back.kdquiz.domain.repository.RoleRepository;
 import com.back.kdquiz.response.ResponseDto;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AdminRoleGetService {
+public class RoleGetService {
 
     private final RoleRepository roleRepository;
 

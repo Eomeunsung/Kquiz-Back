@@ -1,7 +1,6 @@
-package com.back.kdquiz.admin.service;
+package com.back.kdquiz.admin.service.roleService;
 
-import com.back.kdquiz.admin.dto.ResourceCreateDto;
-import com.back.kdquiz.admin.dto.RoleCreateDto;
+import com.back.kdquiz.admin.dto.roleDto.RoleCreateDto;
 import com.back.kdquiz.domain.entity.Role;
 import com.back.kdquiz.domain.repository.RoleRepository;
 import com.back.kdquiz.exception.resourceException.ResourceDuplicationException;
@@ -14,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class AdminRoleCreateService {
+public class RoleCreateService {
 
     private final RoleRepository roleRepository;
 

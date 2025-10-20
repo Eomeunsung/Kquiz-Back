@@ -1,10 +1,14 @@
 package com.back.kdquiz.admin.controller;
 
 import com.back.kdquiz.admin.dto.MappingUpdateDto;
-import com.back.kdquiz.admin.dto.ResourceCreateDto;
-import com.back.kdquiz.admin.dto.RoleCreateDto;
+import com.back.kdquiz.admin.dto.resourceDto.ResourceCreateDto;
+import com.back.kdquiz.admin.dto.roleDto.RoleCreateDto;
 import com.back.kdquiz.admin.dto.UserUpdateDto;
+import com.back.kdquiz.admin.dto.roleDto.RoleUpdateDto;
 import com.back.kdquiz.admin.service.*;
+import com.back.kdquiz.admin.service.roleService.RoleCreateService;
+import com.back.kdquiz.admin.service.roleService.RoleGetService;
+import com.back.kdquiz.admin.service.roleService.RoleUpdateService;
 import com.back.kdquiz.quiz.service.quizService.delete.QuizDeleteService;
 import com.back.kdquiz.quiz.service.quizService.QuizListService;
 import com.back.kdquiz.response.ResponseDto;
@@ -21,15 +25,16 @@ public class AdminController {
 
     private final QuizListService quizListService;
     private final QuizDeleteService quizDeleteService;
-    private final AdminUserListService adminUserListService;
-    private final AdminUserGetService adminUserGetService;
-    private final AdminUserUpdateService adminUserUpdateService;
-    private final AdminRoleGetService adminRoleGetService;
-    private final AdminResourceGetService adminResourceGetService;
-    private final AdminMappingGetService adminMappingGetService;
-    private final AdminResourceCreateService adminResourceCreateService;
-    private final AdminRoleCreateService adminRoleCreateService;
+    private final UserListService adminUserListService;
+    private final UserGetService adminUserGetService;
+    private final UserUpdateService userUpdateService;
+    private final RoleGetService roleGetService;
+    private final ResourceGetService resourceGetService;
+    private final MappingGetService mappingGetService;
+    private final ResourceCreateService resourceCreateService;
+    private final RoleCreateService roleCreateService;
     private final MappingUpdateService mappingUpdateService;
+    private final RoleUpdateService roleUpdateService;
 
     @GetMapping("/quiz/list")
     public ResponseEntity<ResponseDto<?>> quizList(){
@@ -53,33 +58,33 @@ public class AdminController {
 
     @PutMapping("/user/update")
     public ResponseEntity<ResponseDto<?>> userUpdate(@RequestBody UserUpdateDto userUpdateDto){
-        return adminUserUpdateService.userUpdate(userUpdateDto);
+        return userUpdateService.userUpdate(userUpdateDto);
     }
 
     @GetMapping("/role/list")
     public ResponseEntity<ResponseDto<?>> roleGet(){
-        return adminRoleGetService.roleGet();
+        return roleGetService.roleGet();
     }
 
     @GetMapping("/resource/list")
     public ResponseEntity<ResponseDto<?>> resourceGet(){
-        return adminResourceGetService.resourceGet();
+        return resourceGetService.resourceGet();
     }
 
     //ResourceRole-Mapping
     @GetMapping("/mapping/list")
     public ResponseEntity<ResponseDto<?>> mappingGet(){
-        return adminMappingGetService.mappingGet();
+        return mappingGetService.mappingGet();
     }
 
     @PostMapping("/resource/create")
     public ResponseEntity<ResponseDto<?>> resourceCreate(@RequestBody ResourceCreateDto resourceCreateDto){
-        return adminResourceCreateService.resourceCreate(resourceCreateDto);
+        return resourceCreateService.resourceCreate(resourceCreateDto);
     }
 
     @PostMapping("/role/create")
     public ResponseEntity<ResponseDto<?>> roleCreate(@RequestBody RoleCreateDto roleCreateDto){
-        return adminRoleCreateService.roleCreate(roleCreateDto);
+        return roleCreateService.roleCreate(roleCreateDto);
     }
 
     @PutMapping("/mapping/update")
@@ -87,4 +92,9 @@ public class AdminController {
         return mappingUpdateService.mappingUpdate(mappingUpdateDto);
     }
 
+
+    @PatchMapping("/role/update")
+    public ResponseEntity<ResponseDto<?>> roleUpdate(@RequestBody RoleUpdateDto roleUpdateDto){
+        return roleUpdateService.roleUpdate(roleUpdateDto);
+    }
 }

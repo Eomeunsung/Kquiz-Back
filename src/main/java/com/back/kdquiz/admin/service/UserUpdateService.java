@@ -19,7 +19,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AdminUserUpdateService {
+public class UserUpdateService {
 
     private final UsersRepository usersRepository;
     private final RoleRepository roleRepository;

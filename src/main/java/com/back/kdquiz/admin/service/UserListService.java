@@ -2,7 +2,6 @@ package com.back.kdquiz.admin.service;
 
 import com.back.kdquiz.admin.dto.UserGetDto;
 import com.back.kdquiz.admin.dto.UserListDto;
-import com.back.kdquiz.domain.entity.Role;
 import com.back.kdquiz.domain.entity.Users;
 import com.back.kdquiz.domain.repository.UsersRepository;
 import com.back.kdquiz.response.ResponseDto;
@@ -18,11 +17,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class AdminUserListService {
+public class UserListService {
 
     private final UsersRepository usersRepository;
 
-    public AdminUserListService(UsersRepository usersRepository) {
+    public UserListService(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
     }
 

@@ -1,4 +1,4 @@
-package com.back.kdquiz.admin.service;
+package com.back.kdquiz.admin.service.resourceService;
 
 import com.back.kdquiz.admin.dto.resourceDto.ResourceCreateDto;
 import com.back.kdquiz.domain.entity.Resources;

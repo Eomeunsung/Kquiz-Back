@@ -1,8 +1,8 @@
 package com.back.kdquiz.role.controller;
 
+import com.back.kdquiz.admin.service.roleService.RoleGetService;
 import com.back.kdquiz.config.custom.CustomUserDetails;
 import com.back.kdquiz.response.ResponseDto;
-import com.back.kdquiz.role.service.RoleGetService;
 import com.back.kdquiz.role.service.RoleUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

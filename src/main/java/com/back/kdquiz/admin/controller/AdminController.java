@@ -6,7 +6,11 @@ import com.back.kdquiz.admin.dto.roleDto.RoleCreateDto;
 import com.back.kdquiz.admin.dto.UserUpdateDto;
 import com.back.kdquiz.admin.dto.roleDto.RoleUpdateDto;
 import com.back.kdquiz.admin.service.*;
+import com.back.kdquiz.admin.service.resourceService.ResourceCreateService;
+import com.back.kdquiz.admin.service.resourceService.ResourceDeleteService;
+import com.back.kdquiz.admin.service.resourceService.ResourceGetService;
 import com.back.kdquiz.admin.service.roleService.RoleCreateService;
+import com.back.kdquiz.admin.service.roleService.RoleDeleteService;
 import com.back.kdquiz.admin.service.roleService.RoleGetService;
 import com.back.kdquiz.admin.service.roleService.RoleUpdateService;
 import com.back.kdquiz.quiz.service.quizService.delete.QuizDeleteService;
@@ -35,6 +39,8 @@ public class AdminController {
     private final RoleCreateService roleCreateService;
     private final MappingUpdateService mappingUpdateService;
     private final RoleUpdateService roleUpdateService;
+    private final RoleDeleteService roleDeleteService;
+    private final ResourceDeleteService resourceDeleteService;
 
     @GetMapping("/quiz/list")
     public ResponseEntity<ResponseDto<?>> quizList(){
@@ -96,5 +102,15 @@ public class AdminController {
     @PatchMapping("/role/update")
     public ResponseEntity<ResponseDto<?>> roleUpdate(@RequestBody RoleUpdateDto roleUpdateDto){
         return roleUpdateService.roleUpdate(roleUpdateDto);
+    }
+
+    @DeleteMapping("/role/delete/{roleId}")
+    public ResponseEntity<ResponseDto<?>> roleDelete(@PathVariable Long roleId){
+        return roleDeleteService.roleDelete(roleId);
+    }
+
+    @DeleteMapping("/resource/delete/{resourceId}")
+    public ResponseEntity<ResponseDto<?>> resourceDelete(@PathVariable Long resourceId){
+        return resourceDeleteService.resourceDelete(resourceId);
     }
 }

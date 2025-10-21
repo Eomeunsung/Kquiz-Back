@@ -1,5 +1,6 @@
 package com.back.kdquiz.admin.service.roleService;
 
+import com.back.kdquiz.admin.dto.roleDto.RoleGetDto;
 import com.back.kdquiz.admin.dto.roleDto.RoleUpdateDto;
 import com.back.kdquiz.domain.entity.Role;
 import com.back.kdquiz.domain.repository.RoleRepository;
@@ -24,7 +25,10 @@ public class RoleUpdateService {
         Role role = roleRepository.findById(roleUpdateDto.getRoleId()).orElseThrow(()->new RoleNotFoundException());
         role.setRoleName(roleUpdateDto.getRoleName());
         roleRepository.save(role);
-        ResponseDto responseDto = ResponseDto.setSuccess("R200", "Role 수정 완료", null);
+        RoleGetDto roleGetDto = new RoleGetDto();
+        roleGetDto.setRole(role.getRoleName());
+        roleGetDto.setId(role.getId());
+        ResponseDto responseDto = ResponseDto.setSuccess("R200", "Role 수정 완료", roleGetDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

@@ -2,6 +2,7 @@ package com.back.kdquiz.admin.controller;
 
 import com.back.kdquiz.admin.dto.MappingUpdateDto;
 import com.back.kdquiz.admin.dto.resourceDto.ResourceCreateDto;
+import com.back.kdquiz.admin.dto.resourceDto.ResourceUpdateDto;
 import com.back.kdquiz.admin.dto.roleDto.RoleCreateDto;
 import com.back.kdquiz.admin.dto.UserUpdateDto;
 import com.back.kdquiz.admin.dto.roleDto.RoleUpdateDto;
@@ -9,6 +10,7 @@ import com.back.kdquiz.admin.service.*;
 import com.back.kdquiz.admin.service.resourceService.ResourceCreateService;
 import com.back.kdquiz.admin.service.resourceService.ResourceDeleteService;
 import com.back.kdquiz.admin.service.resourceService.ResourceGetService;
+import com.back.kdquiz.admin.service.resourceService.ResourceUpdateService;
 import com.back.kdquiz.admin.service.roleService.RoleCreateService;
 import com.back.kdquiz.admin.service.roleService.RoleDeleteService;
 import com.back.kdquiz.admin.service.roleService.RoleGetService;
@@ -41,6 +43,7 @@ public class AdminController {
     private final RoleUpdateService roleUpdateService;
     private final RoleDeleteService roleDeleteService;
     private final ResourceDeleteService resourceDeleteService;
+    private final ResourceUpdateService resourceUpdateService;
 
     @GetMapping("/quiz/list")
     public ResponseEntity<ResponseDto<?>> quizList(){
@@ -112,5 +115,10 @@ public class AdminController {
     @DeleteMapping("/resource/delete/{resourceId}")
     public ResponseEntity<ResponseDto<?>> resourceDelete(@PathVariable Long resourceId){
         return resourceDeleteService.resourceDelete(resourceId);
+    }
+
+    @PatchMapping("/resource/update")
+    public ResponseEntity<ResponseDto<?>> resourceUpdate(@RequestBody ResourceUpdateDto resourceUpdateDto){
+        return resourceUpdateService.resourceUpdate(resourceUpdateDto);
     }
 }

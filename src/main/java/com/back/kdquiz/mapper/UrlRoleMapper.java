@@ -3,5 +3,5 @@ package com.back.kdquiz.mapper;
 import java.util.Map;
 
 public interface UrlRoleMapper {
-    Map<String, String> getUrlRoleMappings();
+    Map<String, String > getUrlRoleMappings();
 }

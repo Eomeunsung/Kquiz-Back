@@ -1,6 +1,7 @@
 package com.back.kdquiz.admin.service;
 
 import com.back.kdquiz.admin.dto.MappingUpdateDto;
+import com.back.kdquiz.admin.manger.CustomDynamicAuthorizationManger;
 import com.back.kdquiz.domain.entity.Resources;
 import com.back.kdquiz.domain.entity.Role;
 import com.back.kdquiz.domain.repository.ResourcesRepository;
@@ -24,6 +25,7 @@ public class MappingUpdateService {
 
     private final ResourcesRepository resourcesRepository;
     private final RoleRepository roleRepository;
+    private final CustomDynamicAuthorizationManger authorizationManger;
 
     @Transactional
     public ResponseEntity<ResponseDto<?>> mappingUpdate(MappingUpdateDto mappingUpdateDto){
@@ -46,7 +48,7 @@ public class MappingUpdateService {
 
         Resources resources = resourceFind.get();
         resources.setRoleSet(roleSet);
-
+        authorizationManger.reload();
         ResponseDto responseDto = ResponseDto.setSuccess("M200", "매핑 성공", null);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
 

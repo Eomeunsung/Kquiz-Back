@@ -30,6 +30,6 @@ public class Role implements GrantedAuthority ,Serializable {
         return this.roleName;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roleSet", cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roleSet", cascade = CascadeType.ALL)
     private Set<Resources> resourcesSet = new LinkedHashSet<>();
 }

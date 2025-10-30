@@ -15,6 +15,7 @@ import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcherEntry;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class CustomDynamicAuthorizationManger implements AuthorizationManager<Re
 
 
     @PostConstruct
+    @Transactional
     public void mapping(){
         dynamicAuthorizationService =
                 new DynamicAuthorizationService(new PersistenUrlRoleMapper(resourcesRepository));
@@ -49,6 +51,8 @@ public class CustomDynamicAuthorizationManger implements AuthorizationManager<Re
                 ))
                 .collect(Collectors.toList());
     }
+
+
     @Override
     public void verify(Supplier<Authentication> authentication, RequestAuthorizationContext object) {
         AuthorizationManager.super.verify(authentication, object);

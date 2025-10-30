@@ -1,0 +1,32 @@
+
+services:
+  kquiz-db:
+    image: mariadb:11.1
+    container_name: kquiz-db
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: kdquiz
+      MYSQL_USER: kdquiz
+      MYSQL_PASSWORD: 1234
+    volumes:
+      - my_db_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+  kquiz-backend:
+    build: .
+    image: kquiz-back:5.0.0-compose
+    container_name: kquiz-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://kquiz-db:3306/kdquiz
+      SPRING_DATASOURCE_USERNAME: kdquiz
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - kquiz-db
+    ports:
+      - "8080:8080"
+    restart: on-failure
+
+volumes:
+  my_db_data:

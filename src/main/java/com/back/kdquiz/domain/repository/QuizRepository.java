@@ -24,4 +24,10 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     @EntityGraph(attributePaths = {"imgUrl", "questions", "questions.option", "questions.choices"})
     @Query("SELECT q FROM Quiz q WHERE q.id = :quizId")
     Optional<Quiz> findAllQuiz(@Param("quizId") Long quizId);
+
+
+//    @Modifying
+//    @Transactional
+//    @Query("DELETE FROM Quiz q WHERE q.id=:quizId")
+//    int quizDelete(@Param("quizId") Long quizId);
 }

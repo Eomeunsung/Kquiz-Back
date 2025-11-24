@@ -1,8 +1,10 @@
 package com.back.kdquiz.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -12,6 +14,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@ToString(exclude = {"quiz"})
 public class Question implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

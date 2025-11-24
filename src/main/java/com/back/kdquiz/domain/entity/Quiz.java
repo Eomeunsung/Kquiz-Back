@@ -9,11 +9,12 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"questions", "imgUrl"})
+@ToString
 public class Quiz implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

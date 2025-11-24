@@ -1,15 +1,14 @@
 package com.back.kdquiz.quiz.dto.get;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class QuestionGetDto {
     private Long id;
     private String title;

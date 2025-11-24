@@ -48,6 +48,15 @@ public class QuizCreateServiceImpl implements QuizCreateService{
     @Transactional
     @Override
     public long quizCreateDto(QuizCreateDto quizCreateDto) {
+
+        Quiz quiz = Quiz.builder()
+                .title(quizCreateDto.getTitle())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .users(null)
+                .build();
+        quizRepository.save(quiz);
+        questionCreateService.questionCreateDto(quiz.getId());
         return 0;
     }
 }

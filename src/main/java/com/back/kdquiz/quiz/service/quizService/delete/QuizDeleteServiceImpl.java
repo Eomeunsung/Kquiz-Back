@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -28,11 +29,11 @@ public class QuizDeleteServiceImpl implements QuizDeleteService{
     @Transactional
     @Override
     public ResponseEntity quizDeleteResponse(Long quizId) throws IOException {
-        Optional<Quiz> quizOptional = quizRepository.findById(quizId);
+        Optional<Quiz> quizOptional = quizRepository.findAllQuiz(quizId);
         if(quizOptional.isEmpty()){
             throw new QuizNotFoundException();
         }
-        List<ImgUrl> imgUrlList = imgUrlRepository.findByQuiz_Id(quizOptional.get().getId());
+        Set<ImgUrl> imgUrlList = quizOptional.get().getImgUrl();
         if(!imgUrlList.isEmpty()){
             for(ImgUrl imgUrl : imgUrlList){
                 customFileUtil.deleteProfileImg(imgUrl.getImgUrl());

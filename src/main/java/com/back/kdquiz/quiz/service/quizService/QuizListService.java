@@ -42,10 +42,23 @@ public class QuizListService {
         List<QuizAllGetDto> quizAllGetDtoList = new ArrayList<>();
         for(Quiz quiz : quizList){
             QuizAllGetDto qad = new QuizAllGetDto();
-            Optional<Users> usersOptional = usersRepository.findById(quiz.getUsers().getId());
             qad.setId(quiz.getId());
             qad.setTitle(quiz.getTitle());
-            qad.setNickName(usersOptional.get().getNickName());
+            qad.setNickName(quiz.getUsers().getNickName());
+            qad.setUpdateAt(quiz.getUpdatedAt());
+            quizAllGetDtoList.add(qad);
+        }
+        return quizAllGetDtoList;
+    }
+
+    @Transactional
+    public List<QuizAllGetDto> buildQuizAllListTest(List<Quiz> quizList){
+        List<QuizAllGetDto> quizAllGetDtoList = new ArrayList<>();
+        for(Quiz quiz : quizList){
+            QuizAllGetDto qad = new QuizAllGetDto();
+            qad.setId(quiz.getId());
+            qad.setTitle(quiz.getTitle());
+            qad.setNickName(null);
             qad.setUpdateAt(quiz.getUpdatedAt());
             quizAllGetDtoList.add(qad);
         }

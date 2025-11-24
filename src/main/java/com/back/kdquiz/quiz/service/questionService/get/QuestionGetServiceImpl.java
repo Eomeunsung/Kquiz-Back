@@ -66,7 +66,7 @@ public class QuestionGetServiceImpl implements QuestionGetService{
     @Transactional
     @Override
     public QuestionGetDto questionGetDto(Question question) {
-        List<ChoiceGetDto> choiceGetDtoList = choiceGetService.choiceGetDto(question.getChoice());
+        List<ChoiceGetDto> choiceGetDtoList = choiceGetService.choiceGetDto(question.getChoices());
         OptionGetDto optionGetDto = optionGetService.optionGetDto(question.getOption());
 
         return QuestionGetDto.builder()

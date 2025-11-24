@@ -58,7 +58,7 @@ public class GameCreateServiceImpl implements GameCreateService {
         if(quiz.isEmpty()){
             throw new QuizNotFoundException();
         }
-        Long questionSize = questionIndexRedisSave(quiz.get().getQuestions(), roomId);
+        Long questionSize = questionIndexRedisSave((List<Question>) quiz.get().getQuestions(), roomId);
         return GameQuizInfoDto
                 .builder()
                 .quizTitle(quiz.get().getTitle())

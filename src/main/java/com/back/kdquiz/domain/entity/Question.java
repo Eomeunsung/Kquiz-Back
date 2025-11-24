@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -30,10 +31,10 @@ public class Question implements Serializable {
     private Quiz quiz;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
-    private List<Choice> Choice;
+    private List<Choice> choices;
 
     @OneToOne(mappedBy = "question", cascade = CascadeType.REMOVE)
-    private Option Option;
+    private Option option;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")

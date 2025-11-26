@@ -1,6 +1,7 @@
 package com.back.kdquiz.quiz.controller;
 
 import com.back.kdquiz.config.custom.CustomUserDetails;
+import com.back.kdquiz.page.dto.PageRequestDTO;
 import com.back.kdquiz.quiz.dto.create.QuizCreateDto;
 import com.back.kdquiz.quiz.dto.update.QuizTitleUpdateDto;
 import com.back.kdquiz.quiz.dto.update.QuizUpdateDto;
@@ -12,6 +13,7 @@ import com.back.kdquiz.quiz.service.quizService.get.QuizGetService;
 import com.back.kdquiz.quiz.service.quizService.update.QuizUpdateService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,7 @@ import java.io.IOException;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/quiz")
+@Log4j2
 public class QuizController {
 
     private final QuizCreateService quizCreateService;
@@ -36,8 +39,9 @@ public class QuizController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ResponseDto<?>> quizListGet(){
-        return quizListService.quizAllList();
+    public ResponseEntity<ResponseDto<?>> quizGetList(PageRequestDTO pageRequestDTO){
+        log.info("요청 페이지 "+pageRequestDTO.getPage());
+        return quizListService.quizAllList(pageRequestDTO);
     }
 
     @GetMapping("/get/{quizId}")
@@ -51,7 +55,7 @@ public class QuizController {
     }
 
     @PutMapping("/update/title")
-    public ResponseEntity<ResponseDto<?>> quizTitleUpdate(@RequestBody QuizTitleUpdateDto quizTitleUpdateDto){
+    public ResponseEntity<ResponseDto<?>> quizUpdateTitle(@RequestBody QuizTitleUpdateDto quizTitleUpdateDto){
         return quizTitleUpdateService.quizTitleUpdate(quizTitleUpdateDto);
     }
 

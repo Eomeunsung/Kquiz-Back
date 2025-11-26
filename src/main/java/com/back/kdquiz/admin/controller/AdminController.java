@@ -15,6 +15,7 @@ import com.back.kdquiz.admin.service.roleService.RoleCreateService;
 import com.back.kdquiz.admin.service.roleService.RoleDeleteService;
 import com.back.kdquiz.admin.service.roleService.RoleGetService;
 import com.back.kdquiz.admin.service.roleService.RoleUpdateService;
+import com.back.kdquiz.page.dto.PageRequestDTO;
 import com.back.kdquiz.quiz.service.quizService.delete.QuizDeleteService;
 import com.back.kdquiz.quiz.service.quizService.QuizListService;
 import com.back.kdquiz.response.ResponseDto;
@@ -45,20 +46,20 @@ public class AdminController {
     private final ResourceDeleteService resourceDeleteService;
     private final ResourceUpdateService resourceUpdateService;
 
-    @GetMapping("/quiz/list")
-    public ResponseEntity<ResponseDto<?>> quizList(){
-        return quizListService.quizAllList();
-    }
+//    @GetMapping("/quiz/list")
+//    public ResponseEntity<ResponseDto<?>> quizList(){
+//        return quizListService.quizAllList();
+//    }
 
     @DeleteMapping("/quiz/delete/{quizId}")
     public ResponseEntity<ResponseDto<?>> quizDelete(@PathVariable Long quizId) throws IOException {
         return quizDeleteService.quizDeleteResponse(quizId);
     }
 
-    @GetMapping("/user/list")
-    public ResponseEntity<ResponseDto<?>> userList(){
-        return adminUserListService.userList();
-    }
+//    @GetMapping("/user/list")
+//    public ResponseEntity<ResponseDto<?>> userList(PageRequestDTO pageRequestDTO){
+//        return adminUserListService.userList(pageRequestDTO);
+//    }
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<ResponseDto<?>> userGet(@PathVariable Long userId){

@@ -4,13 +4,21 @@ import com.back.kdquiz.domain.entity.Quiz;
 import com.back.kdquiz.domain.entity.Users;
 import com.back.kdquiz.domain.repository.QuizRepository;
 import com.back.kdquiz.domain.repository.UsersRepository;
+import com.back.kdquiz.page.dto.PageRequestDTO;
+import com.back.kdquiz.page.dto.PageResponseDTO;
 import com.back.kdquiz.quiz.dto.get.QuizAllGetDto;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,21 +26,34 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Log4j2
 public class QuizListService {
 
     private final QuizRepository quizRepository;
     private final UsersRepository usersRepository;
 
     @Transactional
-    public ResponseEntity<ResponseDto<?>> quizAllList(){
+    public ResponseEntity<ResponseDto<?>> quizAllList(PageRequestDTO pageRequestDTO){
         ResponseDto responseDto;
-        List<Quiz> quizList = quizRepository.findAll();
-        if(quizList.isEmpty()){
-            responseDto =  ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", null);
-        }else{
-            List<QuizAllGetDto> quizAllGetDtoList = buildQuizAllListResponse(quizList);
-            responseDto =  ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", quizAllGetDtoList);
-        }
+
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage()-1, pageRequestDTO.getSize(), Sort.by("updatedAt").descending());
+
+        Page<Quiz> quizPage = quizRepository.findAll(pageable);
+        log.info("퀴즈 페이지 "+quizPage);
+
+        List<QuizAllGetDto> quizAllGetDtoList = buildQuizAllListResponse(quizPage.getContent());
+        PageResponseDTO<QuizAllGetDto> responseDTO =
+                PageResponseDTO.<QuizAllGetDto>withAll()
+                        .dtoList(quizAllGetDtoList)
+                        .pageRequestDTO(pageRequestDTO)
+                        .total(quizPage.getTotalElements()).build();
+//
+//        if(quizAllGetDtoList.isEmpty()){
+//            responseDto =  ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", null);
+//        }else{
+//            responseDto =  ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", quizAllGetDtoList);
+//        }
+        responseDto =  ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", responseDTO);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
 
     }
@@ -44,7 +65,7 @@ public class QuizListService {
             QuizAllGetDto qad = new QuizAllGetDto();
             qad.setId(quiz.getId());
             qad.setTitle(quiz.getTitle());
-            qad.setNickName(quiz.getUsers().getNickName());
+            qad.setNickName(null);
             qad.setUpdateAt(quiz.getUpdatedAt());
             quizAllGetDtoList.add(qad);
         }

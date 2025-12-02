@@ -35,10 +35,14 @@ public class QuizListService {
     @Transactional
     public ResponseEntity<ResponseDto<?>> quizAllList(PageRequestDTO pageRequestDTO){
         ResponseDto responseDto;
-
+        Page<Quiz> quizPage;
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage()-1, pageRequestDTO.getSize(), Sort.by("updatedAt").descending());
+        if(pageRequestDTO.getSearch().equals("")){
+            quizPage = quizRepository.findAll(pageable);
+        }else{
+            quizPage = quizRepository.findByTitleContainingIgnoreCase(pageRequestDTO.getSearch(), pageable);
+        }
 
-        Page<Quiz> quizPage = quizRepository.findAll(pageable);
         log.info("퀴즈 페이지 "+quizPage);
 
         List<QuizAllGetDto> quizAllGetDtoList = buildQuizAllListResponse(quizPage.getContent());
@@ -47,12 +51,7 @@ public class QuizListService {
                         .dtoList(quizAllGetDtoList)
                         .pageRequestDTO(pageRequestDTO)
                         .total(quizPage.getTotalElements()).build();
-//
-//        if(quizAllGetDtoList.isEmpty()){
-//            responseDto =  ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", null);
-//        }else{
-//            responseDto =  ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", quizAllGetDtoList);
-//        }
+
         responseDto =  ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", responseDTO);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
 

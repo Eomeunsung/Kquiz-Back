@@ -1,6 +1,8 @@
 package com.back.kdquiz.domain.repository;
 
 import com.back.kdquiz.domain.entity.Quiz;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -25,6 +27,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     @Query("SELECT q FROM Quiz q WHERE q.id = :quizId")
     Optional<Quiz> findAllQuiz(@Param("quizId") Long quizId);
 
+    Page<Quiz> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 
 //    @Modifying
 //    @Transactional

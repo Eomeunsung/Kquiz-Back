@@ -40,7 +40,7 @@ public class QuizRepositoryTest {
     public void testInsert(){
         for(int i=1; i<=50; i++){
             QuizCreateDto quizCreateDto = new QuizCreateDto();
-            quizCreateDto.setTitle("Test"+1);
+            quizCreateDto.setTitle("Test"+i);
             quizCreateService.quizCreateDto(quizCreateDto);
         }
     }

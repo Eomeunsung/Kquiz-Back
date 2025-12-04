@@ -15,9 +15,8 @@ import com.back.kdquiz.admin.service.roleService.RoleCreateService;
 import com.back.kdquiz.admin.service.roleService.RoleDeleteService;
 import com.back.kdquiz.admin.service.roleService.RoleGetService;
 import com.back.kdquiz.admin.service.roleService.RoleUpdateService;
-import com.back.kdquiz.page.dto.PageRequestDTO;
 import com.back.kdquiz.quiz.service.quizService.delete.QuizDeleteService;
-import com.back.kdquiz.quiz.service.quizService.QuizListService;
+import com.back.kdquiz.quiz.service.quizService.list.QuizListServiceImpl;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +29,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final QuizListService quizListService;
+    private final QuizListServiceImpl quizListService;
     private final QuizDeleteService quizDeleteService;
     private final UserListService adminUserListService;
     private final UserGetService adminUserGetService;

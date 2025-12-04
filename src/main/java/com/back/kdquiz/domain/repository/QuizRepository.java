@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
@@ -28,6 +29,11 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     Optional<Quiz> findAllQuiz(@Param("quizId") Long quizId);
 
     Page<Quiz> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+
+
+    @Query(value = "SELECT * FROM quiz ORDER BY created_at DESC LIMIT 10", nativeQuery = true)
+    List<Quiz> quizTodayList();
+
 
 //    @Modifying
 //    @Transactional

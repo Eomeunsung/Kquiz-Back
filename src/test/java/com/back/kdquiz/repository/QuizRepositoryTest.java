@@ -5,14 +5,16 @@ import com.back.kdquiz.domain.repository.QuizRepository;
 import com.back.kdquiz.quiz.dto.create.QuizCreateDto;
 import com.back.kdquiz.quiz.dto.get.QuizAllGetDto;
 import com.back.kdquiz.quiz.dto.update.QuizTitleUpdateDto;
-import com.back.kdquiz.quiz.service.quizService.QuizListService;
+import com.back.kdquiz.quiz.service.quizService.list.QuizListServiceImpl;
 import com.back.kdquiz.quiz.service.quizService.QuizTitleUpdateService;
 import com.back.kdquiz.quiz.service.quizService.create.QuizCreateService;
 import com.back.kdquiz.quiz.service.quizService.delete.QuizDeleteService;
+import com.back.kdquiz.response.ResponseDto;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,7 +31,7 @@ public class QuizRepositoryTest {
     private QuizCreateService quizCreateService;
 
     @Autowired
-    private QuizListService quizListService;
+    private QuizListServiceImpl quizListService;
 
     @Autowired
     private QuizTitleUpdateService quizTitleUpdateService;
@@ -80,6 +82,12 @@ public class QuizRepositoryTest {
 //            log.info(quiz.getQuestions().forEach(arr->log.info(arr)));
             quiz.getQuestions().forEach(arr->log.info(arr.getContent()));
         }
+    }
+
+    @Test
+    public void testQuizTodayList(){
+       ResponseDto responseDto =  quizListService.quizTodayList();
+       log.info(responseDto.getData());
     }
 
 }

@@ -5,7 +5,7 @@ import com.back.kdquiz.page.dto.PageRequestDTO;
 import com.back.kdquiz.quiz.dto.create.QuizCreateDto;
 import com.back.kdquiz.quiz.dto.update.QuizTitleUpdateDto;
 import com.back.kdquiz.quiz.dto.update.QuizUpdateDto;
-import com.back.kdquiz.quiz.service.quizService.QuizListService;
+import com.back.kdquiz.quiz.service.quizService.list.QuizListServiceImpl;
 import com.back.kdquiz.quiz.service.quizService.QuizTitleUpdateService;
 import com.back.kdquiz.quiz.service.quizService.create.QuizCreateService;
 import com.back.kdquiz.quiz.service.quizService.delete.QuizDeleteService;
@@ -14,6 +14,7 @@ import com.back.kdquiz.quiz.service.quizService.update.QuizUpdateService;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +29,16 @@ public class QuizController {
 
     private final QuizCreateService quizCreateService;
     private final QuizGetService quizGetService;
-    private final QuizListService quizListService;
+    private final QuizListServiceImpl quizListService;
     private final QuizUpdateService quizUpdateService;
     private final QuizDeleteService quizDeleteService;
     private final QuizTitleUpdateService quizTitleUpdateService;
 
+    @GetMapping("/today")
+    public ResponseEntity quizGetToday(){
+        ResponseDto responseDto = quizListService.quizTodayList();
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
     @PostMapping("/create")
     public ResponseEntity quizCreate(@RequestBody QuizCreateDto quizCreateDto, @AuthenticationPrincipal CustomUserDetails userDetails){
         return quizCreateService.quizCreateResponse(quizCreateDto, userDetails);
@@ -41,7 +47,8 @@ public class QuizController {
     @GetMapping("/list")
     public ResponseEntity<ResponseDto<?>> quizGetList(PageRequestDTO pageRequestDTO){
         log.info("요청 페이지 "+pageRequestDTO.getPage());
-        return quizListService.quizAllList(pageRequestDTO);
+        ResponseDto responseDto = quizListService.quizAllList(pageRequestDTO);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @GetMapping("/get/{quizId}")

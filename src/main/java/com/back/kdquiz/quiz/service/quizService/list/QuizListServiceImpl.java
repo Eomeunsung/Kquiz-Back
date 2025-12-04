@@ -30,22 +30,17 @@ public class QuizListServiceImpl implements QuizListService{
     private final QuizRepository quizRepository;
     private final UsersRepository usersRepository;
 
+    @Override
     public ResponseDto quizTodayList(){
         List<Quiz> quizList = quizRepository.quizTodayList();
         List<QuizAllGetDto> quizGetDTOList = new ArrayList<>();
         if(!quizList.isEmpty()){
-            quizList.forEach(quiz -> {
-                QuizAllGetDto qagd = QuizAllGetDto.builder()
-                        .id(quiz.getId())
-                        .title(quiz.getTitle())
-                        .updateAt(quiz.getCreatedAt())
-                        .build();
-                quizGetDTOList.add(qagd);
-            });
+           quizGetDTOList = entityToDTO(quizList);
         }
         return ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", quizGetDTOList);
     }
 
+    @Override
     public ResponseDto quizAllList(PageRequestDTO pageRequestDTO){
         Page<Quiz> quizPage;
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage()-1, pageRequestDTO.getSize(), Sort.by("updatedAt").descending());
@@ -57,7 +52,7 @@ public class QuizListServiceImpl implements QuizListService{
 
         log.info("퀴즈 페이지 "+quizPage);
 
-        List<QuizAllGetDto> quizAllGetDtoList = buildQuizAllListResponse(quizPage.getContent());
+        List<QuizAllGetDto> quizAllGetDtoList = entityToDTO(quizPage.getContent());
         PageResponseDTO<QuizAllGetDto> responseDTO =
                 PageResponseDTO.<QuizAllGetDto>withAll()
                         .dtoList(quizAllGetDtoList)
@@ -69,14 +64,15 @@ public class QuizListServiceImpl implements QuizListService{
     }
 
     @Transactional
-    private List<QuizAllGetDto> buildQuizAllListResponse(List<Quiz> quizList){
+    private List<QuizAllGetDto> entityToDTO(List<Quiz> quizList){
         List<QuizAllGetDto> quizAllGetDtoList = new ArrayList<>();
         for(Quiz quiz : quizList){
-            QuizAllGetDto qad = new QuizAllGetDto();
-            qad.setId(quiz.getId());
-            qad.setTitle(quiz.getTitle());
-            qad.setNickName(null);
-            qad.setUpdateAt(quiz.getUpdatedAt());
+            QuizAllGetDto qad = QuizAllGetDto.builder()
+                    .id(quiz.getId())
+                    .title(quiz.getTitle())
+                    .nickName(quiz.getUsers() != null ? quiz.getUsers().getNickName() : "Default")
+                    .updateAt(quiz.getUpdatedAt())
+                    .build();
             quizAllGetDtoList.add(qad);
         }
         return quizAllGetDtoList;

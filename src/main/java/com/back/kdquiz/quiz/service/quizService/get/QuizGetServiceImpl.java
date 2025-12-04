@@ -30,7 +30,7 @@ public class QuizGetServiceImpl implements QuizGetService {
 
     @Transactional
     @Override
-    public ResponseEntity quizGetResponse(Long quizId) {
+    public ResponseDto quizGet(Long quizId) {
 
         Optional<Quiz> quizOptional = quizRepository.findById(quizId);
         if(quizOptional.isEmpty()){
@@ -50,14 +50,12 @@ public class QuizGetServiceImpl implements QuizGetService {
         log.info("퀘스천 갯수 "+ quiz.getQuestions().size());
 
         quizGetDto.setQuestions(questionGetDtoList);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", quizGetDto));
+        return ResponseDto.setSuccess("Q200", "퀴즈 목록 조회 성공", quizGetDto);
 
     }
 
     @Override
-    public QuizGetDto quizGetDto(Long quizId) {
+    public QuizGetDto entityToDTO(Long quizId) {
 
         Optional<Quiz> quizOptional = quizRepository.findById(quizId);
         if(quizOptional.isEmpty()){

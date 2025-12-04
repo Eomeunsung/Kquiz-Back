@@ -66,7 +66,7 @@ public class QuizRepositoryTest {
     @Test
     public void testDelete() throws IOException {
         Long id = 4L;
-        quizDeleteService.quizDeleteResponse(id);
+        quizDeleteService.quizDelete(id);
     }
 
     @Test

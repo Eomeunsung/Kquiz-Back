@@ -27,7 +27,7 @@ public class QuizDeleteServiceImpl implements QuizDeleteService{
 
     @Transactional
     @Override
-    public ResponseEntity quizDeleteResponse(Long quizId) throws IOException {
+    public ResponseDto quizDelete(Long quizId) throws IOException {
         Optional<Quiz> quizOptional = quizRepository.findAllQuiz(quizId);
         if(quizOptional.isEmpty()){
             throw new QuizNotFoundException();
@@ -39,10 +39,6 @@ public class QuizDeleteServiceImpl implements QuizDeleteService{
             }
         }
         quizRepository.delete(quizOptional.get());
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ResponseDto.setSuccess("Q200", "퀴즈 삭제하였습니다."));
-
+        return ResponseDto.setSuccess("Q200", "퀴즈 삭제하였습니다.");
     }
 }

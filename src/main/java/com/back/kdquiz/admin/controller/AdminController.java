@@ -19,6 +19,7 @@ import com.back.kdquiz.quiz.service.quizService.delete.QuizDeleteService;
 import com.back.kdquiz.quiz.service.quizService.list.QuizListServiceImpl;
 import com.back.kdquiz.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,7 +53,8 @@ public class AdminController {
 
     @DeleteMapping("/quiz/delete/{quizId}")
     public ResponseEntity<ResponseDto<?>> quizDelete(@PathVariable Long quizId) throws IOException {
-        return quizDeleteService.quizDeleteResponse(quizId);
+        ResponseDto responseDto = quizDeleteService.quizDelete(quizId);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
 //    @GetMapping("/user/list")

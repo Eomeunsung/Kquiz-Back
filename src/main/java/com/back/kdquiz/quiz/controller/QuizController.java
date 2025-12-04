@@ -41,7 +41,8 @@ public class QuizController {
     }
     @PostMapping("/create")
     public ResponseEntity quizCreate(@RequestBody QuizCreateDto quizCreateDto, @AuthenticationPrincipal CustomUserDetails userDetails){
-        return quizCreateService.quizCreateResponse(quizCreateDto, userDetails);
+        ResponseDto responseDto = quizCreateService.quizCreate(quizCreateDto, userDetails);
+        return new ResponseEntity(responseDto, HttpStatus.OK);
     }
 
     @GetMapping("/list")
@@ -53,7 +54,8 @@ public class QuizController {
 
     @GetMapping("/get/{quizId}")
     public ResponseEntity<ResponseDto<?>> quizGet(@PathVariable Long quizId){
-        return quizGetService.quizGetResponse(quizId);
+        ResponseDto responseDto = quizGetService.quizGet(quizId);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @PutMapping("/update")
@@ -68,7 +70,8 @@ public class QuizController {
 
     @DeleteMapping("/delete/{quizId}")
     public ResponseEntity<ResponseDto<?>> quizDelete(@PathVariable Long quizId) throws IOException {
-        return quizDeleteService.quizDeleteResponse(quizId);
+        ResponseDto responseDto =  quizDeleteService.quizDelete(quizId);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
 

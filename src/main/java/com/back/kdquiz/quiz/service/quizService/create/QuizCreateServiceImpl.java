@@ -27,7 +27,7 @@ public class QuizCreateServiceImpl implements QuizCreateService{
 
     @Transactional
     @Override
-    public ResponseEntity quizCreateResponse(QuizCreateDto quizCreateDto, CustomUserDetails userDetails) {
+    public ResponseDto quizCreate(QuizCreateDto quizCreateDto, CustomUserDetails userDetails) {
         Users users = usersRepository.findByEmail(userDetails.getUsername());
         if(users==null){
             throw new UserNotFoundException();
@@ -40,9 +40,7 @@ public class QuizCreateServiceImpl implements QuizCreateService{
                 .build();
         quizRepository.save(quiz);
         questionCreateService.questionCreateDto(quiz.getId());
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ResponseDto.setSuccess("Q200", "Quiz 생성 성공", quiz.getId()));
+        return ResponseDto.setSuccess("Q200", "Quiz 생성 성공", quiz.getId());
     }
 
     @Transactional

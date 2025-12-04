@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 public class QuizAllGetDto {
     private Long id;
     private String title;
-    private String nickName;
+
+    @Builder.Default
+    private String nickName = "default";
     private LocalDateTime updateAt;
 }
